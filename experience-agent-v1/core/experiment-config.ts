@@ -116,7 +116,11 @@ export function buildExperimentConfig(env: EnvironmentCompatibility): JsonValue 
         minor_compatible: FROZEN.environment_factor.minor_compatible,
         major_parseable: FROZEN.environment_factor.major_parseable,
         unusable: FROZEN.environment_factor.unusable,
-        mapping_rules: 'OQ-003-pending（semver 边界比对规则未裁决；同版本→compatible 为唯一已定义情形）',
+        mapping_rules:
+          'OQ-003/OQ-016 裁决 2026-09-27：tool_schema_version = 运行时 ToolSchema canonical hash（tschema-<hash>），' +
+          '不是 SemVer。规则：Harness version 相同 + ToolSchema hash 相同 → 1.0；' +
+          'Harness version 相同 + ToolSchema hash 不同 + 当前 Experience 明确声明兼容 → 0.7；' +
+          'Harness 发生重大不兼容变化 → 0.3；ToolSchema 无法解析 / Experience 不可用 → 0.0。',
       },
     },
     vocabulary: {

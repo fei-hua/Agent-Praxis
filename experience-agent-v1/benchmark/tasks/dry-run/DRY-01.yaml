@@ -1,0 +1,21 @@
+id: DRY-01
+source: synthetic
+task_type: test
+complexity: simple
+scope: project
+characteristics: []
+constraints: [scope_limited]
+prompt: |
+  为已提供的模块 dry-run-workspace/DRY-01/src/counter.js 编写冒烟测试。
+  要求：
+  1. 在 dry-run-workspace/DRY-01/src/smoke.test.js 编写测试，覆盖 increment() 与 reset() 两个函数；
+  2. 测试通过时输出一行 SMOKE PASS，失败时输出 SMOKE FAIL 并以非零码退出；
+  3. 运行 node dry-run-workspace/DRY-01/src/smoke.test.js 验证通过；
+  4. 只允许改动/新增 dry-run-workspace/DRY-01/ 目录内文件，不得修改 counter.js。
+expected_first_decisions: [DIRECT]
+success_criteria:
+  - dry-run-workspace/DRY-01/src/smoke.test.js 存在
+  - node dry-run-workspace/DRY-01/src/smoke.test.js 的输出包含 SMOKE PASS
+  - counter.js 未被修改（哈希不变）
+  - 轨迹中存在至少一次对 smoke.test.js 的执行（成功条件验证）
+dryrun_coverage: [direct_path, tool_pairing, decision_chain]

@@ -12,7 +12,11 @@
     "test": "node --test tests/"
   },
   "devDependencies": {
-    "typescript": "^5.9.0",
-    "@types/node": "^24.0.0"
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  },
+  "dependencies": {
+    "js-yaml": "^5.4.2"
   }
 }

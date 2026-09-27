@@ -1,0 +1,249 @@
+[
+  {
+    "id": "EXP-DRY-UI-DELEGATE",
+    "status": "validated",
+    "scope": "project",
+    "task_type": "ui_upgrade",
+    "complexity": "medium",
+    "characteristics": [
+      "multi_page"
+    ],
+    "constraints": [
+      "scope_limited",
+      "no_public_interface_change"
+    ],
+    "situation": "多页面间距/样式升级且要求 UI 越界风险审查",
+    "decision": "DELEGATE",
+    "delegation": {
+      "mode": "serial",
+      "agents": [
+        "ui-reviewer"
+      ]
+    },
+    "outcome": {
+      "success": true,
+      "task_success_criteria_met": true,
+      "forbidden_violation": false,
+      "tokens": 12000,
+      "subagent_calls": 1,
+      "wall_time_s": 180
+    },
+    "evidence": {
+      "run_id": "run-fixture-ui-01",
+      "trajectory_ref": "telemetry/trajectories/run-fixture-ui-01.jsonl",
+      "harness_version": "0.1.5-rc.3",
+      "tool_schema_version": "tschema-19751aa066b9",
+      "framework_version": "1.0",
+      "evidence_complete": true
+    },
+    "lesson": "间距升级委派 ui-reviewer 做越界审查",
+    "contraindications": [],
+    "conflict_count": 0,
+    "independent_support": 3
+  },
+  {
+    "id": "EXP-DRY-DATA-PARALLEL",
+    "status": "validated",
+    "scope": "project",
+    "task_type": "data_layer",
+    "complexity": "medium",
+    "characteristics": [
+      "multi_file",
+      "shared_state"
+    ],
+    "constraints": [
+      "data_schema_immutable",
+      "scope_limited"
+    ],
+    "situation": "数据层两线工作：schema 核对与校验脚本执行互不依赖",
+    "decision": "PARALLEL",
+    "delegation": {
+      "mode": "parallel",
+      "agents": [
+        "explorer",
+        "tester"
+      ]
+    },
+    "outcome": {
+      "success": true,
+      "task_success_criteria_met": true,
+      "forbidden_violation": false,
+      "tokens": 15000,
+      "subagent_calls": 2,
+      "wall_time_s": 210
+    },
+    "evidence": {
+      "run_id": "run-fixture-data-01",
+      "trajectory_ref": "telemetry/trajectories/run-fixture-data-01.jsonl",
+      "harness_version": "0.1.5-rc.3",
+      "tool_schema_version": "tschema-19751aa066b9",
+      "framework_version": "1.0",
+      "evidence_complete": true
+    },
+    "lesson": "独立数据线并行拆给 explorer 与 tester",
+    "contraindications": [],
+    "conflict_count": 0,
+    "independent_support": 2
+  },
+  {
+    "id": "EXP-DRY-DOC-EXPLORE",
+    "status": "validated",
+    "scope": "project",
+    "task_type": "doc",
+    "complexity": "simple",
+    "characteristics": [
+      "multi_file"
+    ],
+    "constraints": [
+      "scope_limited"
+    ],
+    "situation": "写模块文档前需要先摸清文件与调用关系",
+    "decision": "EXPLORE",
+    "delegation": {
+      "mode": "serial",
+      "agents": [
+        "explorer"
+      ]
+    },
+    "outcome": {
+      "success": true,
+      "task_success_criteria_met": true,
+      "forbidden_violation": false,
+      "tokens": 8000,
+      "subagent_calls": 1,
+      "wall_time_s": 120
+    },
+    "evidence": {
+      "run_id": "run-fixture-doc-01",
+      "trajectory_ref": "telemetry/trajectories/run-fixture-doc-01.jsonl",
+      "harness_version": "0.1.5-rc.3",
+      "tool_schema_version": "tschema-19751aa066b9",
+      "framework_version": "1.0",
+      "evidence_complete": true
+    },
+    "lesson": "先 explore 摸清模块调用再落笔写文档",
+    "contraindications": [],
+    "conflict_count": 0,
+    "independent_support": 2
+  },
+  {
+    "id": "EXP-DRY-TEST-DIRECT",
+    "status": "validated",
+    "scope": "project",
+    "task_type": "test",
+    "complexity": "simple",
+    "characteristics": [],
+    "constraints": [
+      "scope_limited"
+    ],
+    "situation": "单模块冒烟测试，范围小且无未知面",
+    "decision": "DIRECT",
+    "delegation": {
+      "mode": "serial",
+      "agents": []
+    },
+    "outcome": {
+      "success": true,
+      "task_success_criteria_met": true,
+      "forbidden_violation": false,
+      "tokens": 5000,
+      "subagent_calls": 0,
+      "wall_time_s": 60
+    },
+    "evidence": {
+      "run_id": "run-fixture-test-01",
+      "trajectory_ref": "telemetry/trajectories/run-fixture-test-01.jsonl",
+      "harness_version": "0.1.5-rc.3",
+      "tool_schema_version": "tschema-19751aa066b9",
+      "framework_version": "1.0",
+      "evidence_complete": true
+    },
+    "lesson": "单文件冒烟测试直接做，不委派",
+    "contraindications": [],
+    "conflict_count": 0,
+    "independent_support": 3
+  },
+  {
+    "id": "EXP-DRY-GENERIC-STALE",
+    "status": "stale",
+    "scope": "generic",
+    "task_type": "refactor",
+    "complexity": "simple",
+    "characteristics": [
+      "multi_file"
+    ],
+    "constraints": [
+      "no_new_dependency"
+    ],
+    "situation": "泛化重构经验（示例库，含禁忌标记）",
+    "decision": "EXPLORE",
+    "delegation": {
+      "mode": "serial",
+      "agents": [
+        "explorer"
+      ]
+    },
+    "outcome": {
+      "success": true,
+      "task_success_criteria_met": true,
+      "forbidden_violation": false,
+      "tokens": 9000,
+      "subagent_calls": 1,
+      "wall_time_s": 150
+    },
+    "evidence": {
+      "run_id": "run-fixture-gen-01",
+      "trajectory_ref": "telemetry/trajectories/run-fixture-gen-01.jsonl",
+      "harness_version": "0.1.5-rc.3",
+      "tool_schema_version": "tschema-19751aa066b9",
+      "framework_version": "1.0",
+      "evidence_complete": true
+    },
+    "lesson": "重构前先定位调用关系再动手",
+    "contraindications": [
+      "multi_page",
+      "shared_state"
+    ],
+    "conflict_count": 0,
+    "independent_support": 1
+  },
+  {
+    "id": "EXP-DRY-CANDIDATE-01",
+    "status": "candidate",
+    "scope": "project",
+    "task_type": "bugfix",
+    "complexity": "medium",
+    "characteristics": [
+      "multi_file"
+    ],
+    "constraints": [
+      "scope_limited"
+    ],
+    "situation": "修复类任务在失败后需要重新规划路径",
+    "decision": "REPLAN",
+    "delegation": {
+      "mode": "serial",
+      "agents": []
+    },
+    "outcome": {
+      "success": true,
+      "task_success_criteria_met": true,
+      "forbidden_violation": false,
+      "tokens": 11000,
+      "subagent_calls": 0,
+      "wall_time_s": 170
+    },
+    "evidence": {
+      "run_id": "run-fixture-bug-01",
+      "trajectory_ref": "telemetry/trajectories/run-fixture-bug-01.jsonl",
+      "harness_version": "0.1.5-rc.3",
+      "tool_schema_version": "tschema-19751aa066b9",
+      "framework_version": "1.0",
+      "evidence_complete": true
+    },
+    "lesson": "失败后先更新 task state 再重规划",
+    "contraindications": [],
+    "conflict_count": 0,
+    "independent_support": 1
+  }
+]

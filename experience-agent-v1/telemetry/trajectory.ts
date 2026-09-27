@@ -38,12 +38,16 @@ export interface ToolCallRecord {
   call_id: string;
   tool_name: string;
   arguments: unknown;
+  /** 来源会话：'primary' = 执行会话，否则为委派子会话 id（可重建上下文） */
+  from_session?: string;
 }
 
 export interface ToolResultRecord {
   call_id: string;
   ok: boolean;
   result_summary: string;
+  /** 来源会话：'primary' = 执行会话，否则为委派子会话 id */
+  from_session?: string;
 }
 
 export interface SubagentInvocationRecord {
@@ -220,6 +224,14 @@ export interface RunRecord {
   model_id: string;
   /** OQ-009 裁决：SHA256(canonical_json(experiment_config))，"sha256:<hex>" */
   experiment_config_hash: string;
+  /** §8.1：Input Token / Output Token / 总 Token（OQ-018：口径按 DSH 原始字段求和） */
+  input_tokens: number;
+  output_tokens: number;
+  total_tokens: number;
+  /** §8.1：wall_time（毫秒） */
+  wall_time_ms: number;
+  /** §8.1：success_criteria（任务定义原文） */
+  success_criteria: string[];
 }
 
 // ---------- Recorder ----------

@@ -1,0 +1,17 @@
+{
+  "note": "dry-run 种子哈希清单；DRY-05/config.json 故意缺失（失败现场）。哈希算法 SHA-256，内容为文件原文。",
+  "seeded_at": "2026-09-27T15:10:56.427Z",
+  "files": {
+    "DRY-01/src/counter.js": "1bcfdd1a6030421b430810a6ce6238ef28b5d0dc6f9d381d498ce8365f1198be",
+    "DRY-02/mini-lib/alpha.js": "3b82cd9bcd8ffb65242d1eb2e8ead7ce771999c661b813c98fb60cad61c5ef0a",
+    "DRY-02/mini-lib/beta.js": "34f6dd16e50ff61f953c17973c0506d7261c5c579d4dc94df9548fb7f2c05a74",
+    "DRY-02/mini-lib/gamma.js": "abded875b1c9210d02632a691aced77042cb4f92bb2e6c6a04023398457d7f56",
+    "DRY-03/ui.css": "a51fa606a3dcf6a3896e6af2ea8175e6bb2f639c6d275adfa01742e2118c4c92",
+    "DRY-04/schema.json": "41578c4a4815e386062da9950d054542312682d940fa45c8edd6ab7a3cc13b2d",
+    "DRY-04/verify-schema.js": "4e35297ae4458a3bc5e8ca80bcab1ee4b79b8df0722de8f3f6edf1983e19d328",
+    "DRY-05/run-check.js": "e349fa9ac4a4e8c2057fb926d1694ab6d829c3214898238ff61b27336791821d"
+  },
+  "intentionally_missing": [
+    "DRY-05/config.json"
+  ]
+}

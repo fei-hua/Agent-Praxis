@@ -1,0 +1,19 @@
+id: DRY-02
+source: synthetic
+task_type: doc
+complexity: simple
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  分析 dry-run-workspace/DRY-02/mini-lib/ 下的三个模块（alpha.js、beta.js、gamma.js），撰写 dry-run-workspace/DRY-02/docs.md：
+  1. 每个文件的导出函数清单（函数名 + 一句话说明）；
+  2. 模块间调用关系描述（谁调用谁，用 "→" 或"调用"表述）；
+  3. 不得修改 mini-lib/ 下任何文件。
+expected_first_decisions: [EXPLORE]
+success_criteria:
+  - dry-run-workspace/DRY-02/docs.md 存在
+  - docs.md 提及 alpha.js、beta.js、gamma.js 三个文件名
+  - docs.md 含至少一处调用关系表述（→ 或 调用）
+  - mini-lib/ 下文件未被修改
+dryrun_coverage: [explore_path, tool_pairing, decision_chain]

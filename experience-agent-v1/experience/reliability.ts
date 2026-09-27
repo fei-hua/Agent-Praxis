@@ -45,16 +45,21 @@ export function conflictFactor(independentSupport: number, conflictCount: number
 }
 
 /**
- * environment_factor 四档（spec/frozen.md §5.4）：
- *   1.0  harness/tool_schema 完全兼容（同 major，tool_schema 相同）
- *   0.7  minor-compatible（同 major，tool_schema 小改）
- *   0.3  major 不兼容但仍可解析
- *   0.0  不可用（结构性变化，经验无法解析）
+ * environment_factor 四档数值（spec/frozen.md §5.4，冻结）：
+ *   1.0 / 0.7 / 0.3 / 0.0
  *
- * OQ-003（open）：minor/major 的具体比对规则（哪个字段算 major、tool_schema「小改」
- * 如何从版本号判定）规格未定义，人工尚未裁决。
- * 因此 classifyEnvironment() 只实现「版本完全相同 ⇒ 1.0」这一无歧义情形，
- * 其余情形显式抛错等待裁决，绝不隐式假设映射规则。
+ * 分类规则（OQ-003 + OQ-016 人工裁决 2026-09-27，取代原 semver 映射问题）：
+ *   tool_schema_version = 运行时 ToolSchema canonical hash（tschema-<hash>），不是 SemVer，
+ *   major/minor/patch 那套规则不再用于它。规则：
+ *     (1) Harness version 相同 + ToolSchema hash 相同                      → compatible      (1.0)
+ *     (2) Harness version 相同 + ToolSchema hash 不同
+ *         + 当前 Experience 明确声明兼容                                    → minor_compatible(0.7)
+ *     (3) Harness 发生重大不兼容变化                                        → major_parseable (0.3)
+ *     (4) ToolSchema 无法解析 / Experience 不可用                            → unusable        (0.0)
+ *
+ * 未被裁决覆盖的组合（例如 Harness 小版本不同、Experience 未声明兼容）显式抛错，
+ * 不隐式假设取值。「明确声明兼容」「重大不兼容」由调用方以显式判定输入提供
+ * （Experience schema 无兼容声明字段，声明属带外判定）。
  */
 export type EnvironmentClass = 'compatible' | 'minor_compatible' | 'major_parseable' | 'unusable';
 
@@ -68,19 +73,44 @@ export interface VersionInfo {
   framework_version: string;
 }
 
-export function classifyEnvironment(from: VersionInfo, to: VersionInfo): EnvironmentClass {
-  const identical =
-    from.harness_version === to.harness_version &&
-    from.tool_schema_version === to.tool_schema_version &&
-    from.framework_version === to.framework_version;
+export interface EnvironmentClassificationJudgment {
+  /** 规则 (2)：当前 Experience 明确声明兼容（带外判定，Experience schema 无该字段） */
+  experienceDeclaresCompatibility?: boolean;
+  /** 规则 (3)：Harness 发生重大不兼容变化（带外判定） */
+  harnessMajorIncompatible?: boolean;
+  /** 规则 (4)：ToolSchema 无法解析 / Experience 不可用 */
+  toolSchemaUnparseableOrExperienceUnusable?: boolean;
+}
 
-  if (identical) {
-    // 完全同版本 ⇒ 同 major 且 tool_schema 相同 ⇒ §5.4 第一档（无需猜测任何边界）
+export function classifyEnvironment(
+  from: VersionInfo,
+  to: VersionInfo,
+  judgment: EnvironmentClassificationJudgment = {},
+): EnvironmentClass {
+  // 规则 (1)
+  if (from.harness_version === to.harness_version && from.tool_schema_version === to.tool_schema_version) {
     return 'compatible';
   }
+  // 规则 (4) 优先于 (3)：不可用就是不可用
+  if (judgment.toolSchemaUnparseableOrExperienceUnusable) {
+    return 'unusable';
+  }
+  // 规则 (2)
+  if (from.harness_version === to.harness_version && from.tool_schema_version !== to.tool_schema_version) {
+    if (judgment.experienceDeclaresCompatibility) {
+      return 'minor_compatible';
+    }
+    throw new Error(
+      'OQ-003 裁决未覆盖：Harness version 相同、ToolSchema hash 不同，但 Experience 未声明兼容——' +
+        '规则 (2) 要求「明确声明兼容」才给 0.7，其余取值裁决未定义；不做假设。',
+    );
+  }
+  // 规则 (3)
+  if (judgment.harnessMajorIncompatible) {
+    return 'major_parseable';
+  }
   throw new Error(
-    'OQ-003 未裁决：environment_factor 的 semver 映射细节缺失（哪个字段算 major、tool_schema 小改的判定）。' +
-      '非同版本环境的分类在人工裁决前不可计算，代码不做隐式假设。',
+    'OQ-003 裁决未覆盖：Harness version 不同且未提供「重大不兼容」判定——规则 (3) 需要显式判定；不做假设。',
   );
 }
 

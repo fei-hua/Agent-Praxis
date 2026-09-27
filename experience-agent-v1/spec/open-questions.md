@@ -122,10 +122,18 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，与 OQ-016 联动）：tool_schema_version = 运行时 ToolSchema canonical hash
+  （tschema-<hash>），不是 SemVer，major/minor/patch 那套规则不再用于它。
+  environment_factor 最终规则：
+  Harness version 相同 + ToolSchema hash 相同 → 1.0；
+  Harness version 相同 + ToolSchema hash 不同 + 当前 Experience 明确声明兼容 → 0.7；
+  Harness 发生重大不兼容变化 → 0.3；
+  ToolSchema 无法解析 / Experience 不可用 → 0.0。
+  （四档数值 1.0/0.7/0.3/0.0 仍为 §5.4 冻结值，此处只定分类规则。）
 ```
 
 ```yaml
@@ -203,6 +211,18 @@ status: open
 created_at: 2026-09-27
 answered_at:
 answer: 2026-09-27 交互记录：人工选择「人工给定名字与职责」，对应表待人工提供；在此之前 T7 agents/ 定义保持挂起，不自造命名。
+  ── 更新 2026-09-27（人工裁决，采纳）：
+  第一版固定 5 个 Subagent：
+  1. explorer：只读项目探索（文件定位、结构分析、调用关系、数据流、影响范围分析）；不得修改项目文件。
+  2. researcher：独立技术研究与方案分析（文档/API/实现方案比较）；默认不得修改代码。
+  3. ui-reviewer：UI/UX 专项审查（布局、视觉层级、间距、一致性、交互、UI 越界风险）；默认不得修改代码。
+  4. code-reviewer：代码与架构审查（模块边界、数据流、副作用、路由、未授权修改检查）；默认不得修改代码。
+  5. tester：构建、测试、回归、success criteria 验证；可执行测试命令，但默认不得修改源码。
+  first_decision 与 Subagent 不做一一对应，统一关系为：
+  DIRECT → 不调用 Subagent；EXPLORE → 典型调用 explorer；DELEGATE → 根据任务选择专业 Subagent；
+  PARALLEL → 并行调用两个或以上 Subagent；WORKFLOW → 由 Workflow 编排多个 Subagent；
+  VERIFY → 典型调用 tester；REPLAN → 主 Agent 重新决策，不对应固定 Subagent。
+  禁止自行修改以上名称、职责或 enum。
 ```
 
 ```yaml
@@ -435,10 +455,24 @@ proposal: >-
 phase: phase0
 blocking: true
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27）：tool_schema_version 不从单一 npm package version 读取，
+  而从运行时最终暴露给模型的 model-facing ToolSchema[] 自动生成：
+  (1) 获取当前 Session/Agent 实际允许使用的完整 ToolSchema[]；
+  (2) 对工具按 name 字典序排序；(3) 对每个 ToolSchema 的模型可见字段做 canonical JSON 序列化；
+  (4) JSON 使用 UTF-8、递归 key 排序、无空白；(5) 对 canonical JSON 计算 SHA-256；
+  (6) tool_schema_version = "tschema-" + SHA256 前 12 位（例：tschema-a81f3c7e92bd）。
+  该值在 Run 启动时确定并写入 trajectory metadata。不得手工维护、不得从自然语言 description
+  推断、不得使用单独的 package version 替代。同一组 model-facing ToolSchema 必须得到完全相同的
+  tool_schema_version；任意工具名称、参数 schema、必填字段、枚举或模型可见 description 变化时
+  应得到新的 version。tool_schema_version 不参与 Experience 本身的内容判断，只用于：
+  实验可复现性、Experience environment compatibility、Snapshot / Run provenance。
+  环境版本来源：harness_version 由 Harness package/root version 提供；
+  framework_version 由 Agent Praxis 自己的 schema/protocol version 提供；
+  tool_schema_version = 运行时 ToolSchema canonical hash。
 ```
 
 ```yaml
@@ -450,6 +484,51 @@ why_it_matters: >-
   N 未定则该字段只能记录「N 未定」，Phase 1 冻结 config 前必须定稿。
   Phase 0 不执行生命周期自动迁移，故不阻塞 Phase 0 代码路径。
 proposal: 请人工给出 N（或给出 stale 判定的完整规则）；在裁决前 stale_rule 记录规格原文并标注「N 未定」。
+phase: phase0
+blocking: false
+owner: human
+status: open
+created_at: 2026-09-27
+answered_at:
+answer:
+```
+
+---
+
+## OQ-018：token usage 字段口径（cache read 是否计入 Input / 总 Token）
+field: telemetry/trajectory.run_record 的 token 字段口径（experiment-design §4.4）
+context: >-
+  实测 DSH 事件 assistant/message.data.usage = {inputTokens, outputTokens, totalTokens,
+  cacheReadTokens, reasoningTokens}，单条满足 totalTokens ≈ inputTokens + outputTokens + cacheReadTokens
+  （cacheReadTokens 计入 total）。但 experiment-design §4.4 的「Input Token / Output Token / 总 Token」
+  未说明 cache read token 与 reasoning token 的归属（计入 Input？单列？不计？）。
+proposal: >-
+  Phase 0 轨迹按原始字段求和记录 input_tokens = ΣinputTokens、output_tokens = ΣoutputTokens、
+  total_tokens = ΣtotalTokens（不重定义语义，不猜测 cache/reasoning 归属）；
+  报告中明确「口径按 DSH 原始字段」。请人工确认 §4.4 三个数字的正式口径。
+phase: phase0
+blocking: false
+owner: human
+status: open
+created_at: 2026-09-27
+answered_at:
+answer:
+```
+
+---
+
+## OQ-019：failure event 的派生规则（tool error 与非零命令退出）
+field: telemetry/extract.deriveFailures（§5.9 Failure → Replan 的触发源）
+context: >-
+  实测 DSH：tool 级错误 = tool/result 带 error 字段 + isError 标记（真实存在，367+ 例）；
+  命令非零退出 = 正常 tool/result 文本含 [exit code: N] 标记（isError=false，183 例）。
+  §5.9 举例 Failure 为「timeout、tool error、rejected」，未说明命令非零退出是否算 failure。
+proposal: >-
+  Phase 0 的 failure 派生覆盖两类，kind 可区分：
+  (1) tool error（error 字段 / isError 标记）→ kind = errorName || 'tool_error'；
+  (2) 命令非零退出（文本 [exit code: N]，N≠0）→ kind = 'command_exit_nonzero'。
+  两类都保留 reason（结果摘要含 exit code）与 context（tool_call_id/turn/step）。
+  请人工确认 §5.9 failure 的最终口径（尤其 (2) 是否计入 failure_count）。
 phase: phase0
 blocking: false
 owner: human

@@ -270,19 +270,38 @@ export function extractSubagentInvocations(events: RawSessionEvent[]): {
 
 // ---------- failure / replan 派生（可重建） ----------
 
-/** failure 从 tool/result 错误派生：失败原因 + 上下文（callId/turn/step）都保留在事件里 */
+/** failure 从 tool/result 派生（OQ-019）：失败原因 + 上下文（callId/turn/step）都保留在事件里
+ *  (1) tool error（error 字段 / isError 标记）→ kind = errorName || 'tool_error'；
+ *  (2) 命令非零退出（文本 [exit code: N]，N≠0）→ kind = 'command_exit_nonzero'。
+ */
 export function deriveFailures(events: RawSessionEvent[]): FailureRecord[] {
-  return extractToolResults(events)
-    .filter((r) => r.isError)
-    .map((r) => ({
-      failure_id: `fail-${r.call_id}`,
-      reason: r.result_summary || `tool ${r.call_id} 返回错误`,
-      kind: r.errorName ?? 'tool_error',
-      context: {
-        tool_call_id: r.call_id,
-        step: `turn ${r.turn} / step ${r.step}`,
-      },
-    }));
+  const out: FailureRecord[] = [];
+  for (const r of extractToolResults(events)) {
+    const exitMatch = /\[exit code: (-?\d+)\]/.exec(r.result_summary);
+    const nonZeroExit = exitMatch !== null && Number(exitMatch[1]) !== 0;
+    if (r.isError) {
+      out.push({
+        failure_id: `fail-${r.call_id}`,
+        reason: r.result_summary || `tool ${r.call_id} 返回错误`,
+        kind: r.errorName ?? 'tool_error',
+        context: {
+          tool_call_id: r.call_id,
+          step: `turn ${r.turn} / step ${r.step}`,
+        },
+      });
+    } else if (nonZeroExit) {
+      out.push({
+        failure_id: `fail-${r.call_id}`,
+        reason: r.result_summary || `命令 ${r.call_id} 非零退出`,
+        kind: 'command_exit_nonzero',
+        context: {
+          tool_call_id: r.call_id,
+          step: `turn ${r.turn} / step ${r.step}`,
+        },
+      });
+    }
+  }
+  return out;
 }
 
 /**

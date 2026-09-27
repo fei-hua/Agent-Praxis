@@ -106,21 +106,27 @@ export function scanZstdFrames(buf: Buffer): ZstdFrame[] {
 }
 
 export function decompressZstdConcatenated(buf: Buffer): Buffer {
-  // 快路径：整段解码（zstd 规范允许拼接帧一次解码）
-  try {
-    return zstdDecompressSync(buf) as Buffer;
-  } catch {
-    // 慢路径：按帧解码，容忍撕裂尾（只取完整帧）
-    const frames = scanZstdFrames(buf);
-    const parts: Buffer[] = [];
-    for (const f of frames) {
+  // 实测（2026-09-27，真实 DSH 日志 21MB / 15,737 帧）：Node 的 zstdDecompressSync
+  // 对拼接帧只解出第一个帧，因此禁用「整体解码」快路径，一律按帧扫描后逐帧解码再拼接。
+  // 末尾撕裂帧（写入中断）允许丢弃——规格只保证最终一致记录（§3.1），不承诺崩溃安全。
+  const frames = scanZstdFrames(buf);
+  const parts: Buffer[] = [];
+  for (const f of frames) {
+    try {
       parts.push(zstdDecompressSync(buf.subarray(f.offset, f.offset + f.size)) as Buffer);
+    } catch {
+      // 单帧损坏/撕裂：跳过该批，保留其余可解批次
     }
-    if (parts.length === 0) {
+  }
+  if (parts.length === 0) {
+    // 帧扫描识别不出（例如单帧文件的非常规编码）时退回一次性解码
+    try {
+      return zstdDecompressSync(buf) as Buffer;
+    } catch {
       throw new Error('zstd 解码失败：没有可识别的完整帧');
     }
-    return Buffer.concat(parts);
   }
+  return Buffer.concat(parts);
 }
 
 // ---------- 会话日志读取 ----------

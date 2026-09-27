@@ -1,0 +1,19 @@
+id: DRY-04
+source: synthetic
+task_type: data_layer
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [data_schema_immutable, scope_limited]
+prompt: |
+  并行执行两项数据层工作（两条线互不依赖，请并行委派）：
+  1. explorer 线：核对 dry-run-workspace/DRY-04/schema.json 的字段清单与类型，产出 dry-run-workspace/DRY-04/schema-audit.md（字段名、类型、是否必填的核对表）；
+  2. tester 线：运行 node dry-run-workspace/DRY-04/verify-schema.js，把完整输出写入 dry-run-workspace/DRY-04/schema-verify.txt（应包含 SCHEMA OK）。
+  schema.json 本身不得修改（data_schema_immutable）。
+expected_first_decisions: [PARALLEL]
+success_criteria:
+  - dry-run-workspace/DRY-04/schema-audit.md 存在且含字段清单
+  - dry-run-workspace/DRY-04/schema-verify.txt 存在且包含 SCHEMA OK
+  - 轨迹中存在至少 2 次 subagent 调用
+  - schema.json 未被修改（哈希不变）
+dryrun_coverage: [parallel_path, subagent_recording, tool_pairing, decision_chain]

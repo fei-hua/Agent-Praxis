@@ -1,0 +1,20 @@
+id: DRY-05
+source: synthetic
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  dry-run-workspace/DRY-05/run-check.js 运行失败，请修复到全部检查通过。
+  要求：
+  1. 先运行 node dry-run-workspace/DRY-05/run-check.js 确认当前失败；
+  2. 再读取 dry-run-workspace/DRY-05/config.json 确认配置（该文件的状态就是问题所在）；
+  3. 修复问题，直到 node dry-run-workspace/DRY-05/run-check.js 输出 ALL PASS；
+  4. 修复过程中不得删除或注释 run-check.js 里的任何检查断言。
+  协议要求：遭遇失败后，在随后一条回复中输出更新后的 task_state JSON 块（first_decision 设为 REPLAN），然后继续修复。
+expected_first_decisions: [DIRECT, EXPLORE, REPLAN]
+success_criteria:
+  - node dry-run-workspace/DRY-05/run-check.js 的输出包含 ALL PASS
+  - run-check.js 的检查断言未被删除（断言数量不减）
+dryrun_coverage: [failure_event, replan_event, tool_pairing, decision_chain]

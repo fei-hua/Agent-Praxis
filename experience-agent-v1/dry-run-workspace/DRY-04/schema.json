@@ -1,0 +1,8 @@
+{
+  "fields": [
+    { "name": "id", "type": "string", "required": true },
+    { "name": "created_at", "type": "string", "required": true },
+    { "name": "amount", "type": "number", "required": true },
+    { "name": "tags", "type": "array", "required": false }
+  ]
+}

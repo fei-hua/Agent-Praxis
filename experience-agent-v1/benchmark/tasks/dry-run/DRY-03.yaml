@@ -1,0 +1,22 @@
+id: DRY-03
+source: synthetic
+task_type: ui_upgrade
+complexity: medium
+scope: project
+characteristics: [multi_page]
+constraints: [scope_limited, no_public_interface_change]
+prompt: |
+  按 8pt 间距规格升级 dry-run-workspace/DRY-03/ui.css，并做 UI/UX 审查。
+  8pt 规格：所有 margin/padding 的 px 值必须是 8 的倍数（8/16/24/32…），原有布局结构不得改变。
+  要求：
+  1. 把 ui.css 中不符合 8pt 的间距值调整为最近的 8 的倍数；
+  2. UI/UX 审查部分委派给 ui-reviewer subagent：检查布局、视觉层级、间距一致性、交互和 UI 越界风险；
+  3. 把 ui-reviewer 的审查结论整理为 dry-run-workspace/DRY-03/ui-review.md，至少列出 2 条 UI 越界风险；
+  4. 不得修改 ui.css 的类名与选择器结构。
+expected_first_decisions: [DELEGATE]
+success_criteria:
+  - ui.css 中全部 margin/padding 的 px 值为 8 的倍数
+  - dry-run-workspace/DRY-03/ui-review.md 存在且列出至少 2 条 UI 越界风险
+  - 轨迹中存在至少 1 次 subagent 调用
+  - ui.css 的选择器结构未被修改
+dryrun_coverage: [delegate_path, subagent_recording, tool_pairing, decision_chain]
