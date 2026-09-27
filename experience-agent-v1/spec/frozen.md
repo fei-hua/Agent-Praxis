@@ -400,8 +400,7 @@ relevance_score = 0.60 × structured_match + 0.40 × lexical_match     ∈ [0,1]
 contraindication_factor = 1 − matched_count / max(1, total_count)    ∈ [0,1]
 ```
 
-其中 `matched_count` = 当前任务命中的 contraindications 数量，
-`total_count` = 该经验所有 contraindications 数量。
+其中 `total_count` = 该经验所有 contraindications 数量。
 
 ```
 无禁忌       → 1.0
@@ -410,7 +409,27 @@ contraindication_factor = 1 − matched_count / max(1, total_count)    ∈ [0,1]
 （防御性：clamp 到 [0,1]，避免 matched > total 时为负）
 ```
 
-**禁忌命中判定**：`structured_match(当前任务, 该禁忌) ≥ 0.60` 记为命中。
+**禁忌命中判定（OQ-004 人工裁决，2026-09-27）**：
+
+```
+contraindication_hit  ⇔  token ∈ task.characteristics
+```
+
+即按 token **精确匹配**（受控词表内比较，二值相似度 1.0 / 0.0）。
+命中判定与 `structured_match` 无关——**不得**再使用
+`structured_match(当前任务, 该禁忌) ≥ 0.60` 作为判定式。
+
+```
+matched_count = 命中的 contraindication token 数量
+```
+
+实现说明：二值相似度仍经冻结阈值 `contraindication_hit_threshold = 0.60` 判定
+（1.0 ≥ 0.60 记为命中，0.0 < 0.60 记为不命中）；该阈值是 §5.4 体系内的冻结常量，
+不因本次文字同步而改变。
+
+**规格同步记录**：本节原文（“`structured_match(当前任务, 该禁忌) ≥ 0.60` 记为命中”）与 OQ-004
+人工裁决直接冲突，已于 2026-09-27 按裁决同步。代码 `experience/retrieval.ts`
+（`ruledContraindicationSimilarity` / `isContraindicationHit`）自始按裁决实现，无需改动。
 
 ### 5.7 `final_score`、Top-K 与序列化
 

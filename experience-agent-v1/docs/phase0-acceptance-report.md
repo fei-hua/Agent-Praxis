@@ -1,6 +1,6 @@
 # Phase 0 Dry-run 验收报告
 
-生成时间：2026-09-27T15:35:31.263Z
+生成时间：2026-09-27T16:06:32.831Z
 
 ## 集合级覆盖（OQ-007 授权要求：≥1 失败 + ≥1 replan）
 
@@ -341,7 +341,6 @@
 
 | OQ | blocking | 问题 |
 |---|---|---|
-| OQ-010 | 否 | Task State 的捕获机制与「不解析最终聊天文本」（T1）的边界：task_state 由主 Agent 首轮「顺带输出」， |
 | OQ-011 | 否 | token 计数口径未定义——「单条 Experience ≤ 160 tokens」「总 Experience Context ≤ 800 tokens」用哪个 tokenizer 计数？ |
 | OQ-013 | 否 | BM25 标定的 P05/P95 百分位算法未定义（最近秩 / 线性插值 / 其他），会直接影响冻结的标定数值。 |
 | OQ-014 | 否 | Eligibility Filter 中 task.scope 与 experience.scope 的组合规则未定义： |

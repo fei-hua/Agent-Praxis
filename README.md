@@ -136,7 +136,7 @@ failure 可重建 · replan 可重建（含触发与前后决策）· **离线�
 - 环境指纹：`harness 0.1.5-rc.3` · `tool_schema tschema-19751aa066b9` · `experiment_config_hash sha256:90227c3b…`
 - 确定性测试 24/24 通过（冻结公式、质量门裁决规则、benchmark 判定、验收检查器）
 - TypeScript 严格模式 0 error
-- 20 条开放问题登记在案（12 条已由人裁决，8 条非阻塞待补）
+- 20 条开放问题登记在案（13 条已由人裁决，7 条非阻塞待补）
 
 **已知边界（如实记录，不作推测性结论）** 见 `experience-agent-v1/docs/phase0-acceptance-report.md`：
 包括「采集中途读到过期快照」这一真实边界的发现与重采过程，以及一次 Node ESM/CommonJS 包作用域异常。

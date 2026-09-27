@@ -160,6 +160,9 @@ answered_at: 2026-09-27
 answer: >-
   人工裁决：命中 ⇔ 该 contraindication token 出现在当前任务 characteristics（词表精确匹配）。
   实现为二值相似度（成员=1.0，非成员=0.0），冻结阈值 0.60 原样保留并作用于该相似度（语义等价，阈值未改）。
+  规格同步（2026-09-27）：spec/frozen.md §5.6 原判定式「structured_match(当前任务, 该禁忌) ≥ 0.60」
+  已按本裁决改写为 contraindication_hit ⇔ token ∈ task.characteristics，并在该节留下同步记录；
+  core/frozen-constants.ts 与 experience/retrieval.ts 的注释一并同步。阈值 0.60 未变。
 ```
 
 ```yaml
@@ -317,10 +320,20 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工口径（2026-09-27，按人工建议落账）：采用两级通道，优先级如下：
+  (1) **专用结构化事件优先**——若 Harness 提供 task_state 专用结构化事件，一律以该事件为唯一来源；
+  (2) **回退方案**——当前 Harness 无专用事件时，使用「首轮结构化 JSON + 严格 Schema 校验 + 纯代码提取」
+      （无 LLM 参与、不解析后续消息、first_decision 仅取自校验通过的 task_state 对象）。
+  实测依据：本机全部会话日志共 35 种事件类型，其中不存在任何 task/state/decision/plan 类事件
+  （tool/result、assistant/message、turn/start|end、step/start|end、subagent/*、goal/change 等），
+  即当前不存在 (1) 的通道，生效分支为 (2)。
+  实现现状：telemetry/extract.ts 的 extractTaskStates 已按 (2) 实现并通过测试（严格 fenced-JSON + schema 校验），
+  因此本裁决**不需要改动 Phase 0 代码**；若将来 Harness 出现专用事件，切换到 (1) 属于新变更（需重新走验收）。
+  备注：本条按人工「建议裁决」的口径落账；若人工本意仅为建议、待确认后才生效，可改回 open。
 ```
 
 ```yaml
@@ -572,3 +585,25 @@ answer: >-
   缺失或无法确定 outcome → 不得判定 duplicate，进入 Quality Gate / manual review。
   理由：同一行动策略的多次成功经验仍能正常去重，而成功/失败相反的证据被保留为冲突信号。
 ```
+
+---
+
+## 清查：未裁决 OQ 清单（2026-09-27）
+
+**已裁决 13 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 012 / 016 / 020
+**未裁决 7 条**（全部 `blocking: false`），盘点如下：
+
+| OQ | 问题 | 若不定会怎样 | 建议裁决口径 | 覆盖 issue |
+|---|---|---|---|---|
+| OQ-011 | `单条 ≤160 tokens` / `上下文 ≤800 tokens` 用哪个 tokenizer 计数 | 预算约束与正式实验口径不一致，经验注入量不可复现 | 指定 tokenizer（或授权采用 Harness 侧计数口径），并写入 `experiment_config` 冻结 | #4 |
+| OQ-013 | BM25 标定 P05/P95 的百分位算法（最近秩 / 线性插值 / 其他） | `lexical_match` 的标定值不可复现，直接影响检索结果与 `final_score` | 指定算法 + 样本口径（哪个语料、多少条），在 SNAPSHOT_01 上标定 | #4 |
+| OQ-014 | Eligibility Filter 中 `task.scope` × `experience.scope` 的组合规则 | 跨项目经验复用行为未定义（当前遇跨项目即抛错） | 明确组合含义（如 project 经验仅同项目可检索；generic 经验可跨项目） | #5 |
+| OQ-015 | T1 接入方式：读会话日志 vs cordis 插件订阅 | 采集时效与边界不同（日志通道存在「未终态采集得到过期快照」问题，见 M1） | 指定正式采集通道；若仍用日志，明确「会话终态后再采集」的判定方式 | #5 |
+| OQ-017 | `stale` 的 N（超过 N 个任务未命中） | 经验生命周期迁移（→ stale）不可执行 | 给出 N，或给出完整的 stale 判定规则 | #5 |
+| OQ-018 | usage 的 Input / Output / 总 Token 是否计入 cache read 与 reasoning | 成本指标口径不一致（实测 `totalTokens ≈ inputTokens + outputTokens + cacheReadTokens`） | 明确三个统计量的正式定义 | #4 |
+| OQ-019 | failure 事件是否包含「命令非零退出」 | `failure` 事件口径与 `failure_count` 语义可能不一致（当前包含，kind 可区分） | 确认是否计入 failure 与 failure_count | #5 |
+
+**建议顺序**：先 **OQ-013 + OQ-011**（二者直接决定会被哈希冻结进 `experiment_config` 的数值），
+再 **OQ-018**（成本口径），其余（OQ-014 / 015 / 017 / 019）可在 Pilot 期间随用随裁。
+本清单与 GitHub Issue [#4](https://github.com/fei-hua/Agent-Praxis/issues/4)、
+[#5](https://github.com/fei-hua/Agent-Praxis/issues/5) 一一对应。

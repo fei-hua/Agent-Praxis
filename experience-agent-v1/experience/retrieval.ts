@@ -122,9 +122,10 @@ export function contraindicationFactor(matchedCount: number, totalCount: number)
 
 /**
  * OQ-004（已裁决，2026-09-27）：
- * §5.6 的命中判定原文「structured_match(当前任务, 该禁忌) ≥ 0.60」与 §3.1（禁忌是单个
+ * §5.6 原判定式「structured_match(当前任务, 该禁忌) ≥ 0.60」与 §3.1（禁忌是单个
  * characteristics 词表 token，非完整剖面）自相矛盾。人工裁决：
  *   命中 ⇔ 该 contraindication token 出现在当前任务 characteristics（词表精确匹配）。
+ * §5.6 已按裁决同步（2026-09-27），规格与实现现为同一口径。
  * 实现为二值相似度（成员=1.0，非成员=0.0），冻结阈值 0.60 原样保留并作用于该相似度
  * （语义等价：1.0 ≥ 0.60 命中，0.0 < 0.60 不命中）。阈值本身未做任何调整。
  */

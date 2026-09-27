@@ -16,7 +16,7 @@ TypeScript / Node 24，除 `js-yaml` 外零运行时依赖；经验存储用 Nod
 | 离线决策链重放 | ✅ chain_complete = true |
 | 确定性测试 | ✅ 24/24（`npm test`） |
 | 类型检查 | ✅ 0 error（严格模式） |
-| 开放问题 | 20 条登记，12 条已裁决，8 条非阻塞待补 |
+| 开放问题 | 20 条登记，13 条已裁决，7 条非阻塞待补 |
 
 完整证据：`docs/phase0-acceptance-report.md`
 

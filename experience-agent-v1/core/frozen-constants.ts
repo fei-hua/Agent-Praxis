@@ -22,7 +22,7 @@ export const FROZEN = {
   /** §5.5 lexical_match = clamp((P95 − raw_bm25) / (P95 − P05), 0, 1) */
   /** §5.6 relevance_score 权重 */
   relevance_weights: { structured: 0.60, lexical: 0.40 },
-  /** §5.6 禁忌命中判定阈值：structured_match(当前任务, 该禁忌) ≥ 0.60（命中判定语义见 OQ-004） */
+  /** §5.6 禁忌命中阈值（作用于二值相似度）：token ∈ task.characteristics → 1.0 ≥ 0.60 命中（OQ-004 裁决口径） */
   contraindication_hit_threshold: 0.60,
   /** §5.4 reliability：support_factor = 1 − exp(−independent_support / 2) */
   reliability_support_decay: 2,
