@@ -2,7 +2,30 @@
 
 > **经验驱动的 Coding Agent 工具编排框架**
 >
-> Experience-Driven Tool Orchestration — 让 Agent 从「每次都重新摸索」变成「带着经验做决策」。
+> Experience-Driven Tool Orchestration — turn every agent run into reusable, verifiable experience.
+
+**English** · [中文说明见下方](#agent-praxis-中文说明)
+
+Agent Praxis is an **experience-driven tool-orchestration framework for coding agents**, built on **DeepSeek + DeepSeek Harness**.
+It records *how* an agent decides, selects tools, delegates to subagents, fails and recovers — then replays that experience
+under **frozen, reproducible experiment rules**.
+
+```
+Experience → Decision → Tool/Subagent → Outcome → Reflection
+```
+
+**Keywords:** experience-driven tool orchestration · coding agent evaluation · subagent delegation ·
+tool-call trajectory instrumentation · reproducible LLM-agent experiments · DeepSeek Harness
+
+**Status:** Phase 0 (instrumentation + basic run loop) is **complete and verified** — 5/5 dry-run tasks pass every exit
+criterion: 100% tool-call↔result pairing, reconstructable `failure` and `replan` events, and fully offline-reconstructable
+decision chains (Task → Task State → First Decision → Action → Tool/Subagent → Outcome).
+Evidence: [`experience-agent-v1/docs/phase0-acceptance-report.md`](experience-agent-v1/docs/phase0-acceptance-report.md) ·
+Module guide: [`experience-agent-v1/README.md`](experience-agent-v1/README.md)
+
+---
+
+## Agent Praxis 中文说明
 
 Agent Praxis 基于 **DeepSeek + DeepSeek Harness（DSH）**，把 Coding Agent 的实战过程变成可复用的经验：
 记录它如何做决策、如何选工具、如何委派 Subagent、如何失败又如何恢复，再把这些经验在**受控、可复现**的条件下注入下一次决策。
