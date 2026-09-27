@@ -214,7 +214,7 @@ node scripts/dryrun-accept.ts --write-report
 ## 8. 路线图
 
 ```
-Phase 0  观测与闭环          ✅ 已完成并验收
+Phase 0  观测与闭环          ✅ 已完成并验收（tag v0.1.0-phase0）
    ↓
 Pilot    10 任务 × 3 次 × A/B/C  →  SD、检索与经验行为检查、Power Analysis
    ↓
@@ -222,6 +222,12 @@ Pilot    10 任务 × 3 次 × A/B/C  →  SD、检索与经验行为检查、Po
    ↓
 结论     经验是否真的改善工具编排决策（以及代价是多少）
 ```
+
+详细阶段出口标准与逐项待办：
+[`ROADMAP.md`](ROADMAP.md) ·
+[Milestones](https://github.com/fei-hua/Agent-Praxis/milestones) ·
+[Issues](https://github.com/fei-hua/Agent-Praxis/issues) ·
+[Releases](https://github.com/fei-hua/Agent-Praxis/releases)
 
 ---
 
