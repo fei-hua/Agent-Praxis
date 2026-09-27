@@ -1,0 +1,18 @@
+{
+  "name": "experience-agent-v1",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Experience-Driven Tool Orchestration (V1.0) — Phase 0: instrumentation + basic run loop. Frozen spec: spec/frozen.md",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node --test tests/"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/node": "^24.0.0"
+  }
+}

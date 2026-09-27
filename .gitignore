@@ -1,0 +1,12 @@
+# 依赖与缓存
+node_modules/
+.npm-cache/
+dist/
+*.log
+
+# 运行时数据（实验产物按需另行归档；SNAPSHOT 等冻结产物将来需显式提交）
+telemetry/trajectories/*.jsonl.tmp
+
+# 编辑器/系统
+.DS_Store
+Thumbs.db
