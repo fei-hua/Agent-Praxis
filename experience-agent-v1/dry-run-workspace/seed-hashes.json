@@ -1,7 +1,8 @@
 {
   "note": "dry-run 种子哈希清单；DRY-05/config.json 故意缺失（失败现场）。哈希算法 SHA-256，内容为文件原文。",
-  "seeded_at": "2026-09-27T15:10:56.427Z",
+  "seeded_at": "2026-09-27T15:21:57.039Z",
   "files": {
+    "package.json": "57aeaaede3a8321f73a5f90a1f7ca3c06712ca313fcac55b4b611c357f561d47",
     "DRY-01/src/counter.js": "1bcfdd1a6030421b430810a6ce6238ef28b5d0dc6f9d381d498ce8365f1198be",
     "DRY-02/mini-lib/alpha.js": "3b82cd9bcd8ffb65242d1eb2e8ead7ce771999c661b813c98fb60cad61c5ef0a",
     "DRY-02/mini-lib/beta.js": "34f6dd16e50ff61f953c17973c0506d7261c5c579d4dc94df9548fb7f2c05a74",

@@ -329,22 +329,46 @@ export function findExactConflicts(
   } else {
     // 「相同 success criteria」沿证据链比对：evidence.run_id → run → task_id → success criteria 标识
     const candCriteria = criteriaIdentityOf(candidate);
+    let matchedPairs = 0;
+    let unresolvedPairs = 0;
+    let resolvedDifferentPairs = 0;
     for (const o of outcomeOppositePairs) {
       const otherCriteria = criteriaIdentityOf(o);
-      if (candCriteria !== undefined && otherCriteria !== undefined && candCriteria === otherCriteria) {
+      if (candCriteria === undefined || otherCriteria === undefined) {
+        unresolvedPairs++;
+        continue;
+      }
+      if (candCriteria === otherCriteria) {
+        matchedPairs++;
         findings.push({
           rule: 'outcome_opposite',
           other_id: o.id,
           detail: `相同 success criteria 下明确相反 outcome：${candidate.outcome.success} vs ${o.outcome.success}`,
         });
-        subRules.push({ rule: 'outcome_opposite', status: 'fail', detail: `与 ${o.id} 构成相反 outcome` });
       } else {
-        subRules.push({
-          rule: 'outcome_opposite',
-          status: 'not_evaluated',
-          detail: `与 ${o.id} 的 success criteria 不可比对（证据链解析不到或不相同）`,
-        });
+        resolvedDifferentPairs++;
       }
+    }
+    if (matchedPairs > 0) {
+      subRules.push({
+        rule: 'outcome_opposite',
+        status: 'fail',
+        detail: `${matchedPairs} 对满足「相同 criteria + 明确相反 outcome」，构成 conflict(c)`,
+      });
+    } else if (unresolvedPairs > 0) {
+      // 无法解析 ⇒ 不能判定规则是否成立（不猜测、不静默放过）
+      subRules.push({
+        rule: 'outcome_opposite',
+        status: 'not_evaluated',
+        detail: `${unresolvedPairs} 对的 success criteria 不可解析（证据链解析不到），规则 (c) 无法判定`,
+      });
+    } else {
+      // 全部可解析且互不相同 ⇒ 规则 (c) 明确不成立
+      subRules.push({
+        rule: 'outcome_opposite',
+        status: 'pass',
+        detail: `${resolvedDifferentPairs} 对的 success criteria 明确不同，规则 (c) 不成立`,
+      });
     }
   }
 

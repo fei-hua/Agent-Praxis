@@ -1,4 +1,4 @@
 /* 种子：间距不合规的 UI 样式（按 8pt 规格升级；选择器结构禁改） */
-.card { margin: 5px; padding: 7px; }
-.button { margin: 13px 3px; padding: 21px 9px; }
-.nav { margin: 2px; padding: 11px 15px; }
+.card { margin: 8px; padding: 8px; }
+.button { margin: 16px 8px; padding: 24px 8px; }
+.nav { margin: 8px; padding: 8px 16px; }

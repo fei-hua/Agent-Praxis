@@ -162,12 +162,11 @@ function main(): void {
   });
 
   mkdirSync(TRAJ_DIR, { recursive: true });
-  const outPath = path.join(TRAJ_DIR, `${runId}.jsonl`);
-  if (existsSync(outPath)) throw new Error(`轨迹已存在，拒绝覆盖（append-only 语义）：${outPath}`);
-  const recorder = new TrajectoryRecorder(outPath, runId);
-  for (const e of events as TrajectoryEvent[]) {
+  const recorder = new TrajectoryRecorder(runId, TRAJ_DIR);
+  for (const e of events) {
     recorder.append(e);
   }
+  const outPath = path.join(TRAJ_DIR, `${runId}.jsonl`);
   writeFileSync(path.join(TRAJ_DIR, `${runId}.summary.json`), JSON.stringify(record, null, 2) + '\n');
   console.log(`轨迹写入：${outPath}（events=${events.length}）`);
   console.log(`config_hash=${configHash} tool_schema=${env.tool_schema_version} retrieved=${retrieved.length}`);

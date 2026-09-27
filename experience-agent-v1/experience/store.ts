@@ -93,12 +93,27 @@ export class ExperienceStore {
   /**
    * FTS5 BM25 检索。返回 id → raw_bm25。
    * SQLite FTS5 的 bm25() 越低越相关（spec/frozen.md §5.5）。
+   *
+   * 查询串构造（实现细节，非公式）：原始文本直接进 MATCH 会因中文标点、括号、引号、
+   * 换行等被 FTS5 当作语法而报 `SQL logic error`（实证）。因此先切分为安全 token
+   * （字母/数字/CJK 连续段），每个 token 用双引号包裹为字面短语，再以 OR 连接；
+   * 无可用 token 时返回空结果（等价于「无命中」，lexical_match=0）。
+   * 该处理只影响「哪些候选被 FTS5 命中」，不改变 lexical_match 的冻结公式。
    */
   bm25(queryText: string): Map<string, { raw_bm25: number; matched: boolean }> {
     const out = new Map<string, { raw_bm25: number; matched: boolean }>();
+    const tokens = [
+      ...new Set(
+        (queryText.match(/[\p{Script=Han}\p{L}\p{N}_]+/gu) ?? [])
+          .map((t) => t.trim())
+          .filter((t) => t.length > 0),
+      ),
+    ].slice(0, 64);
+    if (tokens.length === 0) return out;
+    const matchQuery = tokens.map((t) => `"${t.replace(/"/g, '""')}"`).join(' OR ');
     const rows = this.#db
       .prepare('SELECT id, bm25(experience_fts) AS raw_bm25 FROM experience_fts WHERE experience_fts MATCH ?')
-      .all(queryText) as Array<{ id: string; raw_bm25: number }>;
+      .all(matchQuery) as Array<{ id: string; raw_bm25: number }>;
     for (const r of rows) {
       out.set(r.id, { raw_bm25: r.raw_bm25, matched: true });
     }

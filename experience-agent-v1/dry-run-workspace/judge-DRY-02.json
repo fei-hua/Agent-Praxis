@@ -1,0 +1,35 @@
+{
+  "task_id": "DRY-02",
+  "success_criteria_results": [
+    {
+      "criterion": "dry-run-workspace/DRY-02/docs.md 存在",
+      "passed": true,
+      "evidence": "长度 1096"
+    },
+    {
+      "criterion": "docs.md 提及 alpha.js、beta.js、gamma.js 三个文件名",
+      "passed": true,
+      "evidence": "三个文件名齐全"
+    },
+    {
+      "criterion": "docs.md 含至少一处调用关系表述（→ 或 调用）",
+      "passed": true,
+      "evidence": "含调用关系表述"
+    },
+    {
+      "criterion": "mini-lib/ 下文件未被修改",
+      "passed": true,
+      "evidence": "哈希一致"
+    },
+    {
+      "criterion": "轨迹中存在对 mini-lib 的读取/检查（成功条件验证）",
+      "passed": true,
+      "evidence": "会话含 mini-lib 读取记录"
+    }
+  ],
+  "forbidden_file_changes": [],
+  "verification_tool_called": true,
+  "subagent_invocations": 0,
+  "task_success": true,
+  "wall_time_ms": 9706
+}

@@ -1,0 +1,65 @@
+{
+  "gate_passed": true,
+  "coverage": [
+    "coverage-1:PASS(集合内 failure 事件总数=5)",
+    "coverage-2:PASS(集合内 replan 事件总数=1)",
+    "coverage-3:PASS(含 subagent 调用的 run 数=2)"
+  ],
+  "runs": [
+    {
+      "run_id": "run-2026-09-27-DRY-01",
+      "passed": true,
+      "checks": [
+        "4.2-1:PASS",
+        "4.2-2:PASS",
+        "4.2-3:PASS",
+        "4.2-4:PASS",
+        "4.2-5:PASS"
+      ]
+    },
+    {
+      "run_id": "run-2026-09-27-DRY-02",
+      "passed": true,
+      "checks": [
+        "4.2-1:PASS",
+        "4.2-2:PASS",
+        "4.2-3:PASS",
+        "4.2-4:PASS",
+        "4.2-5:PASS"
+      ]
+    },
+    {
+      "run_id": "run-2026-09-27-DRY-03",
+      "passed": true,
+      "checks": [
+        "4.2-1:PASS",
+        "4.2-2:PASS",
+        "4.2-3:PASS",
+        "4.2-4:PASS",
+        "4.2-5:PASS"
+      ]
+    },
+    {
+      "run_id": "run-2026-09-27-DRY-04",
+      "passed": true,
+      "checks": [
+        "4.2-1:PASS",
+        "4.2-2:PASS",
+        "4.2-3:PASS",
+        "4.2-4:PASS",
+        "4.2-5:PASS"
+      ]
+    },
+    {
+      "run_id": "run-2026-09-27-DRY-05",
+      "passed": true,
+      "checks": [
+        "4.2-1:PASS",
+        "4.2-2:PASS",
+        "4.2-3:PASS",
+        "4.2-4:PASS",
+        "4.2-5:PASS"
+      ]
+    }
+  ]
+}

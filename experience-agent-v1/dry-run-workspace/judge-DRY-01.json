@@ -1,0 +1,30 @@
+{
+  "task_id": "DRY-01",
+  "success_criteria_results": [
+    {
+      "criterion": "dry-run-workspace/DRY-01/src/smoke.test.js 存在",
+      "passed": true,
+      "evidence": "文件存在"
+    },
+    {
+      "criterion": "node dry-run-workspace/DRY-01/src/smoke.test.js 的输出包含 SMOKE PASS",
+      "passed": true,
+      "evidence": "ok - reset() 返回 0\nok - increment() 默认步长 1\nok - increment() 连续调用累加\nok - increment(3) 自定义步长\nok - reset() 清零\nok - 清零后 increment(2)\nSMOKE PASS\n"
+    },
+    {
+      "criterion": "counter.js 未被修改（哈希不变）",
+      "passed": true,
+      "evidence": "哈希一致"
+    },
+    {
+      "criterion": "轨迹中存在至少一次对 smoke.test.js 的执行（成功条件验证）",
+      "passed": true,
+      "evidence": "会话含 smoke.test.js 执行"
+    }
+  ],
+  "forbidden_file_changes": [],
+  "verification_tool_called": true,
+  "subagent_invocations": 0,
+  "task_success": true,
+  "wall_time_ms": 11271
+}

@@ -1,0 +1,24 @@
+command: node "DRY-04\verify-schema.js"
+workdir: D:\Agent Praxis\experience-agent-v1\dry-run-workspace
+exit code: 1
+
+=== stdout ===
+(empty)
+
+=== stderr ===
+file:///D:/Agent%20Praxis/experience-agent-v1/dry-run-workspace/DRY-04/verify-schema.js:3
+const fs = require('fs');
+           ^
+
+ReferenceError: require is not defined in ES module scope, you can use import instead
+This file is being treated as an ES module because it has a '.js' file extension and 'D:\Agent Praxis\experience-agent-v1\package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+    at file:///D:/Agent%20Praxis/experience-agent-v1/dry-run-workspace/DRY-04/verify-schema.js:3:12
+    at ModuleJob.run (node:internal/modules/esm/loader:437:25)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/esm/run_main:123:123)
+
+Node.js v24.15.0
+
+=== summary ===
+exit code: 1
+output contains "SCHEMA OK": NO
+NOTE: verify-schema.js crashed with ReferenceError (require used in ES module scope); the schema was NOT verified. The literal string "SCHEMA OK" must NOT be treated as produced by this run.

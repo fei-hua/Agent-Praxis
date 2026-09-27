@@ -205,11 +205,11 @@ proposal: >-
   explorer / builder / delegate-worker / parallel-worker / recovery-verifier），
   Phase 0 只保证「能被调用并记录」。命名与职责对应关系请人工确认后我再写。
 phase: phase0
-blocking: true
+blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
+answered_at: 2026-09-27
 answer: 2026-09-27 交互记录：人工选择「人工给定名字与职责」，对应表待人工提供；在此之前 T7 agents/ 定义保持挂起，不自造命名。
   ── 更新 2026-09-27（人工裁决，采纳）：
   第一版固定 5 个 Subagent：
@@ -529,6 +529,30 @@ proposal: >-
   (2) 命令非零退出（文本 [exit code: N]，N≠0）→ kind = 'command_exit_nonzero'。
   两类都保留 reason（结果摘要含 exit code）与 context（tool_call_id/turn/step）。
   请人工确认 §5.9 failure 的最终口径（尤其 (2) 是否计入 failure_count）。
+phase: phase0
+blocking: false
+owner: human
+status: open
+created_at: 2026-09-27
+answered_at:
+answer:
+```
+
+---
+
+## OQ-020：duplicate 与 exact conflict 规则 (c) 的判定重叠
+field: experience/gate.ts（OQ-005 裁决的两条规则的交集）
+context: >-
+  OQ-005 裁决：duplicate = scope/task_type/complexity/characteristics/constraints/
+  decision.action/decision.mode/delegation.agents/lesson 规范化后完全一致（**不含 outcome**）；
+  exact conflict 规则 (c) = 相同任务类型、相同适用条件、相同决策下，相同 success criteria 的相反 outcome。
+  因此「其余字段全同、仅 outcome 相反」的对象同时满足 duplicate 与 conflict(c)，
+  两条规则的优先级/归属未定义（实测：两条检查同时命中，Gate 无法区分应记为哪一种）。
+proposal: >-
+  请人工裁决优先级，例如：(甲) outcome 不同 ⇒ 不判 duplicate，一律走 conflict(c)；
+  (乙) duplicate 优先（去重优先于冲突检测），冲突由后续 Triage 处理；
+  (丙) duplicate 键加入 outcome，两者互斥。
+  在裁决前，代码如实同时报告两条命中（不静默择一），Gate 结论为 fail。
 phase: phase0
 blocking: false
 owner: human

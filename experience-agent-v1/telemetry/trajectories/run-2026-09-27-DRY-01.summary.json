@@ -1,0 +1,163 @@
+{
+  "run_id": "run-2026-09-27-DRY-01",
+  "task_id": "DRY-01",
+  "arm": null,
+  "task_state": {
+    "schema_version": "1.0",
+    "task_state": {
+      "task_type": "test",
+      "complexity": "simple",
+      "characteristics": [],
+      "scope": "project",
+      "constraints": [
+        "scope_limited"
+      ],
+      "first_decision": "DIRECT"
+    }
+  },
+  "first_tool_call": {
+    "call_id": "call_00_OPNqjoCLzApNkdBicbQs0144",
+    "tool_name": "read",
+    "arguments": {
+      "file_path": "D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\counter.js"
+    },
+    "from_session": "primary"
+  },
+  "experience_snapshot_id": "SNAPSHOT_01",
+  "retrieved_experiences": [
+    {
+      "id": "EXP-DRY-TEST-DIRECT",
+      "final_score": 0.4661219039109421,
+      "retrieval_status": "MATCHED",
+      "relevance_score": 0.6,
+      "reliability_score": 0.7768698398515702,
+      "contraindication_factor": 1
+    }
+  ],
+  "tool_calls": [
+    {
+      "call_id": "call_00_OPNqjoCLzApNkdBicbQs0144",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\counter.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_AOdD5I2Pd5QpGTk1tnvp5615",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "experience-agent-v1/dry-run-workspace/DRY-01/**/*"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_2VKoxXMZa3oTsXIMue414746",
+      "tool_name": "write",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\smoke.test.js",
+        "content": "// DRY-01 冒烟测试：覆盖 increment() 与 reset()\n'use strict';\nconst { increment, reset } = require('./counter');\n\nlet failures = 0;\nfunction check(name, actual, expected) {\n  if (actual === expected) {\n    console.log(`ok - ${name}`);\n  } else {\n    failures += 1;\n    console.log(`not ok - ${name}: expected ${expected}, got ${actual}`);\n  }\n}\n\ntry {\n  reset();\n  check('reset() 返回 0', reset(), 0);\n  check('increment() 默认步长 1', increment(), 1);\n  check('increment() 连续调用累加', increment(), 2);\n  check('increment(3) 自定义步长', increment(3), 5);\n  check('reset() 清零', reset(), 0);\n  check('清零后 increment(2)', increment(2), 2);\n} catch (err) {\n  failures += 1;\n  console.log(`not ok - 抛出异常: ${err && err.stack ? err.stack : err}`);\n}\n\nif (failures === 0) {\n  console.log('SMOKE PASS');\n  process.exit(0);\n} else {\n  console.log('SMOKE FAIL');\n  process.exit(1);\n}\n"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_s7hHDev63ju3lXivldHy2770",
+      "tool_name": "edit",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\smoke.test.js",
+        "old_string": "  reset();\n  check('reset() 返回 0', reset(), 0);",
+        "new_string": "  check('reset() 返回 0', reset(), 0);"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ET_34LlSSHXN0YFofb1a63c3439",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node \"dry-run-workspace\\DRY-01\\src\\smoke.test.js\"; Write-Output \"EXIT=$LASTEXITCODE\"",
+        "description": "Run smoke test with node",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_yuLqkrNYAZvVO49xwIhT5915",
+      "tool_name": "send_message",
+      "arguments": {
+        "agent_id": "session-5e2f94d0-c0c9-420d-970f-1fb2f16e714b",
+        "message": "DRY-01 完成（experience-agent-v1 Phase 0 dry-run，task_type=test, complexity=simple, first_decision=DIRECT，全程无失败、无 REPLAN）。\n\n产出：D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\smoke.test.js（新增，CommonJS，require('./counter')）\n覆盖：reset() 返回 0；increment() 默认步长 1；连续调用累加；increment(3) 自定义步长；reset() 清零；清零后 increment(2)。失败路径 catch 异常并计入 failures。\n\n验证（命令）：node \"dry-run-workspace\\DRY-01\\src\\smoke.test.js\"（workdir=D:\\Agent Praxis\\experience-agent-v1）\n结果：6 项全 ok，stdout 末行 \"SMOKE PASS\"，EXIT=0。成功分支 process.exit(0)，失败分支输出 \"SMOKE FAIL\" + process.exit(1)。\n\n约束遵守：仅新增 DRY-01\\src\\ 内一个文件，counter.js 未改动（只读读取）。无阻塞项、无待澄清问题。轨迹要点：一次 read+glob 定位 API → 一次 write → 一次小幅自纠 edit（去掉重复 reset 调用）→ 一次验证运行通过。"
+      },
+      "from_session": "primary"
+    }
+  ],
+  "tool_results": [
+    {
+      "call_id": "call_00_OPNqjoCLzApNkdBicbQs0144",
+      "ok": true,
+      "result_summary": "<path>D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\counter.js</path>\n<type>file</type>\n<content>\n1: // 种子：简单计数器模块（测试目标，禁改）\n2: 'use strict';\n3: let count = 0;\n4: function increment(by = 1) { count += by; return count; }\n5: function reset() { count = 0; return count; }\n6: function current() { return count; }\n7: module.exports = { increment, reset, current };\n\n(End of file - total…",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_AOdD5I2Pd5QpGTk1tnvp5615",
+      "ok": true,
+      "result_summary": "experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\counter.js",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_2VKoxXMZa3oTsXIMue414746",
+      "ok": true,
+      "result_summary": "<path>D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\smoke.test.js</path>\n<type>file</type>\n<content>\nCreated file\n</content>",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_s7hHDev63ju3lXivldHy2770",
+      "ok": true,
+      "result_summary": "The file D:\\Agent Praxis\\experience-agent-v1\\dry-run-workspace\\DRY-01\\src\\smoke.test.js has been updated successfully.",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ET_34LlSSHXN0YFofb1a63c3439",
+      "ok": true,
+      "result_summary": "ok - reset() 返回 0\nok - increment() 默认步长 1\nok - increment() 连续调用累加\nok - increment(3) 自定义步长\nok - reset() 清零\nok - 清零后 increment(2)\nSMOKE PASS\nEXIT=0\r\n",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_yuLqkrNYAZvVO49xwIhT5915",
+      "ok": true,
+      "result_summary": "message delivered to agent session-5e2f94d0-c0c9-420d-970f-1fb2f16e714b",
+      "from_session": "primary"
+    }
+  ],
+  "subagent_invocations": [],
+  "verification_result": {
+    "required": {
+      "dry-run-workspace/DRY-01/src/smoke.test.js 存在": "PASS",
+      "node dry-run-workspace/DRY-01/src/smoke.test.js 的输出包含 SMOKE PASS": "PASS",
+      "counter.js 未被修改（哈希不变）": "PASS",
+      "轨迹中存在至少一次对 smoke.test.js 的执行（成功条件验证）": "PASS"
+    },
+    "forbidden": {},
+    "success": true
+  },
+  "reflection_output": null,
+  "outcome": {
+    "tokens": 62272,
+    "subagent_calls": 0,
+    "wall_time_s": 11.271
+  },
+  "harness_version": "0.1.5-rc.3",
+  "tool_schema_version": "tschema-19751aa066b9",
+  "framework_version": "1.0",
+  "model_id": "deepseek-flash",
+  "experiment_config_hash": "sha256:90227c3b51f9769accbd9d56906b797f106b96121e70effc4c0a47ce0f1ebde0",
+  "input_tokens": 8863,
+  "output_tokens": 1569,
+  "total_tokens": 62272,
+  "wall_time_ms": 11271,
+  "success_criteria": [
+    "dry-run-workspace/DRY-01/src/smoke.test.js 存在",
+    "node dry-run-workspace/DRY-01/src/smoke.test.js 的输出包含 SMOKE PASS",
+    "counter.js 未被修改（哈希不变）",
+    "轨迹中存在至少一次对 smoke.test.js 的执行（成功条件验证）"
+  ]
+}

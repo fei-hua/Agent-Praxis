@@ -247,12 +247,54 @@ export function runAcceptance(trajectoryPath: string): AcceptanceReport {
 export function runAcceptanceAll(trajectoryPaths: string[]): {
   reports: AcceptanceReport[];
   gate_passed: boolean;
+  coverage: CheckResult[];
   frozen_thresholds_recorded: Record<string, number>;
 } {
   const reports = trajectoryPaths.map(runAcceptance);
+
+  // 集合级覆盖（OQ-007 授权要求：5 个 dry-run 至少覆盖 1 次真实失败 + 1 次 replan；
+  // 单条轨迹若无 failure，§4.2-3/4 会「空集通过」，因此必须在集合级显式要求覆盖）
+  let failures = 0;
+  let replans = 0;
+  let subagentRuns = 0;
+  for (const p of trajectoryPaths) {
+    const events = readTrajectory(p);
+    const f = events.filter((e) => e.type === 'failure').length;
+    const r = events.filter((e) => e.type === 'replan').length;
+    const s = events.filter((e) => e.type === 'subagent_invocation').length;
+    failures += f;
+    replans += r;
+    if (s > 0) subagentRuns++;
+  }
+  const coverage: CheckResult[] = [
+    {
+      id: 'coverage-1',
+      title: '失败场景覆盖（至少 1 个 run 含可重建 failure event）',
+      status: failures >= 1 ? 'PASS' : 'FAIL',
+      detail: `集合内 failure 事件总数=${failures}`,
+      metrics: { failures },
+    },
+    {
+      id: 'coverage-2',
+      title: 'Replan 场景覆盖（至少 1 个 run 含可重建 replan event）',
+      status: replans >= 1 ? 'PASS' : 'FAIL',
+      detail: `集合内 replan 事件总数=${replans}`,
+      metrics: { replans },
+    },
+    {
+      id: 'coverage-3',
+      title: '委派场景覆盖（至少 1 个 run 含 subagent 调用与返回）',
+      status: subagentRuns >= 1 ? 'PASS' : 'FAIL',
+      detail: `含 subagent 调用的 run 数=${subagentRuns}`,
+      metrics: { subagent_runs: subagentRuns },
+    },
+  ];
+
   return {
     reports,
-    gate_passed: reports.length === 5 && reports.every((r) => r.all_passed),
+    gate_passed:
+      reports.length === 5 && reports.every((r) => r.all_passed) && coverage.every((c) => c.status === 'PASS'),
+    coverage,
     frozen_thresholds_recorded: {
       final_score_threshold: FROZEN.final_score_threshold,
       top_k: FROZEN.top_k,

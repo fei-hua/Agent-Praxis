@@ -1,0 +1,4 @@
+ok - threshold 是数字
+ok - threshold 在 (0,1]
+ok - name 为 dry-05
+ALL PASS

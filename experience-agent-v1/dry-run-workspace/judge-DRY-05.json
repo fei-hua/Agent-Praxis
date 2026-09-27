@@ -1,0 +1,25 @@
+{
+  "task_id": "DRY-05",
+  "success_criteria_results": [
+    {
+      "criterion": "node dry-run-workspace/DRY-05/run-check.js 的输出包含 ALL PASS",
+      "passed": true,
+      "evidence": "ok - threshold 是数字\nok - threshold 在 (0,1]\nok - name 为 dry-05\nALL PASS\n"
+    },
+    {
+      "criterion": "run-check.js 的检查断言未被删除（断言数量不减）",
+      "passed": true,
+      "evidence": "assert( 出现 4 次"
+    },
+    {
+      "criterion": "轨迹中存在对 run-check.js 的执行（成功条件验证）",
+      "passed": true,
+      "evidence": "会话含执行记录"
+    }
+  ],
+  "forbidden_file_changes": [],
+  "verification_tool_called": true,
+  "subagent_invocations": 0,
+  "task_success": true,
+  "wall_time_ms": 15693
+}

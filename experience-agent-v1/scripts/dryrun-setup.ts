@@ -33,6 +33,14 @@ function sha256(s: string | Buffer): string {
 // ---------- 1. 工作区种子 ----------
 
 const SEEDS: Record<string, string> = {
+  // 工作区模块解析声明：种子脚本是 CommonJS，而父项目 package.json 是 "type":"module"，
+  // 若不在此显式声明，dry-run 内 .js 会被按 ESM 解析导致 require 失败（首轮 dry-run 实证）。
+  'package.json': `{
+  "name": "experience-agent-v1-dryrun-workspace",
+  "private": true,
+  "type": "commonjs"
+}
+`,
   'DRY-01/src/counter.js': `// 种子：简单计数器模块（测试目标，禁改）
 'use strict';
 let count = 0;
@@ -110,6 +118,11 @@ console.log('ALL PASS');
 };
 
 function seedWorkspace(): void {
+  // 默认重置（dry-run 可重复运行）；--no-reset 保留上次产物
+  if (!process.argv.includes('--no-reset') && existsSync(WS_DIR)) {
+    rmSync(WS_DIR, { recursive: true, force: true });
+    console.log(`已重置工作区：${WS_DIR}`);
+  }
   mkdirSync(WS_DIR, { recursive: true });
   const hashes: Record<string, string> = {};
   for (const [rel, content] of Object.entries(SEEDS)) {
@@ -313,6 +326,12 @@ function main(): void {
   console.log(`fixtures 写入 ${fixtures.length} 条 → store=${STORE_PATH}，审计副本 → ${FIXTURES_OUT}`);
   console.log(`harness_version（OQ-016 来源）= ${harnessVersion}`);
 
+  const snapDbPath = path.join(SNAP_DIR, 'SNAPSHOT_01.db');
+  if (existsSync(snapDbPath)) {
+    // 快照语义要求不可变：内容确定（fixtures 固定），已存在则不重建、不覆盖
+    console.log(`SNAPSHOT_01 已存在，保持不可变（不重建）：${snapDbPath}`);
+    return;
+  }
   const snap = createSnapshot({ storeDbPath: STORE_PATH, snapshotId: 'SNAPSHOT_01', snapshotsDir: SNAP_DIR });
   console.log(`SNAPSHOT_01 创建完成（只读）：${snap.db_path}`);
 }
