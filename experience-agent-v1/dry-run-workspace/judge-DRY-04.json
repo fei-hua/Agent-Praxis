@@ -9,12 +9,12 @@
     {
       "criterion": "dry-run-workspace/DRY-04/schema-verify.txt 存在且包含 SCHEMA OK",
       "passed": true,
-      "evidence": "SCHEMA OK\r\n"
+      "evidence": "Task: DRY-04 schema verification\nCommand : node \"DRY-04\\verify-schema.js\"\nWorkdir : D:\\Agent Praxis\\experience-agent-v1\\"
     },
     {
       "criterion": "轨迹中存在至少 2 次 subagent 调用",
       "passed": true,
-      "evidence": "subagent 调用数=2"
+      "evidence": "subagent 调用数=4"
     },
     {
       "criterion": "schema.json 未被修改（哈希不变）",
@@ -29,7 +29,7 @@
   ],
   "forbidden_file_changes": [],
   "verification_tool_called": true,
-  "subagent_invocations": 2,
+  "subagent_invocations": 4,
   "task_success": true,
-  "wall_time_ms": 30310
+  "wall_time_ms": 565377
 }

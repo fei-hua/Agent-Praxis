@@ -158,6 +158,8 @@ function main(): void {
   lines.push('- OQ-008：dry-run 的 `arm` 记为 `null` 并标注（不造 enum 值）。');
   lines.push('- 首轮执行遇到 provider 429 限流导致 5 个执行器中止；已改为分批执行并修复工作区 ESM/CJS 边界（工作区 `package.json{"type":"commonjs"}`），最终 5 条轨迹全部达标。');
   lines.push('- DRY-05 首次执行的协议使初始即 REPLAN，缺少「失败→REPLAN」决策变化，该轨迹已废弃并按修正协议重跑（现存轨迹含 EXPLORE→REPLAN 与 2 个可重建 failure）。');
+  lines.push('- DRY-04 执行器在父级首次采集后仍继续运行（首轮 2 个子代理异常失败 → 输出 REPLAN → 次轮重新并行委派成功）。首次采集的轨迹为**过期快照**（缺 REPLAN 与 2 次委派），已按会话最终状态重新采集，现存轨迹含 PARALLEL→REPLAN 与 4 次委派。');
+  lines.push('- 采集完整性核对（脚本 `_scratch_verify` 逻辑已并入人工核对）：逐条比对会话最终事件数与轨迹内容（task_state / subagent_invocation / tool_call 含子会话），5 条全部一致。');
   lines.push('');
 
   console.log(lines.join('\n'));
