@@ -75,8 +75,6 @@ export interface GateContext {
   trajectoryRoot: string;
   /** evidence.run_id → Trajectory record（run_id/task_id/版本三元组）；不可解析 → Gate 失败 */
   resolveRun?: (runId: string) => RunMetadata | undefined;
-  /** task_id → success criteria 的规范化标识（供 exact conflict 规则 (c) 比对「相同 success criteria」） */
-  resolveSuccessCriteriaIdentity?: (taskId: string) => string | undefined;
   /** 现有经验库（duplicate / exact conflict 比对对象） */
   existing?: Experience[];
 }
@@ -153,35 +151,28 @@ export function runDeterministicGate(input: unknown, ctx: GateContext): GateResu
     detail: hasOutcome(exp) ? 'outcome 记录存在' : 'outcome 记录缺失',
   });
 
-  // 7) duplicate 检测（OQ-005 裁决）
-  const dupFindings = findDuplicates(exp, ctx.existing ?? []);
+  // 7) duplicate 检测 + 8) exact conflict 检测
+  // OQ-020 裁决（2026-09-27）：判定顺序固定为 Conflict → Duplicate：
+  //   (1) 先执行 exact_conflict 检查；(2) 若不存在 conflict，再执行 duplicate 检查。
+  //   因此「相同条件 + 相同决策 + 相反 outcome」唯一判为 exact_conflict(c)，
+  //   不会再同时命中 duplicate。
+  const conflictFindings = findExactConflicts(exp, ctx.existing ?? []);
+  const dup = evaluateDuplicate(exp, ctx.existing ?? [], conflictFindings.length > 0);
   checks.push({
     check: 'duplicate_detection',
-    status: dupFindings.length > 0 ? 'fail' : 'pass',
-    detail:
-      dupFindings.length > 0
-        ? `判定为 duplicate：${dupFindings.map((f) => f.other_id).join(', ')}`
-        : '未发现 duplicate',
-    findings: dupFindings,
+    status: dup.status,
+    detail: dup.detail,
+    ...(dup.oq_id ? { oq_id: dup.oq_id } : {}),
+    findings: dup.findings,
   });
-
-  // 8) exact conflict 检测（OQ-005 裁决：规则 a/b/c）
-  // 规则 (c) 的 success criteria 标识沿证据链解析：evidence.run_id → run → task_id → criteria 标识
-  const criteriaIdentityOf = (e: Experience): string | undefined => {
-    const run = ctx.resolveRun?.(e.evidence.run_id);
-    if (!run || run.task_id.trim() === '') return undefined;
-    return ctx.resolveSuccessCriteriaIdentity?.(run.task_id);
-  };
-  const conflict = findExactConflicts(exp, ctx.existing ?? [], ctx.resolveSuccessCriteriaIdentity ? criteriaIdentityOf : undefined);
   checks.push({
     check: 'exact_conflict_detection',
-    status: conflict.findings.length > 0 ? 'fail' : conflict.subRules.every((s) => s.status === 'pass') ? 'pass' : 'blocked_by_oq',
+    status: conflictFindings.length > 0 ? 'fail' : 'pass',
     detail:
-      conflict.findings.length > 0
-        ? `标记为 exact_conflict：${conflict.findings.map((f) => `${f.other_id}(${f.rule})`).join(', ')}`
+      conflictFindings.length > 0
+        ? `判定为 exact_conflict：${conflictFindings.map((f) => `${f.other_id}(${f.rule})`).join(', ')}`
         : '未发现 exact conflict',
-    findings: conflict.findings,
-    sub_rules: conflict.subRules,
+    findings: conflictFindings,
   });
 
   // 9) version 字段存在（OQ-012 裁决）：Trajectory metadata 三个版本字段必须为合法非空字符串
@@ -253,6 +244,12 @@ function sameJson(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
+/** outcome 的可判定性（OQ-020：缺失或无法确定 ⇒ 不得判定 duplicate，转人工复核） */
+function outcomeOf(e: Experience): boolean | undefined {
+  const v = (e.outcome as { success?: unknown } | null | undefined)?.success;
+  return typeof v === 'boolean' ? v : undefined;
+}
+
 export function findDuplicates(
   candidate: Experience,
   existing: Experience[],
@@ -269,38 +266,35 @@ export function findDuplicates(
     }));
 }
 
+/**
+ * exact conflict（OQ-005 + OQ-020 裁决）：
+ *   (a) 适用条件完全一致，但 decision.action 不同；
+ *   (b) 适用条件完全一致 + 同一 action 下 decision.mode 发生互斥变化（如 PARALLEL vs SERIAL）；
+ *   (c) 适用条件完全一致 + decision.action / decision.mode 相同，但 outcome 在 success / failure 上明确相反。
+ * 仅 lesson 不同、证据数量不同、reliability 不同不构成 conflict。
+ *
+ * OQ-020 裁决：规则 (c) 不再附加「相同 success criteria」条件——outcome 明确相反即成立；
+ * 判定顺序为 Conflict → Duplicate（由 runDeterministicGate 保证）。
+ */
 export function findExactConflicts(
   candidate: Experience,
   existing: Experience[],
-  /**
-   * experience → success criteria 规范化标识（沿证据链：evidence.run_id → run → task_id → criteria）。
-   * 不提供时规则 (c) 记 not_evaluated（不猜测、不静默放过）。
-   */
-  criteriaIdentityOf?: (e: Experience) => string | undefined,
-): {
-  findings: Array<{ rule: string; other_id: string; detail: string }>;
-  subRules: Array<{ rule: string; status: 'pass' | 'fail' | 'not_evaluated'; detail: string }>;
-} {
+): Array<{ rule: string; other_id: string; detail: string }> {
   const findings: Array<{ rule: string; other_id: string; detail: string }> = [];
-  const subRules: Array<{ rule: string; status: 'pass' | 'fail' | 'not_evaluated'; detail: string }> = [];
-
   const cond = conditionsKey(candidate);
   const sameCondition = existing.filter((o) => sameJson(cond, conditionsKey(o)));
+  const action = normScalar(candidate.decision);
+  const mode = normScalar(candidate.delegation.mode);
 
   // (a) decision.action 不同
-  const actionDiff = sameCondition.filter((o) => normScalar(o.decision) !== normScalar(candidate.decision));
-  for (const o of actionDiff) {
+  for (const o of sameCondition.filter((o) => normScalar(o.decision) !== action)) {
     findings.push({ rule: 'action_differs', other_id: o.id, detail: `decision.action 不同：${candidate.decision} vs ${o.decision}` });
   }
 
-  // (b) decision.mode 在同一 action 下发生互斥变化（例如 PARALLEL vs SERIAL）
-  //     实现口径：serial|parallel|workflow 是互斥的 mode 取值（§3 enum），同一 action 下 mode 不同即互斥变化。
-  const modeDiff = sameCondition.filter(
-    (o) =>
-      normScalar(o.decision) === normScalar(candidate.decision) &&
-      normScalar(o.delegation.mode) !== normScalar(candidate.delegation.mode),
-  );
-  for (const o of modeDiff) {
+  // (b) decision.mode 在同一 action 下发生互斥变化（serial|parallel|workflow 互斥，§3 enum）
+  for (const o of sameCondition.filter(
+    (o) => normScalar(o.decision) === action && normScalar(o.delegation.mode) !== mode,
+  )) {
     findings.push({
       rule: 'mode_mutually_exclusive',
       other_id: o.id,
@@ -308,72 +302,78 @@ export function findExactConflicts(
     });
   }
 
-  // (c) 相同任务类型、相同适用条件、相同决策（action+mode）下，相同 success criteria 的相反 outcome
-  const action = normScalar(candidate.decision);
-  const mode = normScalar(candidate.delegation.mode);
-  const outcomeOppositePairs = sameCondition.filter(
-    (o) =>
-      normScalar(o.decision) === action &&
-      normScalar(o.delegation.mode) === mode &&
-      o.outcome.success !== candidate.outcome.success,
-  );
-
-  if (outcomeOppositePairs.length === 0) {
-    subRules.push({ rule: 'outcome_opposite', status: 'pass', detail: '无「相同决策、相反 outcome」的候选对' });
-  } else if (!criteriaIdentityOf) {
-    subRules.push({
-      rule: 'outcome_opposite',
-      status: 'not_evaluated',
-      detail: '存在相同决策、相反 outcome 的候选对，但缺少 success criteria 解析器，无法判定「相同 success criteria」（不猜测、不静默放过）',
-    });
-  } else {
-    // 「相同 success criteria」沿证据链比对：evidence.run_id → run → task_id → success criteria 标识
-    const candCriteria = criteriaIdentityOf(candidate);
-    let matchedPairs = 0;
-    let unresolvedPairs = 0;
-    let resolvedDifferentPairs = 0;
-    for (const o of outcomeOppositePairs) {
-      const otherCriteria = criteriaIdentityOf(o);
-      if (candCriteria === undefined || otherCriteria === undefined) {
-        unresolvedPairs++;
-        continue;
-      }
-      if (candCriteria === otherCriteria) {
-        matchedPairs++;
+  // (c) 同条件 + 同决策 + 明确相反 outcome
+  const candOutcome = outcomeOf(candidate);
+  if (candOutcome !== undefined) {
+    for (const o of sameCondition) {
+      if (normScalar(o.decision) !== action || normScalar(o.delegation.mode) !== mode) continue;
+      const otherOutcome = outcomeOf(o);
+      if (otherOutcome === undefined) continue; // 不可确定 ⇒ 不判 (c)
+      if (otherOutcome !== candOutcome) {
         findings.push({
           rule: 'outcome_opposite',
           other_id: o.id,
-          detail: `相同 success criteria 下明确相反 outcome：${candidate.outcome.success} vs ${o.outcome.success}`,
+          detail: `相同条件与决策下 outcome 明确相反：${candOutcome ? 'success' : 'failure'} vs ${otherOutcome ? 'success' : 'failure'}`,
         });
-      } else {
-        resolvedDifferentPairs++;
       }
-    }
-    if (matchedPairs > 0) {
-      subRules.push({
-        rule: 'outcome_opposite',
-        status: 'fail',
-        detail: `${matchedPairs} 对满足「相同 criteria + 明确相反 outcome」，构成 conflict(c)`,
-      });
-    } else if (unresolvedPairs > 0) {
-      // 无法解析 ⇒ 不能判定规则是否成立（不猜测、不静默放过）
-      subRules.push({
-        rule: 'outcome_opposite',
-        status: 'not_evaluated',
-        detail: `${unresolvedPairs} 对的 success criteria 不可解析（证据链解析不到），规则 (c) 无法判定`,
-      });
-    } else {
-      // 全部可解析且互不相同 ⇒ 规则 (c) 明确不成立
-      subRules.push({
-        rule: 'outcome_opposite',
-        status: 'pass',
-        detail: `${resolvedDifferentPairs} 对的 success criteria 明确不同，规则 (c) 不成立`,
-      });
     }
   }
 
-  return { findings, subRules };
+  return findings;
 }
+
+/**
+ * duplicate 判定（OQ-020 裁决：仅在不存在 exact conflict 时执行）。
+ *   - 存在 conflict ⇒ 不执行 duplicate 判定（Conflict 优先）；
+ *   - outcome 缺失/不可确定（任一侧）⇒ 不得判定 duplicate，转 Quality Gate / manual review；
+ *   - 否则 dedup key 完全一致 ⇒ duplicate。
+ */
+export function evaluateDuplicate(
+  candidate: Experience,
+  existing: Experience[],
+  conflictExists: boolean,
+): {
+  status: 'pass' | 'fail' | 'blocked_by_oq';
+  detail: string;
+  findings: Array<{ rule: string; other_id: string; detail: string }>;
+  oq_id?: string;
+} {
+  if (conflictExists) {
+    return {
+      status: 'pass',
+      detail: 'Conflict 优先（OQ-020）：本对象已判为 exact_conflict，不执行 duplicate 判定',
+      findings: [],
+    };
+  }
+  const candOutcome = outcomeOf(candidate);
+  const keyMatches = findDuplicates(candidate, existing);
+  if (candOutcome === undefined) {
+    return {
+      status: 'blocked_by_oq',
+      oq_id: 'OQ-020',
+      detail: '候选的 outcome 缺失或不可确定 ⇒ 不得判定 duplicate，转 Quality Gate / manual review',
+      findings: [],
+    };
+  }
+  const unresolved = keyMatches.filter((f) => {
+    const other = existing.find((o) => o.id === f.other_id);
+    return other === undefined || outcomeOf(other) === undefined;
+  });
+  if (unresolved.length > 0) {
+    return {
+      status: 'blocked_by_oq',
+      oq_id: 'OQ-020',
+      detail: `dedup key 命中但对方 outcome 不可确定（${unresolved.map((u) => u.other_id).join(', ')}）⇒ 不得判定 duplicate，转人工复核`,
+      findings: [],
+    };
+  }
+  return {
+    status: keyMatches.length > 0 ? 'fail' : 'pass',
+    detail: keyMatches.length > 0 ? `判定为 duplicate：${keyMatches.map((f) => f.other_id).join(', ')}` : '未发现 duplicate',
+    findings: keyMatches,
+  };
+}
+
 
 // ---------- util ----------
 

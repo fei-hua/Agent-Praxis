@@ -1,6 +1,6 @@
 # Phase 0 Dry-run 验收报告
 
-生成时间：2026-09-27T15:30:11.592Z
+生成时间：2026-09-27T15:35:31.263Z
 
 ## 集合级覆盖（OQ-007 授权要求：≥1 失败 + ≥1 replan）
 
@@ -349,7 +349,6 @@
 | OQ-017 | 否 | stale 的具体阈值未定——「超过 N 个任务未被命中，或环境版本变化」中的 N 未定义（规格已知开放项）。 |
 | OQ-018 | 否 | token usage 字段口径（cache read 是否计入 Input / 总 Token） |
 | OQ-019 | 否 | failure event 的派生规则（tool error 与非零命令退出） |
-| OQ-020 | 否 | duplicate 与 exact conflict 规则 (c) 的判定重叠 |
 
 ## 工程约束与已知边界
 

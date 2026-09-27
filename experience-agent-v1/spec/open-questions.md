@@ -556,8 +556,19 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27）：采用方案（甲）并明确「Conflict 优先于 Duplicate」。
+  dedup key 保持不加入 outcome；判定顺序固定为：1) 先执行 exact_conflict 检查；
+  2) 若不存在 conflict，再执行 duplicate 检查。
+  其中 exact_conflict(c)：当两条 Experience 的适用条件完全一致，且 decision.action / decision.mode 相同，
+  但 outcome 在 success / failure 上明确相反时，判定为 exact_conflict(c)（**不再附加「相同 success criteria」条件**，
+  该子条件由本次裁决取代）。duplicate：仅当不存在 exact_conflict 且 dedup key 全部一致时才判定。
+  因此：相同条件 + 相同决策 + 相同 lesson + 相同 outcome → duplicate；
+  相同条件 + 相同决策 + 相同 lesson + 相反 outcome → exact_conflict(c)（唯一判定，不再同时命中 duplicate）；
+  仅 lesson 不同 → 不构成 conflict，可分别保留；
+  缺失或无法确定 outcome → 不得判定 duplicate，进入 Quality Gate / manual review。
+  理由：同一行动策略的多次成功经验仍能正常去重，而成功/失败相反的证据被保留为冲突信号。
 ```

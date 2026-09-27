@@ -39,7 +39,7 @@ import {
   type RetrievalQuery,
 } from '../experience/retrieval.ts';
 import { PLACEHOLDER_CALIBRATION } from '../experience/calibration.ts';
-import { runDeterministicGate, type GateContext, type RunMetadata } from '../experience/gate.ts';
+import { evaluateDuplicate, runDeterministicGate, type GateContext, type RunMetadata } from '../experience/gate.ts';
 import type { Experience } from '../experience/schema.ts';
 import { evaluateCostOk, evaluateTaskChecks, isActionChange, type ActionProfile } from '../benchmark/judge.ts';
 import { loadTask } from '../benchmark/tasks.ts';
@@ -325,74 +325,50 @@ test('Gate：exact conflict 规则 (a) action 不同 / (b) 同 action 下 mode �
   assert.match(rB.checks.find((c) => c.check === 'exact_conflict_detection')!.detail, /mode_mutually_exclusive/);
 });
 
-test('Gate：exact conflict 规则 (c) 相反 outcome + 相同 success criteria', () => {
-  const oppositeOutcome = {
-    success: false,
-    task_success_criteria_met: false,
-    forbidden_violation: false,
-    tokens: 900,
-    subagent_calls: 1,
-    wall_time_s: 9,
-  };
-  // lesson 不同以避开 duplicate 判定（见 OQ-020 的重叠说明）
-  const sameRun = makeExperience({
+test('Gate：exact conflict (c) —— 同条件 + 同决策 + 相反 outcome，唯一判定（OQ-020）', () => {
+  const opposite = makeExperience({
     id: 'EXP-C-C1',
-    lesson: '相反结局的另一条经验（lesson 不同以避开 duplicate 判定）',
-    outcome: oppositeOutcome,
-  });
-  const otherRun = makeExperience({
-    id: 'EXP-C-C2',
-    lesson: '相反结局的另一条经验（lesson 不同以避开 duplicate 判定）',
-    outcome: oppositeOutcome,
-    evidence: { ...makeExperience().evidence, run_id: 'run-2026-09-27-DRY-01' },
-  });
-
-  // run_id → task_id → success criteria 标识（沿证据链；OQ-012/OQ-005(c)）
-  const runResolver = (runId: string): RunMetadata => ({
-    ...runMeta,
-    task_id: runId === 'run-2026-09-27-DRY-05' ? 'DRY-05' : 'DRY-01',
-  });
-  const criteriaByTask = (taskId: string) => (taskId === 'DRY-05' ? 'criteria-A' : 'criteria-B');
-
-  // 同一 success criteria（同 run ⇒ 同 task ⇒ 同 criteria）⇒ conflict(c) 命中
-  const r1 = runDeterministicGate(makeExperience(), ctx({ existing: [sameRun], resolveRun: runResolver, resolveSuccessCriteriaIdentity: criteriaByTask }));
-  assert.equal(r1.checks.find((c) => c.check === 'exact_conflict_detection')!.status, 'fail');
-  assert.match(r1.checks.find((c) => c.check === 'exact_conflict_detection')!.detail, /outcome_opposite/);
-
-  // 缺 criteria 解析器 ⇒ not_evaluated ⇒ 判定不完整（null），绝不静默放过
-  const r2 = runDeterministicGate(makeExperience(), ctx({ existing: [sameRun], resolveRun: runResolver }));
-  assert.equal(r2.checks.find((c) => c.check === 'exact_conflict_detection')!.status, 'blocked_by_oq');
-  assert.equal(r2.passed, null);
-
-  // 不同 success criteria（不同 task）⇒ 不构成 conflict
-  const r3 = runDeterministicGate(makeExperience(), ctx({ existing: [otherRun], resolveRun: runResolver, resolveSuccessCriteriaIdentity: criteriaByTask }));
-  assert.equal(r3.checks.find((c) => c.check === 'duplicate_detection')!.status, 'pass');
-  assert.equal(r3.checks.find((c) => c.check === 'exact_conflict_detection')!.status, 'pass');
-  assert.notEqual(r3.passed, false);
-});
-
-test('Gate：仅 outcome 相反时 duplicate 与 conflict(c) 重叠（OQ-020 待裁决，当前两者同时命中）', () => {
-  // 记录现状：OQ-005 的 dedup 键不含 outcome，因此「其余字段全同、仅 outcome 相反」的对象
-  // 同时满足 duplicate 与 exact conflict 规则 (c)。此为规格内部的判定重叠，已登记 OQ-020，
-  // 在人工裁决优先级前，代码如实同时报告两者（不静默择一）。
-  const oppositeSameLesson = makeExperience({
-    id: 'EXP-C-OVERLAP',
     outcome: { success: false, task_success_criteria_met: false, forbidden_violation: false, tokens: 900, subagent_calls: 1, wall_time_s: 9 },
   });
-  const r = runDeterministicGate(makeExperience(), ctx({ existing: [oppositeSameLesson] }));
-  assert.equal(r.checks.find((c) => c.check === 'duplicate_detection')!.status, 'fail', '按 OQ-005 dedup 键判为 duplicate');
+  const r = runDeterministicGate(makeExperience(), ctx({ existing: [opposite] }));
   const conflict = r.checks.find((c) => c.check === 'exact_conflict_detection')!;
-  assert.equal(conflict.sub_rules?.find((s) => s.rule === 'outcome_opposite')?.status, 'not_evaluated');
-  assert.equal(r.passed, false);
+  assert.equal(conflict.status, 'fail');
+  assert.match(conflict.detail, /outcome_opposite/);
+  // Conflict 优先：不再同时判 duplicate
+  const dup = r.checks.find((c) => c.check === 'duplicate_detection')!;
+  assert.equal(dup.status, 'pass');
+  assert.match(dup.detail, /Conflict 优先/);
 });
 
-test('Gate：lesson / 证据数量 / reliability 差异不构成 conflict', () => {
-  const onlyLesson = makeExperience({ id: 'EXP-L', lesson: '完全不同的教训文本' });
-  const r = runDeterministicGate(makeExperience(), ctx({ existing: [onlyLesson] }));
-  const conflict = r.checks.find((c) => c.check === 'exact_conflict_detection')!;
-  assert.equal(conflict.status, 'pass');
-  // 但 lesson 不同 ⇒ 不是 duplicate
+test('Gate：仅 lesson 不同（outcome 相同）⇒ 既非 conflict 也非 duplicate，两条分别保留', () => {
+  const other = makeExperience({ id: 'EXP-L', lesson: '完全不同的教训文本' });
+  const r = runDeterministicGate(makeExperience(), ctx({ existing: [other] }));
+  assert.equal(r.checks.find((c) => c.check === 'exact_conflict_detection')!.status, 'pass');
   assert.equal(r.checks.find((c) => c.check === 'duplicate_detection')!.status, 'pass');
+});
+
+test('Gate：outcome 缺失/不可确定 ⇒ 不得判定 duplicate（OQ-020）', () => {
+  // 路径 1（真实路径）：outcome 是 §3 必填字段，缺失对象先被 schema 校验挡下 ⇒ Gate 失败，
+  // 且失败原因不是 duplicate 判定（不把「缺 outcome」误记为「重复」）。
+  const noOutcome = { ...makeExperience({ id: 'EXP-NO-OUTCOME' }) } as unknown as Experience;
+  delete (noOutcome as { outcome?: unknown }).outcome;
+  const r = runDeterministicGate(noOutcome, ctx({ existing: [makeExperience()] }));
+  assert.equal(r.checks.find((c) => c.check === 'schema_completeness')!.status, 'fail');
+  assert.equal(r.passed, false);
+
+  // 路径 2（防御层，单元级）：若未过 schema 的数据抵达比对层，evaluateDuplicate 必须
+  // 明确拒绝判定 duplicate 并要求人工复核，而不是静默按 dedup key 判重。
+  const blocked = evaluateDuplicate(noOutcome, [makeExperience()], false);
+  assert.equal(blocked.status, 'blocked_by_oq');
+  assert.equal(blocked.oq_id, 'OQ-020');
+
+  // 对方 outcome 不可确定时同样不判 duplicate
+  const blockedOther = evaluateDuplicate(makeExperience(), [noOutcome], false);
+  assert.equal(blockedOther.status, 'blocked_by_oq');
+
+  // 两侧 outcome 均可确定 + dedup key 一致 ⇒ duplicate
+  const dup = evaluateDuplicate(makeExperience(), [makeExperience({ id: 'EXP-DUP-2' })], false);
+  assert.equal(dup.status, 'fail');
 });
 
 test('Gate：task_id 与版本三元组缺失 ⇒ 失败（OQ-012 证据链）', () => {
