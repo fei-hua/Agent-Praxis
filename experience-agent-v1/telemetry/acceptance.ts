@@ -17,7 +17,7 @@
  */
 
 import { FROZEN } from '../core/frozen-constants.ts';
-import { readTrajectory, type RunRecord, type TrajectoryEvent } from './trajectory.ts';
+import { readTrajectory, FAILURE_CLASSES, type RunRecord, type TrajectoryEvent } from './trajectory.ts';
 
 export interface CheckResult {
   id: string;
@@ -92,23 +92,34 @@ export function checkToolPairing(events: TrajectoryEvent[]): CheckResult {
   };
 }
 
-/** §4.2-3：failure event 可重建（原因 + 上下文都在事件里） */
+/** §4.2-3：failure event 可重建（原因 + 上下文都在事件里；OQ-019：class 必须属四类之一） */
 export function checkFailureReconstructable(events: TrajectoryEvent[]): CheckResult {
   const failures = events.filter((e) => e.type === 'failure');
   const bad: string[] = [];
+  const seqs = new Set(events.map((e) => e.seq));
   for (const e of failures) {
     if (e.type !== 'failure') continue;
     const f = e.failure;
     if (!f.failure_id || !f.reason || !f.kind) bad.push(`${f.failure_id || '<无 id>'}: 原因/kind 缺失`);
-    if (!f.context.tool_call_id && !f.context.subagent_invocation_id) {
-      bad.push(`${f.failure_id}: 上下文（tool_call_id/subagent_invocation_id）缺失`);
+    if (!(FAILURE_CLASSES as readonly string[]).includes(f.class)) {
+      bad.push(`${f.failure_id}: class「${String(f.class)}」不是 OQ-019 的四类之一`);
     }
-    // 上下文必须指向轨迹里真实存在的 call
+    const hasContext =
+      Boolean(f.context.tool_call_id) ||
+      Boolean(f.context.subagent_invocation_id) ||
+      f.context.event_seq !== undefined;
+    if (!hasContext) {
+      bad.push(`${f.failure_id}: 上下文（tool_call_id / subagent_invocation_id / event_seq）缺失`);
+    }
+    // 上下文必须指向轨迹里真实存在的对象
     if (f.context.tool_call_id) {
       const callExists = events.some(
         (ev) => ev.type === 'tool_call' && ev.call.call_id === f.context.tool_call_id,
       );
       if (!callExists) bad.push(`${f.failure_id}: 指向的 tool_call ${f.context.tool_call_id} 不在轨迹中`);
+    }
+    if (f.context.event_seq !== undefined && !seqs.has(f.context.event_seq)) {
+      bad.push(`${f.failure_id}: 指向的 event_seq ${f.context.event_seq} 不在轨迹中`);
     }
   }
   return {
@@ -117,7 +128,7 @@ export function checkFailureReconstructable(events: TrajectoryEvent[]): CheckRes
     status: bad.length === 0 ? 'PASS' : 'FAIL',
     detail:
       bad.length === 0
-        ? `${failures.length} 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call`
+        ? `${failures.length} 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象`
         : bad.join('; '),
     metrics: { failures: failures.length },
   };

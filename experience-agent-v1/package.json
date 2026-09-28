@@ -9,7 +9,7 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
-    "test": "node --test --test-isolation=none tests/deterministic.test.ts tests/pilot-prep.test.ts"
+    "test": "node --test --test-isolation=none tests/deterministic.test.ts tests/pilot-prep.test.ts tests/pilot-orchestration.test.ts"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",

@@ -1,10 +1,10 @@
 # Phase 0 Dry-run 验收报告
 
-生成时间：2026-09-28T11:23:25.344Z
+生成时间：2026-09-28T11:39:34.513Z
 
 ## 集合级覆盖（OQ-007 授权要求：≥1 失败 + ≥1 replan）
 
-- [PASS] **coverage-1** 失败场景覆盖（至少 1 个 run 含可重建 failure event） — 集合内 failure 事件总数=7
+- [PASS] **coverage-1** 失败场景覆盖（至少 1 个 run 含可重建 failure event） — 集合内 failure 事件总数=10
 - [PASS] **coverage-2** Replan 场景覆盖（至少 1 个 run 含可重建 replan event） — 集合内 replan 事件总数=2
 - [PASS] **coverage-3** 委派场景覆盖（至少 1 个 run 含 subagent 调用与返回） — 含 subagent 调用的 run 数=2
 
@@ -13,7 +13,7 @@
 ### run-2026-09-27-DRY-01
 - [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 6/6 配对（含子会话调用）
-- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
+- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
 - [PASS] **4.2-5** 离线可重建完整决策链（Task → Task State → First Decision → Action → Tool/Subagent → Outcome） — 链条完整：task=DRY-01，task_state×1，actions=6，outcome 有记录
 #### §4.3 额外检查（非门禁）
@@ -23,7 +23,7 @@
 ### run-2026-09-27-DRY-02
 - [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 8/8 配对（含子会话调用）
-- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
+- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
 - [PASS] **4.2-5** 离线可重建完整决策链（Task → Task State → First Decision → Action → Tool/Subagent → Outcome） — 链条完整：task=DRY-02，task_state×1，actions=8，outcome 有记录
 #### §4.3 额外检查（非门禁）
@@ -33,7 +33,7 @@
 ### run-2026-09-27-DRY-03
 - [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 14/14 配对（含子会话调用）
-- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 1 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
+- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 1 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
 - [PASS] **4.2-5** 离线可重建完整决策链（Task → Task State → First Decision → Action → Tool/Subagent → Outcome） — 链条完整：task=DRY-03，task_state×1，actions=15，outcome 有记录
 #### §4.3 额外检查（非门禁）
@@ -43,17 +43,17 @@
 ### run-2026-09-27-DRY-04
 - [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 40/40 配对（含子会话调用）
-- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 4 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
+- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 7 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 1 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
 - [PASS] **4.2-5** 离线可重建完整决策链（Task → Task State → First Decision → Action → Tool/Subagent → Outcome） — 链条完整：task=DRY-04，task_state×2，actions=44，outcome 有记录
 #### §4.3 额外检查（非门禁）
-- [PASS] **4.3-1** token 使用量、工具调用数、失败率、replan 次数已记录 — input=89539, output=24920, total=555675, tool_calls=40, failures=4, replans=1
+- [PASS] **4.3-1** token 使用量、工具调用数、失败率、replan 次数已记录 — input=89539, output=24920, total=555675, tool_calls=40, failures=7, replans=1
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 4，返回 4，未返回：[]
 
 ### run-2026-09-27-DRY-05
 - [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 10/10 配对（含子会话调用）
-- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 2 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
+- [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 2 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 1 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
 - [PASS] **4.2-5** 离线可重建完整决策链（Task → Task State → First Decision → Action → Tool/Subagent → Outcome） — 链条完整：task=DRY-05，task_state×2，actions=10，outcome 有记录
 #### §4.3 额外检查（非门禁）
@@ -264,14 +264,17 @@
 [  88] Tool/Subagent  read ← primary
 [  90] Action         tool_call send_message (call_2dc8ddff1a774216acccab16)
 [  90] Tool/Subagent  send_message ← primary
-[  92] Meta           FAILURE 8c5a17eb-fail-call_723fa3c13bbc4d7d82339d8d kind=FsError reason=Error: cannot modify "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md": ctx=call_723fa3c13bbc4d7d82339d8d
-[  93] Meta           FAILURE 8c5a17eb-fail-call_99742be9963843f9917e85ee kind=FsError reason=Error: cannot write "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md":  ctx=call_99742be9963843f9917e85ee
-[  94] Meta           FAILURE 8c5a17eb-fail-call_7ddc7133fa9d417b8c9f1788 kind=FsError reason=Error: cannot write "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md":  ctx=call_7ddc7133fa9d417b8c9f1788
-[  95] Meta           FAILURE 8c5a17eb-fail-call_68955ed5cdd9451b9c046a3d kind=FsError reason=Error: cannot read "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md": n ctx=call_68955ed5cdd9451b9c046a3d
-[  96] First Decision REPLAN replan-68: trigger=8c5a17eb-fail-call_68955ed5cdd9451b9c046a3d PARALLEL → REPLAN
-[  97] Meta           verification success=true required={"dry-run-workspace/DRY-04/schema-audit.md 存在且含字段清单":"PASS","dry-run-workspace/DRY-04/schema-verify.txt 存在且包含 SCHEMA OK":"PASS","轨迹中存在至少 2 次 subagent 调用":"PASS","schema.json 未被修改（哈希不变）":"PASS","轨迹中存在对 verify-schema.js 的执行（成功条件验证）":"PASS"}
-[  98] Outcome        tokens=555675 subagent_calls=4 wall_time_s=565.377
-[  99] Outcome        run_record: task_success=true input=89539 output=24920 total=555675
+[  92] Meta           FAILURE fail-turn-45 kind=RATE_LIMIT reason=429: {"code":"429","message":"Too many requests","type":"limitation"} ctx=undefined
+[  93] Meta           FAILURE 9fd0d8cb-fail-turn-40 kind=RATE_LIMIT reason=429: {"code":"429","message":"Too many requests","type":"limitation"} ctx=undefined
+[  94] Meta           FAILURE 009f0bbe-fail-turn-35 kind=RATE_LIMIT reason=429: {"code":"429","message":"Too many requests","type":"limitation"} ctx=undefined
+[  95] Meta           FAILURE 8c5a17eb-fail-call_723fa3c13bbc4d7d82339d8d kind=FsError reason=Error: cannot modify "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md": ctx=call_723fa3c13bbc4d7d82339d8d
+[  96] Meta           FAILURE 8c5a17eb-fail-call_99742be9963843f9917e85ee kind=FsError reason=Error: cannot write "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md":  ctx=call_99742be9963843f9917e85ee
+[  97] Meta           FAILURE 8c5a17eb-fail-call_7ddc7133fa9d417b8c9f1788 kind=FsError reason=Error: cannot write "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md":  ctx=call_7ddc7133fa9d417b8c9f1788
+[  98] Meta           FAILURE 8c5a17eb-fail-call_68955ed5cdd9451b9c046a3d kind=FsError reason=Error: cannot read "D:\Agent Praxis\experience-agent-v1\dry-run-workspace\DRY-04\schema-audit.md": n ctx=call_68955ed5cdd9451b9c046a3d
+[  99] First Decision REPLAN replan-68: trigger=8c5a17eb-fail-call_68955ed5cdd9451b9c046a3d PARALLEL → REPLAN
+[ 100] Meta           verification success=true required={"dry-run-workspace/DRY-04/schema-audit.md 存在且含字段清单":"PASS","dry-run-workspace/DRY-04/schema-verify.txt 存在且包含 SCHEMA OK":"PASS","轨迹中存在至少 2 次 subagent 调用":"PASS","schema.json 未被修改（哈希不变）":"PASS","轨迹中存在对 verify-schema.js 的执行（成功条件验证）":"PASS"}
+[ 101] Outcome        tokens=555675 subagent_calls=4 wall_time_s=565.377
+[ 102] Outcome        run_record: task_success=true input=89539 output=24920 total=555675
 ```
 
 ### run-2026-09-27-DRY-05（chain_complete=true）
@@ -344,7 +347,7 @@
 | OQ-014 | 否 | Eligibility Filter 中 task.scope 与 experience.scope 的组合规则未定义： |
 | OQ-015 | 否 | T1「在 Harness Session 事件层订阅 tool/call、tool/result、session/event」的接入方式请确认： |
 | OQ-017 | 否 | stale 的具体阈值未定——「超过 N 个任务未被命中，或环境版本变化」中的 N 未定义（规格已知开放项）。 |
-| OQ-019 | 否 | failure event 的派生规则（tool error 与非零命令退出） |
+| OQ-022 | 否 | deliberate verification failure 的判定口径 |
 
 ## 工程约束与已知边界
 

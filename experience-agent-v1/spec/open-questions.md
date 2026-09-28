@@ -562,10 +562,22 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，原话要点）：
+  **failure 事件定义** = 一次执行步骤未达到预期执行结果，且需要进入错误处理流程。
+  包含四类：
+  (1) Tool execution failure —— tool 返回 error / tool timeout / tool schema validation failure；
+  (2) Command execution failure —— exit code ≠ 0；
+  (3) Agent action failure —— action 与 schema 不匹配 / 必需输出缺失 / 明确违反 task constraint；
+  (4) Infrastructure failure —— provider/harness 异常导致任务无法继续。
+  **不包含**：正常业务结果不符合预期但 agent 仍可继续处理、用户需求澄清、普通 replanning、
+  deliberate verification failure。
+  **failure_count 统计**：按 trajectory event 级别统计；同一根因导致多个重复日志只计一次。
+  裁决理由：若不纳入 command exit code，会出现「命令失败 → agent 感知 → replan」但统计为
+  failure=0 / replan=1，导致 Recovery Rate 虚高——`failure → replan` 这条链必须闭合。
 ```
 
 ---
@@ -637,9 +649,30 @@ answer: >-
 
 ---
 
+## OQ-022：deliberate verification failure 的判定口径
+field: telemetry/extract.deriveFailures / failure_count（OQ-019 裁决的排除项）
+context: >-
+  OQ-019 裁决把 failure 定义为四类执行失败，并明确排除「deliberate verification failure」
+  （例如 Agent 故意运行一个预期失败的检查以复现问题）。但「如何判定某次失败是 deliberate」
+  未给出可执行口径：它同样是 exit code ≠ 0 或 tool error，从事件本身无法与真实失败区分。
+proposal: >-
+  在裁决前，实现采用**显式排除输入**：由 run 的判定方（dryrun-judge / Pilot 编排）给出
+  deliberate_verification_call_ids，轨迹派生时把这些 call 的失败排除出 failure 与 failure_count；
+  未提供的失败一律计入（宁可多计，不静默漏计）。请人工给出自动判定口径（如按 task_state 的
+  VERIFY 决策 + 指定检查命令，或按任务定义中的 expected_failing_check 标记）。
+phase: pilot
+blocking: false
+owner: human
+status: open
+created_at: 2026-09-27
+answered_at:
+answer:
+
+---
+
 ## 清查：未裁决 OQ 清单（2026-09-27，裁决后更新）
 
-**已裁决 17 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 016 / 018 / 020 / 021
+**已裁决 18 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 016 / 018 / 019 / 020 / 021
 **未裁决 4 条**（全部 `blocking: false`），盘点如下：
 
 | OQ | 问题 | 若不定会怎样 | 建议裁决口径 | 覆盖 issue |
@@ -647,7 +680,11 @@ answer: >-
 | OQ-014 | Eligibility Filter 中 `task.scope` × `experience.scope` 的组合规则 | 跨项目经验复用行为未定义（当前遇跨项目即抛错） | 明确组合含义（如 project 经验仅同项目可检索；generic 经验可跨项目） | #5 |
 | OQ-015 | T1 接入方式：读会话日志 vs cordis 插件订阅 | 采集时效与边界不同（日志通道存在「未终态采集得到过期快照」问题，见 M1） | 指定正式采集通道；若仍用日志，明确「会话终态后再采集」的判定方式 | #5 |
 | OQ-017 | `stale` 的 N（超过 N 个任务未命中） | 经验生命周期迁移（→ stale）不可执行 | 给出 N，或给出完整的 stale 判定规则 | #5 |
-| OQ-019 | failure 事件是否包含「命令非零退出」 | `failure` 事件口径与 `failure_count` 语义可能不一致（当前包含，kind 可区分） | 确认是否计入 failure 与 failure_count | #5 |
+| OQ-022 | `deliberate verification failure` 的判定口径 | 该排除项无法从事件本身识别；当前靠显式排除输入，未提供即计入（宁可多计不漏计） | 给出自动判定口径（VERIFY 决策 + 指定检查命令，或任务定义标记） | #5 |
+
+> **ID/内容对照提醒（2026-09-27）**：人工在建议顺序中提到「OQ-015 = stale N」「OQ-017 = token/version 边界」，
+> 与本登记簿的编号不一致（本簿：OQ-015 = T1 采集通道；OQ-017 = stale 的 N；且「token/version 边界」不对应
+> 任何未裁决条目）。此处按**内容**保留各自编号，等待人工确认是否需要改编号或改内容映射。
 
 **本轮已落定的、Pilot 前必须冻结的口径**：
 
@@ -658,8 +695,13 @@ answer: >-
   `experience_count` 与 `input_tokens` / `output_tokens` / `cache_read_tokens` / `reasoning_tokens` / `total_tokens`；
 - **OQ-021**：B 臂 = Policy-only baseline，Frozen Delegation Policy 的 7 条优先级规则已固定，
   Pilot/Formal 期间不得调整；`expected_delegation` 由人工预先定义，不得由 Policy 生成。
+- **OQ-019**：failure = 四类执行失败（tool execution / command execution（exit≠0）/ agent action /
+  infrastructure），排除业务结果不符但仍可继续、需求澄清、普通 replanning、deliberate verification failure；
+  `failure_count` 按 trajectory event 统计、同一根因只计一次。`failure → replan` 链必须闭合。
 
-**建议顺序**：先 **OQ-019**（失败口径影响 `failure` 事件与 `failure_count`），
-其余（OQ-014 / 015 / 017）可在 Pilot 期间随用随裁。
+**建议顺序（人工 2026-09-27）**：OQ-019（已裁决）→ Issue #8 三臂编排 → Pilot；
+随后 OQ-014（scope 组合）、OQ-015（采集通道）、OQ-017（stale 的 N）、OQ-022（deliberate failure 口径）。
+**新增问题的分流规则（人工 2026-09-27）**：影响「指标定义 / arm 隔离 / 数据可复现 / 统计假设」→ 登记 OQ；
+不影响 → 记为 Issue。Pilot 前冻结阶段不再扩大规格。
 本清单与 GitHub Issue [#4](https://github.com/fei-hua/Agent-Praxis/issues/4)、
 [#5](https://github.com/fei-hua/Agent-Praxis/issues/5) 一一对应。

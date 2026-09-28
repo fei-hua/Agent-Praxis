@@ -485,7 +485,7 @@ test('acceptance：failure 检查要求上下文指向真实 tool_call', () => {
       seq: 1,
       ts: '',
       run_id: 'r',
-      failure: { failure_id: 'fail-c9', reason: 'boom', kind: 'tool_error', context: { tool_call_id: 'c9' } },
+      failure: { failure_id: 'fail-c9', class: 'tool_execution', reason: 'boom', kind: 'tool_error', context: { tool_call_id: 'c9' } },
     },
   ];
   assert.equal(checkFailureReconstructable(events).status, 'FAIL', '悬空上下文必须判 FAIL');

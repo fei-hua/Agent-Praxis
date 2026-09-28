@@ -1,7 +1,7 @@
 {
   "gate_passed": true,
   "coverage": [
-    "coverage-1:PASS(集合内 failure 事件总数=7)",
+    "coverage-1:PASS(集合内 failure 事件总数=10)",
     "coverage-2:PASS(集合内 replan 事件总数=2)",
     "coverage-3:PASS(含 subagent 调用的 run 数=2)"
   ],

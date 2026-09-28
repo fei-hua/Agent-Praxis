@@ -19,6 +19,7 @@ import type {
   SubagentResultRecord,
   ToolCallRecord,
   ToolResultRecord,
+  FailureClass,
 } from './trajectory.ts';
 import type { RawSessionEvent } from './session-log.ts';
 import { normalizeUsage, sumUsage, type UsageRecord } from '../core/token-accounting.ts';
@@ -274,20 +275,39 @@ export function extractSubagentInvocations(events: RawSessionEvent[]): {
 
 // ---------- failure / replan 派生（可重建） ----------
 
-/** failure 从 tool/result 派生（OQ-019）：失败原因 + 上下文（callId/turn/step）都保留在事件里
- *  (1) tool error（error 字段 / isError 标记）→ kind = errorName || 'tool_error'；
- *  (2) 命令非零退出（文本 [exit code: N]，N≠0）→ kind = 'command_exit_nonzero'。
+/**
+ * failure 从 tool/result 与 turn/end 派生（OQ-019 裁决，2026-09-27）：
+ *
+ * failure = 一次执行步骤未达到预期执行结果，且需要进入错误处理流程。四类：
+ *   (1) tool_execution   —— tool 返回 error / tool timeout / tool schema validation failure
+ *   (2) command_execution—— exit code ≠ 0
+ *   (3) agent_action     —— action 与 schema 不匹配 / 必需输出缺失 / 明确违反 task constraint
+ *   (4) infrastructure   —— provider/harness 异常导致任务无法继续
+ *
+ * 不包含：正常业务结果不符合预期但 agent 仍可继续处理、用户需求澄清、普通 replanning、
+ * deliberate verification failure（后者无法从事件本身识别，须由判定方显式排除，见 OQ-022）。
+ *
+ * context 保留可重建依据（tool_call_id / subagent_invocation_id / event_seq / turn-step）。
  */
-export function deriveFailures(events: RawSessionEvent[]): FailureRecord[] {
+export function deriveFailures(
+  events: RawSessionEvent[],
+  opts: { deliberateVerificationCallIds?: readonly string[] } = {},
+): FailureRecord[] {
+  const deliberate = new Set(opts.deliberateVerificationCallIds ?? []);
   const out: FailureRecord[] = [];
+
   for (const r of extractToolResults(events)) {
+    if (deliberate.has(r.call_id)) continue; // OQ-019：deliberate verification failure 不计入
     const exitMatch = /\[exit code: (-?\d+)\]/.exec(r.result_summary);
     const nonZeroExit = exitMatch !== null && Number(exitMatch[1]) !== 0;
+
     if (r.isError) {
+      const cls = classifyToolError(r.errorName, r.result_summary);
       out.push({
         failure_id: `fail-${r.call_id}`,
+        class: cls.class,
         reason: r.result_summary || `tool ${r.call_id} 返回错误`,
-        kind: r.errorName ?? 'tool_error',
+        kind: cls.kind,
         context: {
           tool_call_id: r.call_id,
           step: `turn ${r.turn} / step ${r.step}`,
@@ -296,6 +316,7 @@ export function deriveFailures(events: RawSessionEvent[]): FailureRecord[] {
     } else if (nonZeroExit) {
       out.push({
         failure_id: `fail-${r.call_id}`,
+        class: 'command_execution',
         reason: r.result_summary || `命令 ${r.call_id} 非零退出`,
         kind: 'command_exit_nonzero',
         context: {
@@ -305,7 +326,59 @@ export function deriveFailures(events: RawSessionEvent[]): FailureRecord[] {
       });
     }
   }
+
+  // run 级失败：turn 以 error 结束（provider/harness 异常，例如 429 RATE_LIMIT）
+  for (const ev of events) {
+    if (ev.type !== 'turn/end') continue;
+    const reason = (ev.data as {
+      reason?: { kind?: string; error?: { message?: string; code?: string } };
+    }).reason;
+    if (reason?.kind !== 'error') continue;
+    out.push({
+      failure_id: `fail-turn-${ev.seq}`,
+      class: 'infrastructure',
+      reason: reason.error?.message ?? 'turn 以 error 结束（provider/harness 异常）',
+      kind: reason.error?.code ?? 'turn_error',
+      context: { event_seq: ev.seq, step: `event seq ${ev.seq}` },
+    });
+  }
+
   return out;
+}
+
+/**
+ * tool 错误的分类（OQ-019）：
+ *   - infrastructure：provider/harness 级异常（限流、连接重置、超载、不可用），这类异常会使任务无法继续；
+ *   - tool_execution：其余 tool 返回错误（含 timeout、schema/参数错误、文件/搜索错误等）。
+ * 注意：HTTP 状态码必须带词边界（`\b`），否则 UUID/哈希里的数字串（如 …2534…）会被误判为 5xx。
+ * 未枚举到的情形一律按 (1) tool execution failure 处理（tool 返回 error），不擅自升级为 infrastructure。
+ */
+function classifyToolError(errorName: string | undefined, reason: string): { class: FailureClass; kind: string } {
+  const name = errorName ?? 'tool_error';
+  const infra =
+    /rate.?limit|\b429\b|\bquota\b|provider|ECONNRESET|connection was reset|connection reset|overloaded|service unavailable|\b50[0-9]\b|\b51[0-9]\b|\b52[0-9]\b/i;
+  const timeout = /timeout|ETIMEDOUT|timed out/i;
+  if (infra.test(name) || infra.test(reason)) return { class: 'infrastructure', kind: name };
+  if (timeout.test(name) || timeout.test(reason)) return { class: 'tool_execution', kind: 'timeout' };
+  return { class: 'tool_execution', kind: name };
+}
+
+/**
+ * failure_count（OQ-019 裁决）：按 trajectory event 级别统计；**同一根因导致多个重复日志只计一次**。
+ * 根因键 = 分类 + kind + 归一化原因首行（去掉 callId/turn/step 等一次性信息）。
+ */
+export function countFailures(failures: FailureRecord[]): number {
+  const seen = new Set<string>();
+  for (const f of failures) {
+    const firstLine = f.reason.split('\n')[0] ?? '';
+    const normalized = firstLine
+      .replace(/call_[0-9A-Za-z_]+/g, '<call>')
+      .replace(/\d+/g, '<n>')
+      .trim()
+      .toLowerCase();
+    seen.add(`${f.class}|${f.kind}|${normalized}`);
+  }
+  return seen.size;
 }
 
 /**

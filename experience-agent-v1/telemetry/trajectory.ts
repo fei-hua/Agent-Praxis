@@ -76,11 +76,27 @@ export interface FailureContext {
   /** 关联的 tool/subagent 事件 id（可重建失败上下文） */
   tool_call_id?: string;
   subagent_invocation_id?: string;
+  /** 关联的会话事件 seq（run 级失败，如 provider/harness 异常） */
+  event_seq?: number;
   step?: string;
 }
 
+/**
+ * OQ-019 人工裁决（2026-09-27）的四类 failure。
+ * failure = 一次执行步骤未达到预期执行结果，且需要进入错误处理流程。
+ */
+export const FAILURE_CLASSES = [
+  'tool_execution',
+  'command_execution',
+  'agent_action',
+  'infrastructure',
+] as const;
+export type FailureClass = (typeof FAILURE_CLASSES)[number];
+
 export interface FailureRecord {
   failure_id: string;
+  /** OQ-019：失败分类（四类之一） */
+  class: FailureClass;
   reason: string;
   kind: string;
   context: FailureContext;
