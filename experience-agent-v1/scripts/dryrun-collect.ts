@@ -207,13 +207,30 @@ function main(): void {
   const expDelegation = armPlan ? expectedDelegation(task.expected_first_decisions) : null;
   const cda = expDelegation === null ? null : cdaScore(expDelegation, taskStates[0]!.first_decision);
 
-  // judge 输入（§9.2 判定结果，由 dryrun-judge 产出）
+  // judge 输入（§9.2 判定结果，由 dryrun-judge / pilot-verify 产出）
+  // 注：judge 里的 wall_time_ms **不再采信**（见下方会话跨度计算）。
   const judge = JSON.parse(readFileSync(judgePath, 'utf8')) as {
     success_criteria_results: Array<{ criterion: string; passed: boolean; evidence?: string }>;
     forbidden_file_changes: string[];
     verification_tool_called: boolean;
-    wall_time_ms: number;
+    wall_time_ms?: number;
   };
+
+  // wall_time（人工要求 2026-09-27）：必须来自**会话事件本身**的时间跨度——
+  //   first event … last event（含子会话），不得从判定器继承 0 值。
+  //   正式 run（arm 非 null）若 ≤ 0 → COLLECTION_ERROR：该 run 不计入正式数据，
+  //   也不得在统计阶段补值（否则成本/延迟比较无法解释）。
+  const allTimes = [primaryLog, ...childLogs]
+    .flatMap((l) => l.events.map((e) => e.time))
+    .filter((t): t is number => typeof t === 'number' && t > 0);
+  const sessionWallTimeMs = allTimes.length >= 2 ? Math.max(...allTimes) - Math.min(...allTimes) : 0;
+  if (armPlan && sessionWallTimeMs <= 0) {
+    throw new Error(
+      `COLLECTION_ERROR: 正式 run（arm=${armPlan.arm}）的 wall_time_ms=${sessionWallTimeMs} ≤ 0 —— ` +
+        'wall_time 必须由会话事件跨度给出（first→last，含子会话），不得继承判定器的 0 值，也不得在统计阶段补值。' +
+        '该 run 不计入正式数据。',
+    );
+  }
 
   const { events, record } = assembleRun({
     runId,
@@ -234,7 +251,7 @@ function main(): void {
       forbidden_file_changes: judge.forbidden_file_changes,
       verification_tool_called: judge.verification_tool_called,
     },
-    wallTimeMs: judge.wall_time_ms,
+    wallTimeMs: sessionWallTimeMs,
   });
 
   mkdirSync(TRAJ_DIR, { recursive: true });

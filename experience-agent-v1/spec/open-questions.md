@@ -425,13 +425,24 @@ proposal: >-
   跨项目候选仅当经验与任务双方 scope=generic 才可进入（其余组合按不可进入处理）。
   代码目前只实现无歧义部分（同项目 → 通过；经验 scope=project 且跨项目 → 拒绝），
   其余组合显式抛错。请人工裁决完整规则。
-phase: phase0
+phase: pilot
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，正式冻结）：
+  **scope = project** → 仅当 current_project == experience.project_id 时 eligible；
+  **scope = generic** → 所有 project 均 eligible；
+  **scope 只决定 eligibility**，不进入 relevance_score / reliability_score / final_score
+  ——不得给 project 经验加 bonus、也不得给 generic 经验加 penalty。
+  同分 tie-break（仅排序，不是评分项）：1) project-specific 优先；2) experience_id 升序。
+  冻结实现细节：**project 经验的 project_id 缺失不得 fallback 为 generic**，
+  应视为无效/配置错误（不得用「缺 project_id = 泛化经验」绕过 scope）。
+  检索链路（冻结）：Experience Store → scope eligibility → structured + lexical
+  → relevance_score → reliability_score → contraindication_factor → final_score
+  → Top-K → 同分 tie-break（project 优先 → id 升序）。
 ```
 
 ```yaml
@@ -685,20 +696,26 @@ proposal: >-
       （required/forbidden 标签 → 纯代码检查）；冻结后任务定义与期望值不得再改。
   请人工确认签署人/签署方式，以及是否需要逐条签字（本簿可按任务 id 记录签署时间）。
 phase: pilot
-blocking: true
+blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27）：采用「开发方起草 + 人工**逐条**签署 + 代码级门禁」三段式，
+  不按 §9.1 类别批量映射冻结。10 条 expected_first_decision 已逐条签署（含等价集），
+  并已把 `status: draft → frozen` 落地；`scripts/pilot-plan.ts` 拒绝 draft 任务。
+  冻结规则：签署后不得因模型表现修改；等价集 Pilot 前冻结、不得事后调整；
+  任务描述若发现真歧义按版本变更处理，不得直接改 ground truth。
+  记录位置：benchmark/tasks/pilot/GROUND-TRUTH-REVIEW.md 第三部分。
 
 ---
 
 ## 清查：未裁决 OQ 清单（2026-09-27，裁决后更新）
 
-**已裁决 18 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 016 / 018 / 019 / 020 / 021
-**未裁决 5 条**：OQ-023 `blocking: true`（Pilot 任务 ground truth 的签署流程，签署前不得开跑）；
-其余 4 条为 `blocking: false`。盘点如下：
+**已裁决 20 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 014 / 016 / 018 / 019 / 020 / 021 / 023
+**未裁决 3 条**（全部 `blocking: false`）：OQ-015（T1 采集通道）、OQ-017（stale 的 N）、OQ-022（deliberate verification failure 判定口径）。
+盘点如下：
 
 | OQ | 问题 | 若不定会怎样 | 建议裁决口径 | 覆盖 issue |
 |---|---|---|---|---|

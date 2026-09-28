@@ -1,6 +1,6 @@
 id: PILOT-D01
 category: D
-status: draft
+status: frozen
 source: synthetic-pilot
 task_type: data_layer
 complexity: medium

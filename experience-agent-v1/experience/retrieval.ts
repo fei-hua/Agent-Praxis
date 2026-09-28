@@ -207,21 +207,24 @@ export interface RetrievalInput {
 }
 
 /**
- * §5.2 Eligibility Filter（scope）——硬过滤，不参与相似度计算。
+ * §5.2 Eligibility Filter（scope）——硬过滤，**不参与任何评分**。
  *
- * OQ-014（open）：task.scope 与 experience.scope 的组合规则规格未定义。
- * 无歧义部分（经验 scope=project ⇒ 仅同项目可检索到）在这里实现；
- * 跨项目情形（两侧 scope 组合）显式抛错等待裁决。
- * Phase 0 dry-run 为单项目，所有候选同项目，不受该 OQ 影响。
+ * OQ-014 人工裁决（2026-09-27，正式冻结）：
+ *   scope = project → 仅当 current_project == experience.project_id 时 eligible；
+ *   scope = generic → 所有 project 均 eligible；
+ *   scope 只决定 eligibility，不进入 relevance/reliability/final_score
+ *   （不得给 project 加 bonus、不得给 generic 加 penalty）。
+ *   冻结细节：project 经验的 project_id 缺失 ⇒ **视为无效/配置错误**，
+ *   不得 fallback 为 generic（不得绕过 scope）。
  */
 export function isEligible(query: RetrievalQuery, candidate: CandidateExperience): boolean {
-  const sameProject = query.project_id === candidate.project_id;
-  if (sameProject) return true;
-  if (candidate.scope === 'generic' && query.scope === 'generic') return true;
-  if (candidate.scope === 'project') return false;
-  throw new Error(
-    'OQ-014 未裁决：task.scope 与 experience.scope 在 Eligibility Filter 中的组合规则缺失（跨项目情形），代码不做假设。',
-  );
+  if (candidate.scope === 'project' && (candidate.project_id ?? '').trim() === '') {
+    throw new Error(
+      'OQ-014 裁决：project 经验的 project_id 缺失 ⇒ 视为无效/配置错误（不得 fallback 为 generic，不得绕过 scope）。',
+    );
+  }
+  if (candidate.scope === 'generic') return true; // generic ⇒ 所有 project eligible
+  return query.project_id === candidate.project_id; // project ⇒ 仅同项目
 }
 
 /** §5 检索主流程（冻结公式，无任何可调参数） */
@@ -266,9 +269,17 @@ export function retrieve(input: RetrievalInput): RetrievalResult {
   }
 
   // §5.7：final_score 降序 → 阈值 0.30 过滤 → Top-K = 5 → LOW_RELEVANCE 最多 2 条 → 预算
+  // OQ-014 裁决的同分 tie-break（仅排序，不是评分项）：project-specific 优先 → experience_id 升序
   const above = scored
     .filter((s) => s.final_score >= FROZEN.final_score_threshold)
-    .sort((a, b) => b.final_score - a.final_score);
+    .sort((a, b) => {
+      if (b.final_score !== a.final_score) return b.final_score - a.final_score;
+      const rank = (s: ScoredExperience): number => (s.candidate.scope === 'project' ? 0 : 1);
+      const ra = rank(a);
+      const rb = rank(b);
+      if (ra !== rb) return ra - rb;
+      return a.candidate.id < b.candidate.id ? -1 : a.candidate.id > b.candidate.id ? 1 : 0;
+    });
 
   const topK = above.slice(0, FROZEN.top_k);
 

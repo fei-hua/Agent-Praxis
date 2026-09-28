@@ -1,6 +1,6 @@
 id: PILOT-C01
 category: C
-status: draft
+status: frozen
 source: synthetic-pilot
 task_type: ui_upgrade
 complexity: medium

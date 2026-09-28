@@ -15,7 +15,7 @@
 | PILOT-E01 | E Recovery | bugfix | medium | `REPLAN` | false |
 | PILOT-E02 | E Recovery | bugfix | medium | `REPLAN` | false |
 
-## 签署状态：**ground truth 已签署（2026-09-27），`status` 仍为 `draft`**
+## 签署状态：**ground truth 已逐条签署并冻结（2026-09-27），`status = frozen`**
 
 签署结论与规则见 [`GROUND-TRUTH-REVIEW.md`](GROUND-TRUTH-REVIEW.md) 第三部分。要点：
 
@@ -93,6 +93,6 @@ Pilot 规模：`10 任务 × 3 次重复 × A/B/C_frozen = 90 次 run`（`spec/e
 
 ### 本 issue 剩余
 
-- 🔲 C/D/E 类 6 个任务的种子与 checker（batch 2）
-- 🔲 对应 `verification` 块
-- 🔲 `status: draft` → `frozen`（在 OQ-014 之后执行）
+- ✅ C/D/E 类 6 个任务的种子与 checker（batch 2 完成，10/10 覆盖）
+- ✅ 对应 `verification` 块
+- ✅ `status: draft` → `frozen`（OQ-014 冻结后执行，2026-09-27）

@@ -1,6 +1,6 @@
 id: PILOT-E02
 category: E
-status: draft
+status: frozen
 source: synthetic-pilot
 task_type: bugfix
 complexity: medium

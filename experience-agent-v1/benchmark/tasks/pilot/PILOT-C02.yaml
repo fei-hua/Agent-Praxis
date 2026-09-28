@@ -1,6 +1,6 @@
 id: PILOT-C02
 category: C
-status: draft
+status: frozen
 source: synthetic-pilot
 task_type: refactor
 complexity: medium

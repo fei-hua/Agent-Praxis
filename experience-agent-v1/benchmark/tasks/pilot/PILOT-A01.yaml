@@ -1,6 +1,6 @@
 id: PILOT-A01
 category: A
-status: draft          # ground truth 待人工签署（OQ-023）；签署前不得用于正式 run
+status: frozen         # ground truth 已人工签署（2026-09-27）；定义与期望值不得再改（OQ-023）
 source: synthetic-pilot
 task_type: bugfix
 complexity: simple
