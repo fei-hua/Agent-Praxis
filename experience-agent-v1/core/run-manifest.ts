@@ -12,6 +12,13 @@
 
 import type { Arm } from './enums.ts';
 
+/**
+ * prepare 阶段没有真实会话 ⇒ tool_schema_version 无法计算，plan 里写该占位符。
+ * 人工要求（2026-09-27）：允许 prepare 阶段为未验证，但**真实 session 建立后必须验证**；
+ * 执行完仍为未验证的 run 不计入正式数据。这是唯一允许"先跑后验"的字段。
+ */
+export const TOOL_SCHEMA_UNVERIFIED_AT_PLAN_TIME = 'UNVERIFIED_AT_PLAN_TIME';
+
 export interface RunManifest {
   arm: Arm;
   /** 'none' 表示该臂不使用经验（A / B） */
@@ -30,8 +37,8 @@ export interface ManifestMismatch {
 }
 
 export type ManifestCheckResult =
-  | { status: 'ok'; mismatches: [] }
-  | { status: 'CONFIG_MISMATCH'; mismatches: ManifestMismatch[] };
+  | { status: 'ok'; mismatches: []; deferred?: Array<keyof RunManifest> }
+  | { status: 'CONFIG_MISMATCH'; mismatches: ManifestMismatch[]; deferred?: Array<keyof RunManifest> };
 
 const MANIFEST_FIELDS: Array<keyof RunManifest> = [
   'arm',
@@ -53,16 +60,22 @@ export function buildRunManifest(input: RunManifest): RunManifest {
  */
 export function verifyRunManifest(declared: RunManifest, runtime: RunManifest): ManifestCheckResult {
   const mismatches: ManifestMismatch[] = [];
+  const deferred: Array<keyof RunManifest> = [];
   for (const field of MANIFEST_FIELDS) {
     const d = declared[field];
     const r = runtime[field];
+    // 唯一允许后验的字段：prepare 阶段无会话 ⇒ 占位符；真实会话建立后由采集阶段验证并写入运行记录
+    if (field === 'tool_schema_version' && d === TOOL_SCHEMA_UNVERIFIED_AT_PLAN_TIME) {
+      deferred.push(field);
+      continue;
+    }
     if (d !== r) {
       mismatches.push({ field, declared: d === null ? null : String(d), runtime: r === null ? null : String(r) });
     }
   }
   return mismatches.length === 0
-    ? { status: 'ok', mismatches: [] }
-    : { status: 'CONFIG_MISMATCH', mismatches };
+    ? { status: 'ok', mismatches: [], deferred }
+    : { status: 'CONFIG_MISMATCH', mismatches, deferred };
 }
 
 /**

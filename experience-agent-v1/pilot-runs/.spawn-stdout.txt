@@ -1,4 +1,4 @@
-plan 写入：D:\Agent Praxis\experience-agent-v1\pilot-runs\pilotdry-PILOT-E02-R1-B.plan.json
+plan 写入：D:\Agent Praxis\experience-agent-v1\pilot-runs\pilotdry-PILOT-A01-R1-B.plan.json
 arm=B snapshot=none policy=sha256:91185f5bbf72ae4af0fb07486968962d2e8cb12e095053a00c5e721bbe0bea42 config=sha256:cbbe49e631d2b… tool_schema=待采集阶段验证
 expected_delegation=false 经验注入=false Reflection=false
 --- 注入主 Agent 的指令块（节选）---

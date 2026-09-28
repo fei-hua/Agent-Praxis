@@ -312,12 +312,19 @@ function collect(manifest: PilotManifest, harnessVersion: string, ledgerFile: st
       failures.push(`${runId}: 判定文件未生成`);
       continue;
     }
+    // 声明 manifest 单独落盘：collect 的门禁读的是 manifest 本身（整份 plan 不是 manifest）
+    const planJson = JSON.parse(readFileSync(path.join(RUNS_DIR, `${runId}.plan.json`), 'utf8')) as {
+      manifest: Record<string, unknown>;
+    };
+    const manifestFile = path.join(RUNS_DIR, `${runId}.manifest.json`);
+    writeFileSync(manifestFile, JSON.stringify(planJson.manifest, null, 2) + '\n', 'utf8');
+
     const args = [
       '--task', run.task_id,
       '--tasks-dir', TASKS_DIR,
       '--run-id', runId,
       '--arm', run.arm,
-      '--manifest', path.join(RUNS_DIR, `${runId}.plan.json`),
+      '--manifest', manifestFile,
       '--primary', sessionId,
       '--judge', judgeFile,
       '--harness-version', harnessVersion,
@@ -326,6 +333,23 @@ function collect(manifest: PilotManifest, harnessVersion: string, ledgerFile: st
     if (res.code !== 0) {
       failures.push(`${runId}: 采集失败（exit=${res.code}）${res.output.split('\n').slice(-4).join(' ')}`);
       continue;
+    }
+    // tool_schema_version：只能在真实 session 存在后验证（人工要求 2026-09-27）。
+    // 采集脚本从会话 request/header 工具快照算出该值并打印；取不到 ⇒ 该 run 不计入正式数据。
+    const tsMatch = /tool_schema=(\S+)/.exec(res.output);
+    const toolSchemaVerified = !!tsMatch && tsMatch[1] !== 'UNVERIFIED_AT_PLAN_TIME';
+    if (!toolSchemaVerified) {
+      failures.push(`${runId}: tool_schema_version 未能在真实 session 上验证（tool_schema_verified=false）⇒ 不计入正式数据`);
+      continue;
+    }
+    // 回填 receipt（prepare 阶段为 false，真实会话验证后置 true 并记录实测值）
+    const receiptFile = path.join(RUNS_DIR, `${runId}.receipt.json`);
+    if (existsSync(receiptFile)) {
+      const receipt = JSON.parse(readFileSync(receiptFile, 'utf8')) as Record<string, unknown>;
+      receipt['tool_schema_verified'] = true;
+      receipt['tool_schema_version'] = tsMatch![1];
+      receipt['collected_at'] = new Date().toISOString();
+      writeFileSync(receiptFile, JSON.stringify(receipt, null, 2) + '\n', 'utf8');
     }
     appendFileSync(
       collectedFile,
