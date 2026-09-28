@@ -140,6 +140,49 @@ add(8, 'top-level headless delegation（depth 0 → 子会话存在）', probe.d
 add(9, 'maxDepth 不阻断既定委派（未改 Harness 参数）', probe.depth === 0 && children.length > 0,
   `无需改 maxDepth：顶层会话已成功委派 ${children.length} 个子会话`);
 
+// 11) 启动器上下文一致性门禁（人工冻结 2026-09-27，路线 3）
+//     启动步骤可在沙箱外（elevated/outside-sandbox），但**生成的真实会话**必须是
+//     workspace-write + depth 0；若生成会话是 danger-full-access ⇒ 本条 FAIL
+//     （不得用 danger-full-access 的 run 会话成功来替代）。
+{
+  const launcherMarker = arg('launcher-marker') ?? 'PFP3-ROUTE3';
+  let found: { id: string; mode: string | null; depth: number; version: number; ok: number; kids: number } | null = null;
+  for (const s of listSessions(DSH_HOME)) {
+    if (!existsSync(s.logPath) || statSync(s.logPath).size > maxBytes) continue;
+    try {
+      const d = decodeSessionLog(s.logPath);
+      if (!d.events.some((e) => JSON.stringify(e.data ?? {}).includes(launcherMarker))) continue;
+      const sb = d.events.find((e) => e.type === 'sandbox/mode');
+      const mode = (sb?.data as { mode?: unknown } | undefined)?.mode;
+      const oks = d.events.filter((e) => {
+        if (e.type !== 'tool/result') return false;
+        const dd = e.data as { error?: unknown; message?: { content?: Array<{ isError?: boolean }> } };
+        return dd.error === undefined && dd.message?.content?.[0]?.isError !== true;
+      }).length;
+      found = {
+        id: s.sessionId,
+        mode: typeof mode === 'string' ? mode : null,
+        depth: d.header.delegationDepth,
+        version: d.header.version,
+        ok: oks,
+        kids: findChildSessions(DSH_HOME, s.sessionId).length,
+      };
+      break;
+    } catch {
+      continue;
+    }
+  }
+  const pass = !!found && found.mode === 'workspace-write' && found.depth === 0 && found.ok > 0 && found.kids > 0 && found.version >= 4;
+  add(
+    11,
+    'launcher can boot dsh headless under the exact Pilot run policy（workspace-write + depth 0；danger-full-access 不算通过）',
+    pass,
+    found
+      ? `launcher=elevated/outside-sandbox → session=${found.id.slice(0, 20)} sandbox=${found.mode} depth=${found.depth} format=v${found.version} 成功工具结果=${found.ok} 子会话=${found.kids}`
+      : `未找到含启动器标记「${launcherMarker}」的会话`,
+  );
+}
+
 // 10) 确定性 seed 重建（附带项）
 seedPilotWorkspace();
 const seed = loadSeedHashes()!;

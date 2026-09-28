@@ -57,3 +57,35 @@ icacls "D:\Agent Praxis" /grant "LAPTOP-DDFDM393\asus:(OI)(CI)F"
 
 > 注意：A01 的 infrastructure-failure **恢复规则尚未冻结**，因此 A01 仍不补跑；
 > 恢复规则单独冻结后，才决定 30-run 有效样本如何补齐。
+
+## 5. 启动器执行上下文（人工冻结 2026-09-27，路线 3）
+
+```
+launcher_execution_context = elevated / outside-sandbox
+run_sandbox_mode           = workspace-write
+run_depth                  = 0
+maxDepth                   = 1（未修改）
+```
+
+**为什么必须分离**：`dsh headless` 启动时**总是**重写自己的根配置
+（`dsh/lib/profile-boot-*.js` 的 `prepareProfile` → 无条件 `writeFileSync`，注释原文 "The root is always rewritten"），
+因此启动步骤必须能写 `DSH_HOME`（`C:\Users\asus\.dsh`）；而 `workspace-write` 沙箱的可写根只覆盖工作区
+（`dsh-sandbox-windows-acl/lib/runner.js:144`：`writableDirs: mode === "workspace-write" ? [parsed.workspace] : []`）。
+路线 1（预物化 profile）与路线 2（把 DSH_HOME 加进可写根）在本版本 DSH 上均不可行 ⇒ 采用路线 3。
+
+**重要**：这是**启动机制**，不是被测 Agent 的运行环境。不得把 run 标成 `danger-full-access`。
+
+### PILOT-ENV-PREFLIGHT #11（冻结措辞）
+
+```
+launcher can boot dsh headless such that the resulting session is
+workspace-write + top-level (depth 0), with command execution,
+delegation and v4 log persistence all working.
+注：启动步骤本身可运行在沙箱外（路线 3），但不得用
+danger-full-access 的 run 会话成功来替代本条。
+```
+
+**一致性门禁**：resulting session 必须为 `workspace-write`；若为 `danger-full-access` ⇒ **#11 FAIL**。
+
+**实测（2026-09-27）**：`launcher=elevated → session-640f6474… sandbox=workspace-write depth=0 format=v4`,
+成功工具结果=5、子会话=1 ⇒ **11/11 PASS**（`node scripts/pilot-env-preflight.ts`）。
