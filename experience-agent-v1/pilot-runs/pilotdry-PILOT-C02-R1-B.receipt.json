@@ -1,0 +1,17 @@
+{
+  "run_id": "pilotdry-PILOT-C02-R1-B",
+  "task_id": "PILOT-C02",
+  "replicate": 1,
+  "arm": "B",
+  "arm_order_index": 2,
+  "group_id": "PILOT-C02|R1",
+  "seed_id": "seed-PILOT-C02-e0ceab9cf73a",
+  "seed_hash": "e0ceab9cf73aabb0aeb50ff8bdaee19d61bcdb7b9858cfa17ad316f9a3cb9360",
+  "workspace_baseline_hash": "6aeee38c14e90b9187bfb0d30edd5339345075e331eb3fe93a68e93213a309f6",
+  "manifest_hash": "08017fbb41d503bd049730da18d7d4e1151f9f498377ac44a5b6f06531f452ef",
+  "pilot_manifest": "pilot_dry_execution",
+  "experience_snapshot_id": null,
+  "plan_file": "pilot-runs\\pilotdry-PILOT-C02-R1-B.plan.json",
+  "tool_schema_verified": false,
+  "prepared_at": "2026-09-28T16:38:29.639Z"
+}

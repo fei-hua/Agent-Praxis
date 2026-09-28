@@ -1,0 +1,268 @@
+{
+  "dataset": "pilot_dry_execution",
+  "created_at": "2026-09-28T16:32:26.488Z",
+  "frozen_randomization_seed": "pilot-arm-order-2026-09-27",
+  "snapshot_id": "SNAPSHOT_01",
+  "arms": [
+    "A",
+    "B",
+    "C_frozen"
+  ],
+  "tasks": [
+    "PILOT-A01",
+    "PILOT-A02",
+    "PILOT-B01",
+    "PILOT-B02",
+    "PILOT-C01",
+    "PILOT-C02",
+    "PILOT-D01",
+    "PILOT-D02",
+    "PILOT-E01",
+    "PILOT-E02"
+  ],
+  "replicates": 1,
+  "planned_count": 30,
+  "planned_runs": [
+    {
+      "run_id": "pilotdry-PILOT-A01-R1-A",
+      "task_id": "PILOT-A01",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "PILOT-A01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-A01-R1-C_frozen",
+      "task_id": "PILOT-A01",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "PILOT-A01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-A01-R1-B",
+      "task_id": "PILOT-A01",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "PILOT-A01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-A02-R1-B",
+      "task_id": "PILOT-A02",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "PILOT-A02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-A02-R1-C_frozen",
+      "task_id": "PILOT-A02",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "PILOT-A02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-A02-R1-A",
+      "task_id": "PILOT-A02",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "PILOT-A02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-B01-R1-A",
+      "task_id": "PILOT-B01",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "PILOT-B01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-B01-R1-C_frozen",
+      "task_id": "PILOT-B01",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "PILOT-B01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-B01-R1-B",
+      "task_id": "PILOT-B01",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "PILOT-B01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-B02-R1-C_frozen",
+      "task_id": "PILOT-B02",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "PILOT-B02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-B02-R1-B",
+      "task_id": "PILOT-B02",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "PILOT-B02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-B02-R1-A",
+      "task_id": "PILOT-B02",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "PILOT-B02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-C01-R1-A",
+      "task_id": "PILOT-C01",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "PILOT-C01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-C01-R1-C_frozen",
+      "task_id": "PILOT-C01",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "PILOT-C01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-C01-R1-B",
+      "task_id": "PILOT-C01",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "PILOT-C01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-C02-R1-C_frozen",
+      "task_id": "PILOT-C02",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "PILOT-C02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-C02-R1-A",
+      "task_id": "PILOT-C02",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "PILOT-C02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-C02-R1-B",
+      "task_id": "PILOT-C02",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "PILOT-C02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-D01-R1-B",
+      "task_id": "PILOT-D01",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "PILOT-D01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-D01-R1-A",
+      "task_id": "PILOT-D01",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "PILOT-D01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-D01-R1-C_frozen",
+      "task_id": "PILOT-D01",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "PILOT-D01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-D02-R1-C_frozen",
+      "task_id": "PILOT-D02",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "PILOT-D02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-D02-R1-B",
+      "task_id": "PILOT-D02",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "PILOT-D02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-D02-R1-A",
+      "task_id": "PILOT-D02",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "PILOT-D02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-E01-R1-B",
+      "task_id": "PILOT-E01",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "PILOT-E01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-E01-R1-A",
+      "task_id": "PILOT-E01",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "PILOT-E01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-E01-R1-C_frozen",
+      "task_id": "PILOT-E01",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "PILOT-E01|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-E02-R1-C_frozen",
+      "task_id": "PILOT-E02",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "PILOT-E02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-E02-R1-A",
+      "task_id": "PILOT-E02",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "PILOT-E02|R1"
+    },
+    {
+      "run_id": "pilotdry-PILOT-E02-R1-B",
+      "task_id": "PILOT-E02",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "PILOT-E02|R1"
+    }
+  ],
+  "manifest_hash": "08017fbb41d503bd049730da18d7d4e1151f9f498377ac44a5b6f06531f452ef"
+}

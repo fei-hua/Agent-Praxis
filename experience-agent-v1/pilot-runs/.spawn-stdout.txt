@@ -1,0 +1,16 @@
+plan 写入：D:\Agent Praxis\experience-agent-v1\pilot-runs\pilotdry-PILOT-E02-R1-B.plan.json
+arm=B snapshot=none policy=sha256:91185f5bbf72ae4af0fb07486968962d2e8cb12e095053a00c5e721bbe0bea42 config=sha256:cbbe49e631d2b… tool_schema=待采集阶段验证
+expected_delegation=false 经验注入=false Reflection=false
+--- 注入主 Agent 的指令块（节选）---
+# Frozen Delegation Policy（B 臂，已冻结）
+
+B = DeepSeek V4.1 + DeepSeek Harness + Frozen Delegation Policy
+
+按以下优先级确定 first_decision（自上而下，先命中先定）：
+
+1. REPLAN：已有失败状态，需要重新规划
+2. VERIFY：任务主要目标是验证/测试/审计已有结果
+3. WORKFLOW：任务包含多个存在明确先后依赖的阶段
+4. PARALLEL：存在两个或以上相互独立且适合委派的子任务
+5. DELEGATE：存在明确的专业分工、独立分析或单个可委派子任务
+6. EXPLORE：项目结构、调用关系、数据流或影响范围尚不明确，需要先探索

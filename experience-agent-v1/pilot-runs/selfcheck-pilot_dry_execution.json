@@ -1,0 +1,54 @@
+{
+  "dataset": "pilot_dry_execution",
+  "manifest_hash": "08017fbb41d503bd049730da18d7d4e1151f9f498377ac44a5b6f06531f452ef",
+  "checked_at": "2026-09-28T16:32:30.303Z",
+  "planned_count": 30,
+  "groups": 10,
+  "arms_per_group": 3,
+  "workspace_baseline_hash": "6aeee38c14e90b9187bfb0d30edd5339345075e331eb3fe93a68e93213a309f6",
+  "arm_isolation_checked": 30,
+  "seed_fingerprints": {
+    "PILOT-A01": {
+      "seed_id": "seed-PILOT-A01-571135156bbe",
+      "seed_hash": "571135156bbe088834033163dc2bd8bda7dea4b53198605335ff7a5aec2a8fcb"
+    },
+    "PILOT-A02": {
+      "seed_id": "seed-PILOT-A02-3786950cf304",
+      "seed_hash": "3786950cf304b9bed2a9d29d0d824f19c0b185d37daa44420db09d4281243bf3"
+    },
+    "PILOT-B01": {
+      "seed_id": "seed-PILOT-B01-407615f94822",
+      "seed_hash": "407615f94822d5e5d1c87b62b0c6ccaf52aa70e3778f68cd91a3d62cbf6aca86"
+    },
+    "PILOT-B02": {
+      "seed_id": "seed-PILOT-B02-5675d6cec789",
+      "seed_hash": "5675d6cec78981e1c44d2147df3215a2ecfa0ddc722a7671d81c1593dafc2f16"
+    },
+    "PILOT-C01": {
+      "seed_id": "seed-PILOT-C01-b88833e43d7e",
+      "seed_hash": "b88833e43d7e974ca2a8b993e2c0b94904f942d51ae4f4ba6d07cb0da1e11953"
+    },
+    "PILOT-C02": {
+      "seed_id": "seed-PILOT-C02-e0ceab9cf73a",
+      "seed_hash": "e0ceab9cf73aabb0aeb50ff8bdaee19d61bcdb7b9858cfa17ad316f9a3cb9360"
+    },
+    "PILOT-D01": {
+      "seed_id": "seed-PILOT-D01-e1609cb7f7c7",
+      "seed_hash": "e1609cb7f7c73aa6a697f8b75e86cd8d22d99f1419586dc25d9faf50e11525e8"
+    },
+    "PILOT-D02": {
+      "seed_id": "seed-PILOT-D02-ebef7b664590",
+      "seed_hash": "ebef7b664590ba118ac75c2875a229227846034b0fca5a6c81530ce7d8553b07"
+    },
+    "PILOT-E01": {
+      "seed_id": "seed-PILOT-E01-92786e5301e3",
+      "seed_hash": "92786e5301e3ee35025a0894814dbe3dddc3aaa221f0ba79650a6d030ec902be"
+    },
+    "PILOT-E02": {
+      "seed_id": "seed-PILOT-E02-f28176f030c7",
+      "seed_hash": "f28176f030c760f9599b28651437de273d4b9b275a9b7f7b421f9c31398d4b6f"
+    }
+  },
+  "issues": [],
+  "ok": true
+}

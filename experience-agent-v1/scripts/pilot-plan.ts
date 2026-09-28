@@ -153,7 +153,9 @@ function main(): void {
     generated_at: new Date().toISOString(),
   };
 
-  const outDir = path.join(PROJECT_ROOT, arg('out') ?? 'pilot-runs');
+  // --out 支持绝对路径（编排器会传绝对路径；此前恒按相对 PROJECT_ROOT 拼接，导致路径被重复拼接）
+  const outArg = arg('out') ?? 'pilot-runs';
+  const outDir = path.isAbsolute(outArg) ? outArg : path.join(PROJECT_ROOT, outArg);
   mkdirSync(outDir, { recursive: true });
   const outPath = path.join(outDir, `${runId}.plan.json`);
   writeFileSync(outPath, JSON.stringify(runPlan, null, 2) + '\n');
