@@ -281,6 +281,15 @@ export interface RunRecord {
   token_accounting_source: TokenAccountingSource;
   /** §8.1：wall_time（毫秒） */
   wall_time_ms: number;
+  /**
+   * 会话格式版本（采集自会话 header.version，形如 "v4"）。
+   * 人工要求（2026-09-27）：正式采集必须存在；缺失 ⇒ COLLECTION_ERROR（不得计为 Agent FAIL）。
+   */
+  session_format_version: string;
+  /** 该会话实际生效的沙箱模式（取自 sandbox/mode 事件）；正式采集必须存在 */
+  sandbox_mode: string | null;
+  /** 会话委派深度（header.delegationDepth）：Pilot 执行会话必须为 0（顶层），否则无法委派 */
+  delegation_depth: number | null;
   /** §8.1：success_criteria（任务定义原文） */
   success_criteria: string[];
 }

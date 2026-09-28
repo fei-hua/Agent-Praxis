@@ -232,6 +232,36 @@ function main(): void {
     );
   }
 
+  // 会话元数据（人工要求 2026-09-27）：格式版本 / 沙箱模式 / 委派深度必须随 run 记录落盘，
+  // 且正式 run 缺失任一项 ⇒ COLLECTION_ERROR（实验基础设施错误，不计为 Agent 失败）。
+  const sessionFormatVersion = `v${primaryLog.header.version}`;
+  const sandboxModeEvent = primaryLog.events.find((e) => e.type === 'sandbox/mode');
+  const sandboxModeRaw = (sandboxModeEvent?.data as { mode?: unknown } | undefined)?.mode;
+  const sandboxMode = typeof sandboxModeRaw === 'string' ? sandboxModeRaw : null;
+  const delegationDepth =
+    typeof primaryLog.header.delegationDepth === 'number' ? primaryLog.header.delegationDepth : null;
+  if (armPlan) {
+    const missing: string[] = [];
+    if (typeof primaryLog.header.version !== 'number') missing.push('session header version');
+    if (!sandboxMode) missing.push('sandbox/mode');
+    if (env.tool_schema_version === 'UNVERIFIED_AT_PLAN_TIME' || env.tool_schema_version === '') {
+      missing.push('tool_schema_version');
+    }
+    if (delegationDepth === null) missing.push('delegationDepth');
+    if (delegationDepth !== null && delegationDepth > 0) {
+      throw new Error(
+        `COLLECTION_ERROR: 正式 run 的执行会话委派深度=${delegationDepth}（应为 0 顶层）—— ` +
+          'depth > 0 时该会话无法再委派，C/D 类任务的委派决策会被环境阻断，该 run 不计入正式数据。',
+      );
+    }
+    if (missing.length > 0) {
+      throw new Error(
+        `COLLECTION_ERROR: 正式 run 缺少基础设施字段 [${missing.join(', ')}] —— ` +
+          '属实验基础设施错误，不得计为 Agent FAIL，也不得在统计阶段补值。该 run 不计入正式数据。',
+      );
+    }
+  }
+
   const { events, record } = assembleRun({
     runId,
     task,
@@ -252,6 +282,9 @@ function main(): void {
       verification_tool_called: judge.verification_tool_called,
     },
     wallTimeMs: sessionWallTimeMs,
+    sessionFormatVersion,
+    sandboxMode,
+    delegationDepth,
   });
 
   mkdirSync(TRAJ_DIR, { recursive: true });

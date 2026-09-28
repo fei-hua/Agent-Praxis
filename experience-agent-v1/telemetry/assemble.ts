@@ -72,6 +72,10 @@ export interface AssembleRunInput {
     verification_tool_called: boolean;
   };
   wallTimeMs: number;
+  /** 会话格式版本 / 沙箱模式 / 委派深度（人工要求 2026-09-27：正式采集必须存在） */
+  sessionFormatVersion: string;
+  sandboxMode: string | null;
+  delegationDepth: number | null;
 }
 
 export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[]; record: RunRecord } {
@@ -180,6 +184,9 @@ export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[
     experience_context_tokens: input.tokenAccounting.experience_context_tokens,
     token_accounting_source: input.tokenAccounting.token_accounting_source,
     wall_time_ms: input.wallTimeMs,
+    session_format_version: input.sessionFormatVersion,
+    sandbox_mode: input.sandboxMode,
+    delegation_depth: input.delegationDepth,
     success_criteria: task.success_criteria,
   };
 

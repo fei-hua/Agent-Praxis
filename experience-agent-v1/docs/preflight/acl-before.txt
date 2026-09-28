@@ -1,0 +1,11 @@
+﻿D:\Agent Praxis S-1-4-880441379-463273224:(OI)(CI)(W,D,DC)
+                BUILTIN\Administrators:(I)(F)
+                BUILTIN\Administrators:(I)(OI)(CI)(IO)(F)
+                NT AUTHORITY\SYSTEM:(I)(F)
+                NT AUTHORITY\SYSTEM:(I)(OI)(CI)(IO)(F)
+                NT AUTHORITY\Authenticated Users:(I)(M)
+                NT AUTHORITY\Authenticated Users:(I)(OI)(CI)(IO)(M)
+                BUILTIN\Users:(I)(RX)
+                BUILTIN\Users:(I)(OI)(CI)(IO)(GR,GE)
+
+Successfully processed 1 files; Failed processing 0 files

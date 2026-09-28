@@ -40,7 +40,8 @@ const RUN_RECORD_FIELDS: Array<keyof RunRecord> = [
   'verification_result', 'reflection_output', 'outcome', 'harness_version',
   'tool_schema_version', 'framework_version', 'model_id', 'experiment_config_hash',
   'input_tokens', 'output_tokens', 'total_tokens', 'cache_read_tokens', 'reasoning_tokens',
-  'experience_context_tokens', 'token_accounting_source', 'wall_time_ms', 'success_criteria',
+  'experience_context_tokens', 'token_accounting_source', 'wall_time_ms', 'session_format_version',
+  'sandbox_mode', 'delegation_depth', 'success_criteria',
 ];
 
 /** §4.2-1：trajectory schema 覆盖率 100%（§8.1 全部字段都有值或明确的 null） */

@@ -232,3 +232,52 @@ input_tokens / output_tokens / cache_read / reasoning  ✅（大会话中实测�
 **③ 之后才是**：用顶层 `dsh headless` 会话跑完 10 任务 × 1 rep × 3 臂的 30-run 验收（此时才能采到数据）。
 
 **④ 仍待单独冻结**：infrastructure-failure 的恢复规则（在此之前不重跑 A01）。
+
+---
+
+## 九、更正 + 最终结果（2026-09-27，路线 A 修复与 v4 复测之后）
+
+### 1）两处需要更正的前述判断（第八节说错了）
+
+| 前述判断 | 实际 | 依据 |
+|---|---|---|
+| 「采集器只认 `session.v3.jsonl*`」 | **错** | `session-log.ts` 的发现正则是 `/^session\.v[0-9]+\.jsonl(\.zstd)?$/`，本就版本无关 |
+| 「extract 期望下划线事件名（`tool_call`）」 | **错** | `extract.ts` 消费的正是 `tool/call` / `tool/result`（第 46、63 行），与 v4 一致 |
+
+原因：当时用的是我自己的临时计数器（只统计 `"type":"tool_call"`）而非源码。**修正结论**：v4 会话不需要"改造事件映射"，
+真正缺的是**环境元数据落盘 + 硬门禁**（已补齐）。
+
+同时更正：`usage-ledger.json` 是**按天 × provider × model 聚合**的（无法归属到单 run），
+因此 per-run 权威用量仍取会话内 provider-reported `assistant/message.data.usage`
+（`extractTokenUsage` 已按"reasoning 单独记录、不重复计入"归一，符合 OQ-018）；账本仅作对账。
+
+### 2）已落地改动
+
+- `RunRecord` 新增 `session_format_version` / `sandbox_mode` / `delegation_depth`；
+- 采集期硬门禁（仅正式 run）：缺 `session header version` / `sandbox/mode` / `tool_schema_version` /
+  `delegationDepth` ⇒ **`COLLECTION_ERROR`**；`delegationDepth > 0` 同样判 `COLLECTION_ERROR`
+  （depth>0 无法委派，会把 C/D 的委派决策变成环境阻断）——均不计为 Agent FAIL；
+- ACL 修复与沙箱模式记录：见 `docs/pilot-environment-metadata.md`（含 before/after）。
+
+### 3）PILOT-ENV-PREFLIGHT 最终结果：**ALL PASS（10/10）**
+
+`node scripts/pilot-env-preflight.ts`（自动化，只用真实会话产物，不产生实验 run）：
+
+```
+preflight 探针会话：session-0535727c-…  sandbox=workspace-write  depth=0  format=v4
+[PASS]  1. command execution（workspace-write 沙箱通道） — tool/call=5 tool/result=5 成功=5
+[PASS]  2. sandbox workspace write — sandbox/mode=workspace-write；含工作区文件操作=true
+[PASS]  3. session log persisted（v4） — header.version=4
+[PASS]  4. event timestamps / wall_time_ms > 0 — 时间戳=51  wall_time_ms=15499
+[PASS]  5. tool_schema_version（request/header 工具快照） — tschema-dcdb10f5d21c
+[PASS]  6. token usage（provider usage，reasoning 不重复计入） — input=1506 output=1041 cache_read=36352 reasoning=null total=38899
+[PASS]  7. sandbox mode recorded（run record 字段） — sandbox_mode=workspace-write
+[PASS]  8. top-level headless delegation（depth 0 → 子会话存在） — delegationDepth=0 子会话=1e8e27f0
+[PASS]  9. maxDepth 不阻断既定委派（未改 Harness 参数） — 顶层会话已成功委派 1 个子会话
+[PASS] 10. deterministic seed rebuild — 36 个种子文件，漂移=0
+
+✅ ALL PASS —— 可解除 Pilot 暂停
+```
+
+**环境前置条件全部解除。** 仍不变的三条纪律：不补跑 A01（待单独冻结恢复规则）、
+不改 frozen ground truth / CDA / OQ-014 / Policy / Experience / retrieval、不改 `maxDepth`。
