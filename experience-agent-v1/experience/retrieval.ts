@@ -12,13 +12,20 @@
  *
  * 规格未定义处（不猜测）：
  *   OQ-004  禁忌命中判定 —— 已由人工裁决（2026-09-27）：token 精确匹配（见下）
- *   OQ-011  token 计数口径（160/800 tokens 的 tokenizer 未定义）
- *   OQ-013  P05/P95 的百分位算法未定义（Phase 0 用占位常数，标定代码路径存在）
+ *   OQ-011  token 计数口径 —— 已由人工裁决（2026-09-27）：正式口径为 Harness/Provider 侧
+ *           accounting；离线 tokenizer 仅限开发诊断（诊断口径会写入 token_accounting_source）
+ *   OQ-013  P05/P95 百分位 —— 已由人工裁决（2026-09-27）：nearest-rank
  *   OQ-014  task.scope 与 experience.scope 在 Eligibility Filter 中的组合规则未定义
  */
 
 import { FROZEN } from '../core/frozen-constants.ts';
 import type { Complexity, FirstDecision, RetrievalStatus, Scope, ConstraintToken } from '../core/enums.ts';
+import {
+  accountExperienceTokens,
+  DIAGNOSTIC_ESTIMATOR,
+  type ExperienceTokenAccounting,
+  type TokenCounter,
+} from '../core/token-accounting.ts';
 import { reliabilityScore, type EnvironmentClass } from './reliability.ts';
 
 // ---------- 检索输入画像 ----------
@@ -177,6 +184,8 @@ export interface RetrievalResult {
   /** 进入主 Agent 上下文的条目（§5.7：Top-K=5、final_score ≥ 0.30、LOW_RELEVANCE ≤ 2、预算约束） */
   in_context: ScoredExperience[];
   serialized_context: string;
+  /** OQ-011 裁决：注入上下文的 token 记账（experience_item_tokens / experience_context_tokens / experience_count） */
+  token_accounting: ExperienceTokenAccounting;
 }
 
 export interface RetrievalInput {
@@ -189,6 +198,12 @@ export interface RetrievalInput {
   environment: EnvironmentClass;
   /** OQ-004：禁忌相似度函数；未注入且候选含 contraindications 时抛错 */
   contraindicationSimilarity?: ContraindicationSimilarityFn;
+  /**
+   * OQ-011 裁决：token 计数器。正式实验**必须**注入 Harness / Provider 侧口径
+   * （source = 'harness' | 'provider'）；未注入时使用诊断口径，并在
+   * `token_accounting.token_accounting_source` 中如实标注为 'diagnostic'。
+   */
+  tokenCounter?: TokenCounter;
 }
 
 /**
@@ -257,39 +272,53 @@ export function retrieve(input: RetrievalInput): RetrievalResult {
 
   const topK = above.slice(0, FROZEN.top_k);
 
-  const in_context: ScoredExperience[] = [];
+  const counter: TokenCounter = input.tokenCounter ?? DIAGNOSTIC_ESTIMATOR;
+
+  const ordered: ScoredExperience[] = [];
   let lowRelevanceCount = 0;
   for (const s of topK) {
     if (s.retrieval_status === 'LOW_RELEVANCE') {
       if (lowRelevanceCount >= FROZEN.low_relevance_max) continue;
       lowRelevanceCount++;
     }
+    ordered.push(s);
+  }
+
+  // §5.7 冻结预算（OQ-011 裁决口径计数）：
+  //   单条 Experience > 160 tokens → 丢弃该条；
+  //   总 Experience Context > 800 tokens → 按 final_score 降序在此截断。
+  const in_context: ScoredExperience[] = [];
+  for (const s of ordered) {
+    const itemText = serializeExperience(s);
+    if (counter.count(itemText) > FROZEN.experience_token_budget_item) continue;
+    const nextContext = serializeContext([...in_context, s]);
+    if (counter.count(nextContext) > FROZEN.experience_context_total_budget) break;
     in_context.push(s);
   }
 
+  const serialized_context = serializeContext(in_context);
   return {
     scored,
     in_context,
-    serialized_context: serializeContext(in_context),
+    serialized_context,
+    token_accounting: accountExperienceTokens(
+      in_context.map((s) => serializeExperience(s)),
+      serialized_context,
+      counter,
+    ),
   };
 }
 
-// ---------- §5.7 序列化（冻结格式，不发整个 YAML） ----------
+// ---------- §5.7 序列化与 token 记账（冻结格式，不发整个 YAML） ----------
 
 /**
- * OQ-011（open）：单条 ≤160 tokens / 总 ≤800 tokens 的「token」计数口径
- * （tokenizer）规格未定义。此处使用显式标注的占位估算器，待人工裁决后替换；
- * lesson ≤60 字的截断按字符计数，是规格明确定义的（§5.7），不受本 OQ 影响。
+ * OQ-011（已裁决 2026-09-27）：正式口径为 Harness / Provider 侧 token accounting。
+ * 本函数仅提供**诊断用**字符近似计数（CJK 1 字/token、其余 4 字符/token），
+ * 委托 core/token-accounting.ts 的 DIAGNOSTIC_ESTIMATOR，保持单一实现。
+ * lesson ≤60 字的截断按字符计数，由规格明确定义（§5.7），不受本 OQ 影响。
  */
 export function estimateTokensPlaceholder(text: string): number {
-  // 占位估算（OQ-011）：CJK 记 1 字/字，其余按 4 字符/token。非最终口径。
-  let cjk = 0;
-  let other = 0;
-  for (const ch of text) {
-    if (/[\u3000-\u9fff\uff00-\uffef]/.test(ch)) cjk++;
-    else other++;
-  }
-  return cjk + Math.ceil(other / 4);
+  return DIAGNOSTIC_ESTIMATOR.count(text);
 }
 
 export function serializeExperience(s: ScoredExperience): string {

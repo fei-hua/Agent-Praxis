@@ -160,6 +160,8 @@ function main(): void {
   lines.push('- DRY-05 首次执行的协议使初始即 REPLAN，缺少「失败→REPLAN」决策变化，该轨迹已废弃并按修正协议重跑（现存轨迹含 EXPLORE→REPLAN 与 2 个可重建 failure）。');
   lines.push('- DRY-04 执行器在父级首次采集后仍继续运行（首轮 2 个子代理异常失败 → 输出 REPLAN → 次轮重新并行委派成功）。首次采集的轨迹为**过期快照**（缺 REPLAN 与 2 次委派），已按会话最终状态重新采集，现存轨迹含 PARALLEL→REPLAN 与 4 次委派。');
   lines.push('- 采集完整性核对（脚本 `_scratch_verify` 逻辑已并入人工核对）：逐条比对会话最终事件数与轨迹内容（task_state / subagent_invocation / tool_call 含子会话），5 条全部一致。');
+  lines.push('- **M4 溯源修正（2026-09-27）**：`harness_version` 必须取 **run 当时**实际使用的版本，**不得**读采集时的本机安装版本。原采集脚本隐式读取本机安装版本，而本机在 dry-run 之后已被环境升级（0.1.5-rc.3 → 0.1.7-rc.2），导致环境字段与 `experiment_config_hash` 被写成采集时环境（`sha256:c7013033…`）。已改为显式传入 `--harness-version`（缺省即报错）；按 run 当时版本（0.1.5-rc.3）重采后指纹恢复为 `sha256:90227c3b…`，与 Phase 0 原始证据一致。`tool_schema_version` 不受影响——它取自会话内 `request/header` 工具快照（run 时快照）。');
+  lines.push('- 本轮按 OQ-011 裁决补齐了轨迹字段：`cache_read_tokens` / `reasoning_tokens` / `experience_context_tokens` / `token_accounting_source`，并让 §5.7 的 160/800 预算真正按注入的计数口径执行（dry-run 为诊断口径，故 `token_accounting_source = diagnostic`）；5 条轨迹已按新 schema 重采（事件数不变：18/22/37/100/30）。');
   lines.push('');
 
   console.log(lines.join('\n'));

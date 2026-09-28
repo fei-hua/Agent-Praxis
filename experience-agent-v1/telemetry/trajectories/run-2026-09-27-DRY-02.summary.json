@@ -33,7 +33,8 @@
       "retrieval_status": "MATCHED",
       "relevance_score": 0.6,
       "reliability_score": 0.6321205588285577,
-      "contraindication_factor": 1
+      "contraindication_factor": 1,
+      "tokens": 48
     }
   ],
   "tool_calls": [
@@ -185,6 +186,10 @@
   "input_tokens": 9495,
   "output_tokens": 1553,
   "total_tokens": 54312,
+  "cache_read_tokens": 43264,
+  "reasoning_tokens": 110,
+  "experience_context_tokens": 48,
+  "token_accounting_source": "diagnostic",
   "wall_time_ms": 9706,
   "success_criteria": [
     "dry-run-workspace/DRY-02/docs.md 存在",

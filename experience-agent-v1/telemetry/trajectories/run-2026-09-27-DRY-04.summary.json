@@ -36,7 +36,8 @@
       "retrieval_status": "MATCHED",
       "relevance_score": 0.7603571723095894,
       "reliability_score": 0.6321205588285577,
-      "contraindication_factor": 1
+      "contraindication_factor": 1,
+      "tokens": 53
     }
   ],
   "tool_calls": [
@@ -687,6 +688,10 @@
   "input_tokens": 89539,
   "output_tokens": 24920,
   "total_tokens": 555675,
+  "cache_read_tokens": 441216,
+  "reasoning_tokens": null,
+  "experience_context_tokens": 53,
+  "token_accounting_source": "diagnostic",
   "wall_time_ms": 565377,
   "success_criteria": [
     "dry-run-workspace/DRY-04/schema-audit.md 存在且含字段清单",

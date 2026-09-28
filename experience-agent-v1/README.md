@@ -60,6 +60,9 @@ dry-run 的执行本身是**真实 DSH 子会话**（不是 mock）：每个任�
   （task_state / subagent_invocation / tool_call，含子会话）后再验收。DRY-04 曾因此重采。
 - **M2 沙箱限制**：`npm test` 必须加 `--test-isolation=none`（子进程管道在受限沙箱内被拒）；
   git 推送需 `-c http.sslBackend=openssl`（schannel 在该环境下取不到凭据）。
-- **M3 未裁决项**：OQ-010/011/013/014/015/017/018/019 —— 涉及 Task State 捕获边界、token 计数口径、
-  BM25 标定百分位算法、scope 组合规则、T1 集成方式、stale 的 N、usage 字段口径、failure 派生口径。
-  Phase 1 开始前需要补齐（其中 BM25 标定与 token 口径直接影响正式实验的冻结配置）。
+- **M3 未裁决项**：OQ-014 / 015 / 017 / 019 —— 涉及 `task.scope × experience.scope` 组合规则、T1 采集通道、
+  stale 的 N、failure 是否含「命令非零退出」。Pilot 期间会真实碰到，需要在正式跑数前补齐。
+- **M4 溯源**：`harness_version` 必须取 **run 当时**的版本（`dryrun-collect.ts --harness-version`，缺参即报错），
+  不得读采集时的本机安装版本——会话日志只带日志格式版本，不含 harness 版本。
+  实证：dry-run 在 0.1.5-rc.3 下运行，采集时本机已被环境升级到 0.1.7-rc.2，隐式读取会把环境字段与
+  `experiment_config_hash` 写错（`c7013033…`）；按 run 时版本重采后恢复为 `90227c3b…`。

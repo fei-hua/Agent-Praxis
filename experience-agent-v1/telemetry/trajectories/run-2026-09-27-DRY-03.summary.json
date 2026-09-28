@@ -34,7 +34,8 @@
       "retrieval_status": "MATCHED",
       "relevance_score": 0.7427185735159068,
       "reliability_score": 0.7768698398515702,
-      "contraindication_factor": 1
+      "contraindication_factor": 1,
+      "tokens": 49
     }
   ],
   "tool_calls": [
@@ -283,6 +284,10 @@
   "input_tokens": 8003,
   "output_tokens": 8399,
   "total_tokens": 192914,
+  "cache_read_tokens": 176512,
+  "reasoning_tokens": 659,
+  "experience_context_tokens": 49,
+  "token_accounting_source": "diagnostic",
   "wall_time_ms": 34087,
   "success_criteria": [
     "ui.css 中全部 margin/padding 的 px 值为 8 的倍数",

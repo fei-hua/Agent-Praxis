@@ -110,22 +110,37 @@ function main(): void {
     query,
     candidates,
     lexical,
-    calibration: PLACEHOLDER_CALIBRATION, // OQ-013：标定口径未裁决，占位常数
+    calibration: PLACEHOLDER_CALIBRATION, // OQ-013：正式标定在 SNAPSHOT_01 冻结后按 nearest-rank 跑一次；Phase 0 dry-run 用占位常数
     environment: 'compatible', // Phase 0 dry-run 同环境（OQ-003 规则 1）
     contraindicationSimilarity: ruledContraindicationSimilarity,
+    // OQ-011：dry-run 属诊断场景，未注入 Harness 侧计数器 → 记账来源如实标为 'diagnostic'
   });
-  const retrieved: RetrievedExperienceRef[] = result.in_context.map((s) => ({
+  const retrieved: RetrievedExperienceRef[] = result.in_context.map((s, i) => ({
     id: s.candidate.id,
     final_score: s.final_score,
     retrieval_status: s.retrieval_status,
     relevance_score: s.relevance_score,
     reliability_score: s.reliability_score,
     contraindication_factor: s.contraindication_factor,
+    // OQ-011：逐条 token 数（与 in_context 顺序一致）
+    tokens: result.token_accounting.experience_item_tokens[i] ?? 0,
   }));
 
   // env（OQ-016 / OQ-003 裁决）
-  const harnessVersion = (JSON.parse(readFileSync(HARNESS_PKG, 'utf8')) as { version?: string }).version;
-  if (!harnessVersion) throw new Error('Harness package.json 缺 version');
+  // 溯源要求：harness_version 必须是 **run 当时**实际使用的版本，**不得**读采集时的本机安装版本。
+  // 实证（2026-09-27）：dry-run 在 0.1.5-rc.3 下运行，采集时本机已被环境升级到 0.1.7-rc.2，
+  // 隐式读取会把 run 的环境写错，并连带改变 experiment_config_hash。
+  // 会话日志只带日志格式版本（header.version = 3），不含 harness 版本，故必须显式传入。
+  const currentInstallVersion = existsSync(HARNESS_PKG)
+    ? ((JSON.parse(readFileSync(HARNESS_PKG, 'utf8')) as { version?: string }).version ?? 'unknown')
+    : 'unknown';
+  const harnessVersion = arg('harness-version');
+  if (!harnessVersion) {
+    throw new Error(
+      '缺少 --harness-version：必须显式给出该 run **当时**使用的 Harness 版本（OQ-016 裁决）。' +
+        `当前本机安装版本仅供诊断参考（不是 run 的版本）：${currentInstallVersion}`,
+    );
+  }
   const reqHeader = primaryLog.events.find((e) => e.type === 'request/header');
   const tools = (reqHeader?.data as { header?: { tools?: unknown } } | undefined)?.header?.tools;
   if (!Array.isArray(tools)) throw new Error(`run ${runId}：会话没有 request/header 工具快照，无法计算 tool_schema_version`);
@@ -150,6 +165,7 @@ function main(): void {
     primaryLog,
     childLogs,
     retrieved,
+    tokenAccounting: result.token_accounting,
     experienceSnapshotId: 'SNAPSHOT_01',
     experimentConfigHash: configHash,
     env,

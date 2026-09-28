@@ -21,6 +21,7 @@
 import { appendFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import type { Arm, FirstDecision, RetrievalStatus } from '../core/enums.ts';
+import type { TokenAccountingSource } from '../core/token-accounting.ts';
 import type { TaskStateEnvelope } from '../core/task-state.ts';
 
 // ---------- 事件负载类型 ----------
@@ -32,6 +33,8 @@ export interface RetrievedExperienceRef {
   relevance_score: number;
   reliability_score: number;
   contraindication_factor: number;
+  /** OQ-011 裁决：该条经验序列化后的 token 数（experience_item_tokens） */
+  tokens: number;
 }
 
 export interface ToolCallRecord {
@@ -127,7 +130,11 @@ export interface TaskStateEvent extends EventBase {
    * 唯一来源 = task_state.first_decision（代码复制字段，非推断）。
    */
   first_decision: FirstDecision;
-  capture_source: 'first_turn_structured_json';
+  /**
+   * OQ-010 裁决：两级通道 —— 优先 'dedicated_event'（Harness 专用结构化事件）；
+   * 当前 Harness 无该事件，故实际值为回退通道 'first_turn_structured_json'。
+   */
+  capture_source: 'dedicated_event' | 'first_turn_structured_json';
   capture_oq: 'OQ-010';
 }
 
@@ -135,6 +142,10 @@ export interface RetrievalEvent extends EventBase {
   type: 'experience_retrieval';
   experience_snapshot_id: string;
   retrieved_experiences: RetrievedExperienceRef[];
+  /** OQ-011 裁决：注入上下文的经验总 token 数（experience_context_tokens） */
+  experience_context_tokens: number;
+  /** OQ-011 裁决：计数口径来源（正式实验必须为 'harness' | 'provider'） */
+  token_accounting_source: TokenAccountingSource;
 }
 
 export interface ToolCallEvent extends EventBase {
@@ -224,10 +235,18 @@ export interface RunRecord {
   model_id: string;
   /** OQ-009 裁决：SHA256(canonical_json(experiment_config))，"sha256:<hex>" */
   experiment_config_hash: string;
-  /** §8.1：Input Token / Output Token / 总 Token（OQ-018：口径按 DSH 原始字段求和） */
+  /** §8.1：Input Token / Output Token / 总 Token（OQ-018 裁决：以 Harness/Provider usage 为权威来源） */
   input_tokens: number;
   output_tokens: number;
   total_tokens: number;
+  /** OQ-018 裁决：cache read tokens（provider 提供时记录） */
+  cache_read_tokens: number;
+  /** OQ-018 裁决：reasoning tokens（provider 未单独提供时为 null；已含在 output 内时不重复计算） */
+  reasoning_tokens: number | null;
+  /** OQ-011 裁决：注入上下文的经验总 token 数 */
+  experience_context_tokens: number;
+  /** OQ-011 裁决：token 计数口径来源（正式实验必须为 'harness' | 'provider'） */
+  token_accounting_source: TokenAccountingSource;
   /** §8.1：wall_time（毫秒） */
   wall_time_ms: number;
   /** §8.1：success_criteria（任务定义原文） */

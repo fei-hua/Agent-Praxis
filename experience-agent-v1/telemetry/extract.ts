@@ -21,6 +21,7 @@ import type {
   ToolResultRecord,
 } from './trajectory.ts';
 import type { RawSessionEvent } from './session-log.ts';
+import { normalizeUsage, sumUsage, type UsageRecord } from '../core/token-accounting.ts';
 
 // ---------- tool/call、tool/result ----------
 
@@ -161,25 +162,28 @@ export function extractModelId(events: RawSessionEvent[]): string | undefined {
   return undefined;
 }
 
-export function extractTokenUsage(events: RawSessionEvent[]): {
-  input_tokens: number;
-  output_tokens: number;
-  total_tokens: number;
-} {
-  let input = 0;
-  let output = 0;
-  let total = 0;
+/**
+ * OQ-018 裁决（2026-09-27）：以 Harness / Provider 返回的 usage 为权威来源。
+ * 逐条 assistant/message 的 usage 归一（total 缺失时 total = input + output + cache_read；
+ * reasoning 单独提供时只记录、不重复计入），再按同一口径求和。
+ */
+export function extractTokenUsage(events: RawSessionEvent[]): UsageRecord {
+  const records: UsageRecord[] = [];
   for (const ev of events) {
     if (ev.type !== 'assistant/message') continue;
     const d = ev.data as {
-      usage?: { inputTokens?: number; outputTokens?: number; totalTokens?: number };
+      usage?: {
+        inputTokens?: number;
+        outputTokens?: number;
+        totalTokens?: number;
+        cacheReadTokens?: number;
+        reasoningTokens?: number;
+      };
     };
     if (!d.usage) continue;
-    input += d.usage.inputTokens ?? 0;
-    output += d.usage.outputTokens ?? 0;
-    total += d.usage.totalTokens ?? (d.usage.inputTokens ?? 0) + (d.usage.outputTokens ?? 0);
+    records.push(normalizeUsage(d.usage));
   }
-  return { input_tokens: input, output_tokens: output, total_tokens: total };
+  return sumUsage(records);
 }
 
 // ---------- Subagent 委派（DELEGATE / PARALLEL / WORKFLOW 的记录） ----------

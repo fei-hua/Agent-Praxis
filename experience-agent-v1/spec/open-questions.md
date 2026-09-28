@@ -348,10 +348,17 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，原话要点）：
+  160 tokens / Experience 与 800 tokens / Experience Context 的正式口径，
+  采用**实际 DeepSeek 模型 / Harness 侧 token accounting**。
+  **禁止**使用 o200k_base 等通用 tokenizer 作为正式实验口径。
+  必须记录：experience_item_tokens / experience_context_tokens / experience_count。
+  约束不变：单条 Experience ≤ 160 tokens、总 Experience Context ≤ 800 tokens、lesson ≤ 60 个中文字符。
+  离线 tokenizer 只能用于开发诊断，不能作为正式实验结果。
 ```
 
 ```yaml
@@ -394,10 +401,15 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，原话要点）：采用 **nearest-rank percentile**。
+  SNAPSHOT_01 上的 calibration raw_bm25 升序为 x(1) ≤ x(2) ≤ … ≤ x(N)，则
+  P05 = x(ceil(0.05 × N))，P95 = x(ceil(0.95 × N))。
+  **N 必须写入 experiment_config**。P05/P95 只在 SNAPSHOT_01 最终冻结后计算一次，
+  Formal 期间禁止重新估计。
 ```
 
 ```yaml
@@ -522,10 +534,15 @@ proposal: >-
 phase: phase0
 blocking: false
 owner: human
-status: open
+status: answered
 created_at: 2026-09-27
-answered_at:
-answer:
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，原话要点）：正式实验以 **Harness / Provider 返回的 usage 为 token 统计权威来源**。
+  记录 input_tokens / output_tokens / cache_read_tokens / reasoning_tokens（若 provider 单独提供）/ total_tokens。
+  若 provider 没有 total：total = input + output + cache_read。
+  若 reasoning 已包含在 output 中：**不得重复计算**。
+  所有实验臂必须使用**完全相同**的 token accounting 口径。
 ```
 
 ---
@@ -588,22 +605,61 @@ answer: >-
 
 ---
 
-## 清查：未裁决 OQ 清单（2026-09-27）
+## OQ-021：B 臂（Policy）没有规则定义
+field: policies/（B 臂）/ spec/experiment-design.md §3 臂定义
+context: >-
+  全 spec 只有 6 处提到 Policy：RQ1/RQ2 对比式、一张示意图、两句假设陈述、目录注释
+  (frozen.md §8.2 `policies/  # Policy 规则（B 臂）`)，**没有任何规则内容**。
+  而 tasks/phase0.md 与 Pilot 计划要求 B 臂可用，Issue #7 明确「规则必须来自规格或人工裁决」。
+proposal: 请人工给出 B 臂规则集，或裁决 B 臂的定位与最小定义。
+phase: pilot
+blocking: true
+owner: human
+status: answered
+created_at: 2026-09-27
+answered_at: 2026-09-27
+answer: >-
+  人工裁决（2026-09-27，原话要点）：采用「人工冻结的 Policy-only baseline」。
+  B = DeepSeek V4.1 + DeepSeek Harness + Frozen Delegation Policy。
+  B 臂运行约束：不读取 Experience Store、不使用 Reflection 产生的经验、不在线更新 Policy、
+  不根据历史轨迹修改规则；可以正常使用 Harness Tool / Subagent / Workflow。
+  Frozen Delegation Policy 按以下**优先级**确定 first_decision：
+  1. REPLAN —— 已有失败状态，需要重新规划；
+  2. VERIFY —— 任务主要目标是验证/测试/审计已有结果；
+  3. WORKFLOW —— 任务包含多个存在明确先后依赖的阶段；
+  4. PARALLEL —— 存在两个或以上相互独立且适合委派的子任务；
+  5. DELEGATE —— 存在明确的专业分工、独立分析或单个可委派子任务；
+  6. EXPLORE —— 项目结构、调用关系、数据流或影响范围尚不明确，需要先探索；
+  7. DIRECT —— 任务局部、范围明确、信息充分，且不满足以上条件。
+  Policy 在 Pilot 开始前冻结；Pilot 及 Formal 期间**不得**根据实验结果修改 Policy。
+  注意：Benchmark 中的 expected_delegation 必须由人工提前定义，**不得由该 Policy 自动生成**。
+  落地位置：policies/delegation-policy.ts（规则原文与指纹）。
 
-**已裁决 13 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 012 / 016 / 020
-**未裁决 7 条**（全部 `blocking: false`），盘点如下：
+---
+
+## 清查：未裁决 OQ 清单（2026-09-27，裁决后更新）
+
+**已裁决 17 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 016 / 018 / 020 / 021
+**未裁决 4 条**（全部 `blocking: false`），盘点如下：
 
 | OQ | 问题 | 若不定会怎样 | 建议裁决口径 | 覆盖 issue |
 |---|---|---|---|---|
-| OQ-011 | `单条 ≤160 tokens` / `上下文 ≤800 tokens` 用哪个 tokenizer 计数 | 预算约束与正式实验口径不一致，经验注入量不可复现 | 指定 tokenizer（或授权采用 Harness 侧计数口径），并写入 `experiment_config` 冻结 | #4 |
-| OQ-013 | BM25 标定 P05/P95 的百分位算法（最近秩 / 线性插值 / 其他） | `lexical_match` 的标定值不可复现，直接影响检索结果与 `final_score` | 指定算法 + 样本口径（哪个语料、多少条），在 SNAPSHOT_01 上标定 | #4 |
 | OQ-014 | Eligibility Filter 中 `task.scope` × `experience.scope` 的组合规则 | 跨项目经验复用行为未定义（当前遇跨项目即抛错） | 明确组合含义（如 project 经验仅同项目可检索；generic 经验可跨项目） | #5 |
 | OQ-015 | T1 接入方式：读会话日志 vs cordis 插件订阅 | 采集时效与边界不同（日志通道存在「未终态采集得到过期快照」问题，见 M1） | 指定正式采集通道；若仍用日志，明确「会话终态后再采集」的判定方式 | #5 |
 | OQ-017 | `stale` 的 N（超过 N 个任务未命中） | 经验生命周期迁移（→ stale）不可执行 | 给出 N，或给出完整的 stale 判定规则 | #5 |
-| OQ-018 | usage 的 Input / Output / 总 Token 是否计入 cache read 与 reasoning | 成本指标口径不一致（实测 `totalTokens ≈ inputTokens + outputTokens + cacheReadTokens`） | 明确三个统计量的正式定义 | #4 |
 | OQ-019 | failure 事件是否包含「命令非零退出」 | `failure` 事件口径与 `failure_count` 语义可能不一致（当前包含，kind 可区分） | 确认是否计入 failure 与 failure_count | #5 |
 
-**建议顺序**：先 **OQ-013 + OQ-011**（二者直接决定会被哈希冻结进 `experiment_config` 的数值），
-再 **OQ-018**（成本口径），其余（OQ-014 / 015 / 017 / 019）可在 Pilot 期间随用随裁。
+**本轮已落定的、Pilot 前必须冻结的口径**：
+
+- **OQ-013**：nearest-rank（`P05 = x(ceil(0.05N))`、`P95 = x(ceil(0.95N))`），N 写入 `experiment_config`，
+  只在 SNAPSHOT_01 最终冻结后计算一次，Formal 期间不得重估；
+- **OQ-011 / OQ-018**：token 一律采用 **Harness / Provider 侧 usage** 作为权威口径
+  （离线 tokenizer 仅限开发诊断），记录 `experience_item_tokens` / `experience_context_tokens` /
+  `experience_count` 与 `input_tokens` / `output_tokens` / `cache_read_tokens` / `reasoning_tokens` / `total_tokens`；
+- **OQ-021**：B 臂 = Policy-only baseline，Frozen Delegation Policy 的 7 条优先级规则已固定，
+  Pilot/Formal 期间不得调整；`expected_delegation` 由人工预先定义，不得由 Policy 生成。
+
+**建议顺序**：先 **OQ-019**（失败口径影响 `failure` 事件与 `failure_count`），
+其余（OQ-014 / 015 / 017）可在 Pilot 期间随用随裁。
 本清单与 GitHub Issue [#4](https://github.com/fei-hua/Agent-Praxis/issues/4)、
 [#5](https://github.com/fei-hua/Agent-Praxis/issues/5) 一一对应。

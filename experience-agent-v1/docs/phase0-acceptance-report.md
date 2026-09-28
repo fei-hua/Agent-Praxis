@@ -1,6 +1,6 @@
 # Phase 0 Dry-run 验收报告
 
-生成时间：2026-09-27T16:06:32.831Z
+生成时间：2026-09-28T11:23:25.344Z
 
 ## 集合级覆盖（OQ-007 授权要求：≥1 失败 + ≥1 replan）
 
@@ -11,7 +11,7 @@
 ## §4.2 五条验收（全部 PASS 才允许 Pilot）
 
 ### run-2026-09-27-DRY-01
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 23 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 6/6 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -21,7 +21,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 0，返回 0，未返回：[]
 
 ### run-2026-09-27-DRY-02
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 23 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 8/8 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -31,7 +31,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 0，返回 0，未返回：[]
 
 ### run-2026-09-27-DRY-03
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 23 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 14/14 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 1 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -41,7 +41,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 1，返回 1，未返回：[]
 
 ### run-2026-09-27-DRY-04
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 23 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 40/40 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 4 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 1 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -51,7 +51,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 4，返回 4，未返回：[]
 
 ### run-2026-09-27-DRY-05
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 23 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 10/10 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 2 个 failure 均含 reason/kind/context 且上下文指向真实 tool_call
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 1 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -341,12 +341,9 @@
 
 | OQ | blocking | 问题 |
 |---|---|---|
-| OQ-011 | 否 | token 计数口径未定义——「单条 Experience ≤ 160 tokens」「总 Experience Context ≤ 800 tokens」用哪个 tokenizer 计数？ |
-| OQ-013 | 否 | BM25 标定的 P05/P95 百分位算法未定义（最近秩 / 线性插值 / 其他），会直接影响冻结的标定数值。 |
 | OQ-014 | 否 | Eligibility Filter 中 task.scope 与 experience.scope 的组合规则未定义： |
 | OQ-015 | 否 | T1「在 Harness Session 事件层订阅 tool/call、tool/result、session/event」的接入方式请确认： |
 | OQ-017 | 否 | stale 的具体阈值未定——「超过 N 个任务未被命中，或环境版本变化」中的 N 未定义（规格已知开放项）。 |
-| OQ-018 | 否 | token usage 字段口径（cache read 是否计入 Input / 总 Token） |
 | OQ-019 | 否 | failure event 的派生规则（tool error 与非零命令退出） |
 
 ## 工程约束与已知边界
@@ -358,3 +355,5 @@
 - DRY-05 首次执行的协议使初始即 REPLAN，缺少「失败→REPLAN」决策变化，该轨迹已废弃并按修正协议重跑（现存轨迹含 EXPLORE→REPLAN 与 2 个可重建 failure）。
 - DRY-04 执行器在父级首次采集后仍继续运行（首轮 2 个子代理异常失败 → 输出 REPLAN → 次轮重新并行委派成功）。首次采集的轨迹为**过期快照**（缺 REPLAN 与 2 次委派），已按会话最终状态重新采集，现存轨迹含 PARALLEL→REPLAN 与 4 次委派。
 - 采集完整性核对（脚本 `_scratch_verify` 逻辑已并入人工核对）：逐条比对会话最终事件数与轨迹内容（task_state / subagent_invocation / tool_call 含子会话），5 条全部一致。
+- **M4 溯源修正（2026-09-27）**：`harness_version` 必须取 **run 当时**实际使用的版本，**不得**读采集时的本机安装版本。原采集脚本隐式读取本机安装版本，而本机在 dry-run 之后已被环境升级（0.1.5-rc.3 → 0.1.7-rc.2），导致环境字段与 `experiment_config_hash` 被写成采集时环境（`sha256:c7013033…`）。已改为显式传入 `--harness-version`（缺省即报错）；按 run 当时版本（0.1.5-rc.3）重采后指纹恢复为 `sha256:90227c3b…`，与 Phase 0 原始证据一致。`tool_schema_version` 不受影响——它取自会话内 `request/header` 工具快照（run 时快照）。
+- 本轮按 OQ-011 裁决补齐了轨迹字段：`cache_read_tokens` / `reasoning_tokens` / `experience_context_tokens` / `token_accounting_source`，并让 §5.7 的 160/800 预算真正按注入的计数口径执行（dry-run 为诊断口径，故 `token_accounting_source = diagnostic`）；5 条轨迹已按新 schema 重采（事件数不变：18/22/37/100/30）。

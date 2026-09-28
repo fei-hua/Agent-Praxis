@@ -12,6 +12,7 @@
 
 import type { BenchmarkTask } from '../benchmark/tasks.ts';
 import type { DecodedSessionLog, RawSessionEvent } from './session-log.ts';
+import { sumUsage, type ExperienceTokenAccounting } from '../core/token-accounting.ts';
 import {
   deriveFailures,
   deriveReplans,
@@ -44,6 +45,8 @@ export interface AssembleRunInput {
   /** 委派子会话日志（DELEGATE/PARALLEL/WORKFLOW 成员） */
   childLogs?: DecodedSessionLog[];
   retrieved: RetrievedExperienceRef[];
+  /** OQ-011 裁决：注入上下文的 token 记账（experience_item_tokens / experience_context_tokens / experience_count） */
+  tokenAccounting: ExperienceTokenAccounting;
   experienceSnapshotId: string;
   experimentConfigHash: string;
   env: {
@@ -74,13 +77,8 @@ export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[
 
   const callsByLog = allLogs.map((l) => extractToolCalls(l.events));
   const resultsByLog = allLogs.map((l) => extractToolResults(l.events));
-  const usagePrimary = extractTokenUsage(primaryLog.events);
-  const usageChildren = childLogs.map((l) => extractTokenUsage(l.events));
-  const usage = {
-    input_tokens: usagePrimary.input_tokens + usageChildren.reduce((a, u) => a + u.input_tokens, 0),
-    output_tokens: usagePrimary.output_tokens + usageChildren.reduce((a, u) => a + u.output_tokens, 0),
-    total_tokens: usagePrimary.total_tokens + usageChildren.reduce((a, u) => a + u.total_tokens, 0),
-  };
+  // OQ-018 裁决：逐条 usage 归一后按同一口径求和（provider total 优先；reasoning 不重复计入）
+  const usage = sumUsage([extractTokenUsage(primaryLog.events), ...childLogs.map((l) => extractTokenUsage(l.events))]);
 
   // tool_call / tool_result 记录（含子会话来源标记）
   const toolCalls: ToolCallRecord[] = [];
@@ -163,6 +161,10 @@ export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[
     input_tokens: usage.input_tokens,
     output_tokens: usage.output_tokens,
     total_tokens: usage.total_tokens,
+    cache_read_tokens: usage.cache_read_tokens,
+    reasoning_tokens: usage.reasoning_tokens,
+    experience_context_tokens: input.tokenAccounting.experience_context_tokens,
+    token_accounting_source: input.tokenAccounting.token_accounting_source,
     wall_time_ms: input.wallTimeMs,
     success_criteria: task.success_criteria,
   };
@@ -209,6 +211,8 @@ export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[
     run_id: runId,
     experience_snapshot_id: input.experienceSnapshotId,
     retrieved_experiences: input.retrieved,
+    experience_context_tokens: input.tokenAccounting.experience_context_tokens,
+    token_accounting_source: input.tokenAccounting.token_accounting_source,
   });
 
   // tool_call/tool_result/subagent/failure：按源事件 seq 合并排序（多会话按各自 seq 交错）

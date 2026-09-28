@@ -31,7 +31,8 @@
       "retrieval_status": "MATCHED",
       "relevance_score": 0.6,
       "reliability_score": 0.7768698398515702,
-      "contraindication_factor": 1
+      "contraindication_factor": 1,
+      "tokens": 44
     }
   ],
   "tool_calls": [
@@ -153,6 +154,10 @@
   "input_tokens": 8863,
   "output_tokens": 1569,
   "total_tokens": 62272,
+  "cache_read_tokens": 51840,
+  "reasoning_tokens": 247,
+  "experience_context_tokens": 44,
+  "token_accounting_source": "diagnostic",
   "wall_time_ms": 11271,
   "success_criteria": [
     "dry-run-workspace/DRY-01/src/smoke.test.js 存在",
