@@ -1,0 +1,12 @@
+file:///D:/Agent%20Praxis/experience-agent-v1/scripts/dryrun-collect.ts:91
+  if (taskStates.length === 0) throw new Error(`run ${runId}：会话中没有可校验的 task_state（OQ-010）`);
+                                     ^
+
+Error: run pilotdry-PILOT-A01-R1-A：会话中没有可校验的 task_state（OQ-010）
+    at main (file:///D:/Agent%20Praxis/experience-agent-v1/scripts/dryrun-collect.ts:91:38)
+    at file:///D:/Agent%20Praxis/experience-agent-v1/scripts/dryrun-collect.ts:301:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at async node:internal/modules/esm/loader:639:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.15.0
