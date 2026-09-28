@@ -30,3 +30,20 @@ allowed_paths:
   - pilot-workspace/PILOT-C02/security-review.md
 protected_paths:
   - pilot-workspace/PILOT-C02/verify-auth.js
+
+verification:
+  - id: validation_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-C02/verify-auth.js
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/PILOT-C02/verify-auth.js
+    expect: AUTH OK
+  - id: review_written
+    kind: file_contains
+    path: pilot-workspace/PILOT-C02/security-review.md
+    expect: 风险
+    min_count: 3
+  - id: public_api_changed
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-C02/check-api.js

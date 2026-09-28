@@ -28,5 +28,19 @@ expected_files:
 allowed_paths:
   - pilot-workspace/PILOT-E02/**
 protected_paths:
-  - pilot-workspace/PILOT-E02/build.js
   - pilot-workspace/PILOT-E02/verify-build.js
+
+verification:
+  # 只检查最终任务结果；绝不检查 first_decision == REPLAN
+  - id: build_ok
+    kind: output_contains
+    command: node pilot-workspace/PILOT-E02/verify-build.js
+    expect: BUILD OK
+  - id: assertions_intact
+    kind: file_contains
+    path: pilot-workspace/PILOT-E02/build.js
+    expect: "assert("
+    min_count: 3
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/PILOT-E02/verify-build.js

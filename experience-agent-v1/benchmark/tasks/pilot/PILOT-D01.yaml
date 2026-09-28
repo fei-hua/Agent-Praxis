@@ -30,3 +30,17 @@ allowed_paths:
 protected_paths:
   - pilot-workspace/PILOT-D01/src/**
   - pilot-workspace/PILOT-D01/tests/**
+
+verification:
+  - id: graph_written
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-D01/check-graph.js
+  - id: test_report_written
+    kind: file_contains
+    path: pilot-workspace/PILOT-D01/test-report.txt
+    expect: TESTS PASS
+  - id: source_files_changed
+    kind: files_unchanged
+    paths:
+      - pilot-workspace/PILOT-D01/src/**
+      - pilot-workspace/PILOT-D01/tests/**

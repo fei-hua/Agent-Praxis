@@ -30,3 +30,20 @@ allowed_paths:
   - pilot-workspace/PILOT-C01/a11y-review.md
 protected_paths:
   - pilot-workspace/PILOT-C01/verify-a11y.js
+
+verification:
+  - id: a11y_css_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-C01/verify-a11y.js
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/PILOT-C01/verify-a11y.js
+    expect: A11Y OK
+  - id: review_written
+    kind: file_contains
+    path: pilot-workspace/PILOT-C01/a11y-review.md
+    expect: 风险
+    min_count: 3
+  - id: selector_structure_changed
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-C01/check-selectors.js

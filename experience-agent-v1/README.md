@@ -67,3 +67,10 @@ dry-run 的执行本身是**真实 DSH 子会话**（不是 mock）：每个任�
   不得读采集时的本机安装版本——会话日志只带日志格式版本，不含 harness 版本。
   实证：dry-run 在 0.1.5-rc.3 下运行，采集时本机已被环境升级到 0.1.7-rc.2，隐式读取会把环境字段与
   `experiment_config_hash` 写错（`c7013033…`）；按 run 时版本重采后恢复为 `90227c3b…`。
+- **M5 工作区模块解析边界（已闭环，2026-09-27）**：工作区必须有 `package.json{"type":"commonjs"}`。
+  种子与验收脚本是 CommonJS，而父项目是 `"type":"module"`；缺少该边界声明会让所有 `.js` 被按 ESM 解析，
+  `require` 直接报 `ReferenceError: require is not defined in ES module scope`。
+  **这就是 Phase 0 当初那条未解释异常的根因**（DRY-04 tester 首跑）——当时工作区确实没有该文件，
+  因此「报错指向父级 `package.json`」并不矛盾。现已同时固化在 `dry-run-workspace/package.json` 与
+  `pilot-workspace/package.json`（后者由 `benchmark/pilot-seeds.ts` 作为第一条种子生成），
+  避免后续 Pilot 把环境问题误判成模型失败。

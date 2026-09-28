@@ -1,6 +1,6 @@
 # Phase 0 Dry-run 验收报告
 
-生成时间：2026-09-28T11:45:00.972Z
+生成时间：2026-09-28T15:43:46.929Z
 
 ## 集合级覆盖（OQ-007 授权要求：≥1 失败 + ≥1 replan）
 
@@ -332,7 +332,7 @@
 | T7 5 个 Subagent | `agents/registry.ts` | DRY-03（ui-reviewer ×1）、DRY-04（explorer+tester ×2）调用与返回均已记录 |
 | T8 first_decision logging | `core/task-state.ts readFirstDecision + telemetry/extract.ts` | 每条 task_state 事件带 first_decision；重放可索引（EXPLORE→REPLAN 见于 DRY-05） |
 | T9 Snapshot 机制 | `experience/snapshot.ts` | snapshots/SNAPSHOT_01.db（0444 只读 + readOnly 连接），每次 run 记录 experience_snapshot_id |
-| T10 5 Dry-run verification | `scripts/dryrun-{setup,judge,collect,accept}.ts` | 本报告 §4.2 全部 PASS |
+| T10 5 Dry-run verification | `scripts/dryrun-{setup,judge,collect,accept}.ts + scripts/pilot-plan.ts` | 本报告 §4.2 全部 PASS；Pilot 复用同一采集路径（--arm/--manifest） |
 
 ## 确定性测试与类型检查
 
@@ -348,6 +348,7 @@
 | OQ-015 | 否 | T1「在 Harness Session 事件层订阅 tool/call、tool/result、session/event」的接入方式请确认： |
 | OQ-017 | 否 | stale 的具体阈值未定——「超过 N 个任务未被命中，或环境版本变化」中的 N 未定义（规格已知开放项）。 |
 | OQ-022 | 否 | deliberate verification failure 的判定口径 |
+| OQ-023 | **是** | Pilot/Formal 任务的 ground truth 由谁定义与签署 |
 
 ## 工程约束与已知边界
 
@@ -360,3 +361,4 @@
 - 采集完整性核对（脚本 `_scratch_verify` 逻辑已并入人工核对）：逐条比对会话最终事件数与轨迹内容（task_state / subagent_invocation / tool_call 含子会话），5 条全部一致。
 - **M4 溯源修正（2026-09-27）**：`harness_version` 必须取 **run 当时**实际使用的版本，**不得**读采集时的本机安装版本。原采集脚本隐式读取本机安装版本，而本机在 dry-run 之后已被环境升级（0.1.5-rc.3 → 0.1.7-rc.2），导致环境字段与 `experiment_config_hash` 被写成采集时环境（`sha256:c7013033…`）。已改为显式传入 `--harness-version`（缺省即报错）；按 run 当时版本（0.1.5-rc.3）重采后指纹恢复为 `sha256:90227c3b…`，与 Phase 0 原始证据一致。`tool_schema_version` 不受影响——它取自会话内 `request/header` 工具快照（run 时快照）。
 - 本轮按 OQ-011 裁决补齐了轨迹字段：`cache_read_tokens` / `reasoning_tokens` / `experience_context_tokens` / `token_accounting_source`，并让 §5.7 的 160/800 预算真正按注入的计数口径执行（dry-run 为诊断口径，故 `token_accounting_source = diagnostic`）；5 条轨迹已按新 schema 重采（事件数不变：18/22/37/100/30）。
+- **M3/M5 环境异常闭环（2026-09-27）**：Phase 0 曾记为「无法用现有证据排除」的 Node ESM/CommonJS 包作用域异常，已在 Pilot 种子阶段复现并定位——工作区缺少 `package.json{"type":"commonjs"}` 边界声明，导致 CommonJS 种子脚本被按 ESM 解析（`ReferenceError: require is not defined in ES module scope`）。当时工作区确实没有该文件，因此「报错指向父级 package.json」并不矛盾。已在 dry-run 与 pilot 两个工作区同时固化为种子第一条，避免后续把环境问题误判为模型失败。

@@ -30,3 +30,16 @@ allowed_paths:
 protected_paths:
   - pilot-workspace/PILOT-D02/deps/**
   - pilot-workspace/PILOT-D02/compat-check.js
+
+verification:
+  - id: notes_written
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-D02/check-notes.js
+  - id: compat_result_written
+    kind: file_contains
+    path: pilot-workspace/PILOT-D02/compat-result.txt
+    expect: COMPAT OK
+  - id: deps_changed
+    kind: files_unchanged
+    paths:
+      - pilot-workspace/PILOT-D02/deps/**
