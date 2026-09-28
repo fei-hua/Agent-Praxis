@@ -8,19 +8,17 @@ scope: project
 characteristics: [multi_file, shared_state]
 constraints: [scope_limited]
 prompt: |
-  pilot-workspace/PILOT-D01/ 下有两项互不依赖的工作，请**并行**委派两个 subagent 完成：
-  1. explorer 线（description 以 "explorer" 开头）：产出模块依赖图 module-graph.md，
-     列出每个模块直接依赖的模块名；
-  2. tester 线（description 以 "tester" 开头）：运行 node pilot-workspace/PILOT-D01/tests/run-tests.js，
+  pilot-workspace/PILOT-D01/ 下有两项互不依赖的工作：
+  1. 产出模块依赖图 module-graph.md，列出每个模块直接依赖的模块名；
+  2. 运行 node pilot-workspace/PILOT-D01/tests/run-tests.js，
      把完整输出写入 test-report.txt（应包含 TESTS PASS）。
-  两项之间没有先后依赖，应在同一步发出委派。
-expected_first_decisions: [PARALLEL]
+  两项之间没有先后依赖。
+expected_first_decisions: [PARALLEL, WORKFLOW]
 expected_delegation: true
 success_criteria:
   required:
     - graph_written
     - test_report_written
-    - two_subagents_used
   forbidden:
     - source_files_changed
 expected_files:

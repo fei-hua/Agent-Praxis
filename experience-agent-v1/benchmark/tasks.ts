@@ -20,19 +20,26 @@ import path from 'node:path';
 import { load as parseYaml } from 'js-yaml';
 import { COMPLEXITY, CONSTRAINTS_VOCAB, FIRST_DECISION, SCOPE, type FirstDecision } from '../core/enums.ts';
 import { SPEC_EXAMPLE_VOCAB, type ControlledVocab } from '../core/vocab.ts';
-import { expectedDelegation } from './cda.ts';
+import { expectedDelegation, isDelegationAction } from './cda.ts';
 
 /** §9.1 任务类别 */
 export const TASK_CATEGORIES = ['A', 'B', 'C', 'D', 'E'] as const;
 export type TaskCategory = (typeof TASK_CATEGORIES)[number];
 
-/** 类别 → 允许的 expected_first_decisions（§9.1 冻结分布） */
-export const CATEGORY_EXPECTED_DECISIONS: Readonly<Record<TaskCategory, readonly FirstDecision[]>> = {
-  A: ['DIRECT'],
-  B: ['EXPLORE'],
-  C: ['DELEGATE', 'PARALLEL', 'WORKFLOW'],
-  D: ['PARALLEL', 'WORKFLOW'],
-  E: ['REPLAN'],
+/**
+ * 类别 → 该类别所属的**委派轴**（§9.1 + Q3/Q4 裁决 2026-09-27）。
+ * A/B/E → 非委派；C/D → 委派。
+ *
+ * 校验规则（人工 Q4 裁决）：允许多值等价集，但集合内每个取值必须与类别**同属一个委派轴**。
+ * 理由：CDA 只看委派轴（Q3 裁决：EXPLORE 不与 DELEGATE/PARALLEL/WORKFLOW 等价），
+ * 因此轴一致是测量有效性所需的全部约束；等价集本身在 Pilot 前冻结，不得事后调整。
+ */
+export const CATEGORY_DELEGATION_AXIS: Readonly<Record<TaskCategory, boolean>> = {
+  A: false,
+  B: false,
+  C: true,
+  D: true,
+  E: false,
 };
 
 /** 纯代码检查种类（把 success_criteria 标签落实为可执行判定） */
@@ -40,6 +47,7 @@ export type VerificationKind =
   | 'command_exit_zero'
   | 'output_contains'
   | 'file_exists'
+  | 'file_changed'
   | 'file_unchanged'
   | 'files_unchanged';
 
@@ -156,9 +164,14 @@ export function loadTask(
   if (expectedOk) {
     derivedDelegation = expectedDelegation(expected as FirstDecision[]);
     if (category !== undefined && (TASK_CATEGORIES as readonly string[]).includes(category)) {
-      const allowed = CATEGORY_EXPECTED_DECISIONS[category as TaskCategory];
-      if (!(expected as FirstDecision[]).every((d) => allowed.includes(d))) {
-        push('expected_first_decisions', `类别 ${category} 的期望值必须 ∈ [${allowed.join(', ')}]（§9.1）`);
+      const axis = CATEGORY_DELEGATION_AXIS[category as TaskCategory];
+      const wrong = (expected as FirstDecision[]).filter((d) => isDelegationAction(d) !== axis);
+      if (wrong.length > 0) {
+        push(
+          'expected_first_decisions',
+          `类别 ${category} 的期望值必须与类别同属委派轴（axis delegation=${String(axis)}）；` +
+            `越轴取值：[${wrong.join(', ')}]（§9.1 + Q3/Q4 裁决）`,
+        );
       }
     }
     if (o['expected_delegation'] !== undefined) {
@@ -216,6 +229,7 @@ export function loadTask(
         'command_exit_zero',
         'output_contains',
         'file_exists',
+        'file_changed',
         'file_unchanged',
         'files_unchanged',
       ];
@@ -233,7 +247,10 @@ export function loadTask(
         if (kind === 'output_contains' && (typeof c['expect'] !== 'string' || c['expect'] === '')) {
           push(`verification[${i}].expect`, 'output_contains 必须提供 expect');
         }
-        if ((kind === 'file_exists' || kind === 'file_unchanged') && (typeof c['path'] !== 'string' || c['path'] === '')) {
+        if (
+          (kind === 'file_exists' || kind === 'file_unchanged' || kind === 'file_changed') &&
+          (typeof c['path'] !== 'string' || c['path'] === '')
+        ) {
           push(`verification[${i}].path`, `${kind} 必须提供 path`);
         }
         if (kind === 'files_unchanged' && (toStringArray(c['paths']) ?? []).length === 0) {

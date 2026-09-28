@@ -104,23 +104,43 @@
 
 ---
 
-## 第三部分：签署记录
+## 第三部分：签署记录（已签署 2026-09-27）
 
-| 任务 | 签署人 | 日期 | expected_first_decisions（冻结值） | 等价集 | 备注 |
-|---|---|---|---|---|---|
-| PILOT-A01 | | | | | |
-| PILOT-A02 | | | | | |
-| PILOT-B01 | | | | | |
-| PILOT-B02 | | | | | |
-| PILOT-C01 | | | | | |
-| PILOT-C02 | | | | | |
-| PILOT-D01 | | | | | |
-| PILOT-D02 | | | | | |
-| PILOT-E01 | | | | | |
-| PILOT-E02 | | | | | |
+**签署人**：fei-hua　**日期**：2026-09-27　**签署方式**：逐条审核（不按类别批量映射）
 
-签署完成后由开发方执行：
-1. 按签署结论修订任务书与 `expected_first_decisions`（若涉及问题 1/2 的改动）；
-2. 补齐 `verification`（每个 required/forbidden 标签 → 纯代码检查）；
-3. 把 `status: draft` 改为 `frozen`；
-4. 记录冻结日期与签署人（写入本文件第三部分），之后任务定义不得再改。
+| 任务 | expected_first_decisions（冻结值） | 等价集 | 签署 | 备注 |
+|---|---|---|---|---|
+| PILOT-A01 | `DIRECT` | `{DIRECT}` | ✓ | |
+| PILOT-A02 | `DIRECT` | `{DIRECT, EXPLORE}` | ✓ | 人工确认放行 `EXPLORE`：存在合理执行路径差异，不改变 CDA 委派轴；仅影响 Decision Accuracy |
+| PILOT-B01 | `EXPLORE` | `{EXPLORE}` | ✓ | |
+| PILOT-B02 | `EXPLORE` | `{EXPLORE}` | ✓ | |
+| PILOT-C01 | `DELEGATE` | `{DELEGATE, PARALLEL, WORKFLOW}` | ✓ | |
+| PILOT-C02 | `DELEGATE` | `{DELEGATE, PARALLEL, WORKFLOW}` | ✓ | |
+| PILOT-D01 | `PARALLEL` | `{PARALLEL, WORKFLOW}` | ✓ | |
+| PILOT-D02 | `PARALLEL` | `{PARALLEL, WORKFLOW}` | ✓ | |
+| PILOT-E01 | `REPLAN` | `{REPLAN}` | ✓ | 人工确认：与 DRY-05 的差异（DRY-05 为 `EXPLORE → 失败 → REPLAN`）是有意保留的，用于检验 Agent 能否识别**已有失败状态** |
+| PILOT-E02 | `REPLAN` | `{REPLAN}` | ✓ | 同上 |
+
+### 跨任务设计问题的裁决（人工 2026-09-27）
+
+| 问题 | 裁决 | 落地 |
+|---|---|---|
+| Q1 C/D 任务书是否显式要求委派 | **甲：去掉委派指令** | C01/C02 改为只描述审查范围；D01/D02 改为只描述两项互不依赖的工作。已修订任务书（实验泄漏已在 Pilot 前消除） |
+| Q2 `subagent_used` 是否留在 required | **甲：移出** | 从 C01/C02/D01/D02 的 `success_criteria.required` 移除；委派使用作为轨迹观测指标（`subagent_invocations` / delegate agent set） |
+| Q3 B 类委派 explorer 是否算 CDA 等价 | **甲：维持 CDA 定义** | 委派 ⇔ `first_decision ∈ {DELEGATE, PARALLEL, WORKFLOW}`；`EXPLORE` 与 `DELEGATE` **不等价**，`expected=EXPLORE ∧ actual=DELEGATE ⇒ CDA=0` |
+| Q4 是否允许多值等价集 | **甲：允许，但 Pilot 前冻结** | 已按上表写入任务 YAML 的 `expected_first_decisions` 列表；类别校验改为**委派轴一致**（A/B/E = 非委派轴，C/D = 委派轴） |
+
+### 冻结规则（人工 2026-09-27 拍板）
+
+> 1. 这 10 个 `expected_first_decision` 一旦签署，**Pilot 与 Formal 期间不得因模型表现不好而修改**。
+> 2. **等价集必须在任务正式进入 Pilot 前确定**，不得根据 Pilot 结果事后增加、删除或修改。
+> 3. 若发现任务描述存在真正的歧义，必须作为**版本变更**处理（记为新任务或标记修订），**不得直接改 ground truth**。
+
+### 签署后的执行状态
+
+| 步骤 | 状态 |
+|---|---|
+| 1. 按 Q1/Q2 修订任务书与判定项 | ✅ 已完成（2026-09-27） |
+| 2. 按签署值写入等价集 | ✅ 已完成（10/10 加载校验 0 issue） |
+| 3. 补齐 `verification`（标签 → 纯代码检查） | 🔲 待办（#6 剩余项） |
+| 4. `status: draft` → `frozen` | 🔲 待办（第 3 步完成后，且按既定顺序在 OQ-014 之后） |

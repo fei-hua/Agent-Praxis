@@ -2,35 +2,29 @@
 
 10 个 Pilot 任务，按 `spec/frozen.md` §9.1 的类别分布各取 2 个（A/B/C/D/E）。
 
-| 任务 | 类别 | task_type | complexity | expected_first_decisions | expected_delegation |
+| 任务 | 类别 | task_type | complexity | expected_first_decisions（**已签署冻结**） | expected_delegation |
 |---|---|---|---|---|---|
 | PILOT-A01 | A Simple | bugfix | simple | `DIRECT` | false |
-| PILOT-A02 | A Simple | doc | simple | `DIRECT` | false |
+| PILOT-A02 | A Simple | doc | simple | `DIRECT`（等价集含 `EXPLORE`） | false |
 | PILOT-B01 | B Explore | doc | medium | `EXPLORE` | false |
 | PILOT-B02 | B Explore | refactor | medium | `EXPLORE` | false |
-| PILOT-C01 | C Delegate | ui_upgrade | medium | `DELEGATE` | true |
-| PILOT-C02 | C Delegate | refactor | medium | `DELEGATE` | true |
-| PILOT-D01 | D Parallel | data_layer | medium | `PARALLEL` | true |
-| PILOT-D02 | D Parallel | refactor | medium | `PARALLEL` | true |
+| PILOT-C01 | C Delegate | ui_upgrade | medium | `DELEGATE`（等价集 `{DELEGATE, PARALLEL, WORKFLOW}`） | true |
+| PILOT-C02 | C Delegate | refactor | medium | `DELEGATE`（同上） | true |
+| PILOT-D01 | D Parallel | data_layer | medium | `PARALLEL`（等价集 `{PARALLEL, WORKFLOW}`） | true |
+| PILOT-D02 | D Parallel | refactor | medium | `PARALLEL`（同上） | true |
 | PILOT-E01 | E Recovery | bugfix | medium | `REPLAN` | false |
 | PILOT-E02 | E Recovery | bugfix | medium | `REPLAN` | false |
 
-## ⚠️ 签署状态：全部为 `status: draft`，**不得用于正式 run**
+## 签署状态：**ground truth 已签署（2026-09-27），`status` 仍为 `draft`**
 
-`expected_first_decisions` 是**测量基准（ground truth）**，它决定了 CDA 的分母。
-按 OQ-021 裁决「`expected_delegation` 必须由人工提前定义，不得由该 Policy 自动生成」，
-本任务集的处理方式是：
+签署结论与规则见 [`GROUND-TRUTH-REVIEW.md`](GROUND-TRUTH-REVIEW.md) 第三部分。要点：
 
-1. 开发方（AI）起草任务书、类别归属与期望决策（本文件与各 YAML）；
-2. **人工逐条签署**后才能置为 `status: frozen`；
-3. `scripts/pilot-plan.ts` 会拒绝 `status != 'frozen'` 的任务（代码级门禁，不靠口头约定）；
-4. 冻结后任务定义与期望决策不得再改（改了就是新任务集，需重新签署）。
-
-> 为什么这一步必须人工签字：任务书和期望决策都由实现了 Policy 的一方起草时，
-> 存在「让 Policy 自己定义自己的成功」的风险。签署是这条风险的唯一防线。
-
-签署方式：把每个 YAML 的 `status: draft` 改为 `frozen`，并补齐 `verification`
-（把 `success_criteria.required/forbidden` 的每个标签映射为纯代码检查，见下）。
+- 逐条审核签署，**不按类别批量映射**；签署值与等价集已写入各 YAML；
+- **Q1**：C/D 任务书已去掉"委派/并行委派"指令（消除实验泄漏——不然三条臂都会照做，CDA 失去区分度）；
+- **Q2**：`subagent_used` / `two_subagents_used` 已移出 `required`，改为轨迹观测指标（Task Success 与委派决策解耦）；
+- **Q3**：CDA 定义不变，`EXPLORE` 与 `DELEGATE/PARALLEL/WORKFLOW` **不等价**；
+- **Q4**：允许多值等价集，但**必须在 Pilot 前冻结，不得事后调整**；类别校验相应改为**委派轴一致**；
+- `status` 仍为 `draft`：等 `verification` 补齐后才置 `frozen`（`pilot-plan.ts` 会拒绝 `draft`，代码级门禁）。
 
 ## 与 dry-run 任务集不相交
 

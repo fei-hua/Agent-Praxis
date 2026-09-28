@@ -12,7 +12,7 @@ prompt: |
   含 @param 与 @returns）。
   要求：pilot-workspace/PILOT-A02/check-doc.js 通过（输出 DOC OK 且退出码 0）。
   只能修改 parser.js；check-doc.js 为验收脚本，不得修改。
-expected_first_decisions: [DIRECT]
+expected_first_decisions: [DIRECT, EXPLORE]
 expected_delegation: false
 success_criteria:
   required:

@@ -9,18 +9,16 @@ characteristics: [multi_file]
 constraints: [api_immutable, scope_limited]
 prompt: |
   审查 pilot-workspace/PILOT-C02/src/auth.js 的输入校验与错误处理：
-  1. 委派 code-reviewer subagent（description 以 "code-reviewer" 开头）做代码与架构审查，
-     重点：输入校验缺失、异常吞掉、越权路径；
+  1. 审查重点：输入校验缺失、异常吞掉、越权路径；
   2. 在不改变对外函数签名（api_immutable）的前提下修正校验缺陷；
   3. 把审查结论写入 pilot-workspace/PILOT-C02/security-review.md，至少列出 3 条风险（每条含"风险"字样）。
   验收脚本 pilot-workspace/PILOT-C02/verify-auth.js 必须通过。
-expected_first_decisions: [DELEGATE]
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
 expected_delegation: true
 success_criteria:
   required:
     - validation_fixed
     - review_written
-    - subagent_used
     - verify_pass
   forbidden:
     - public_api_changed

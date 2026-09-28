@@ -8,19 +8,17 @@ scope: project
 characteristics: [multi_file]
 constraints: [no_new_dependency, scope_limited]
 prompt: |
-  pilot-workspace/PILOT-D02/ 下有依赖升级评估的两项独立工作，请**并行**委派两个 subagent：
-  1. researcher 线（description 以 "researcher" 开头）：对比 deps/pinned.json 与 deps/latest.json，
-     产出 upgrade-notes.md，逐条列出 breaking change 与兼容风险；
-  2. tester 线（description 以 "tester" 开头）：运行 node pilot-workspace/PILOT-D02/compat-check.js，
+  pilot-workspace/PILOT-D02/ 下有依赖升级评估的两项独立工作：
+  1. 对比 deps/pinned.json 与 deps/latest.json，产出 upgrade-notes.md，逐条列出 breaking change 与兼容风险；
+  2. 运行 node pilot-workspace/PILOT-D02/compat-check.js，
      把完整输出写入 compat-result.txt（应包含 COMPAT OK）。
   不得新增依赖（no_new_dependency），deps/ 与 compat-check.js 不得修改。
-expected_first_decisions: [PARALLEL]
+expected_first_decisions: [PARALLEL, WORKFLOW]
 expected_delegation: true
 success_criteria:
   required:
     - notes_written
     - compat_result_written
-    - two_subagents_used
   forbidden:
     - deps_changed
 expected_files:
