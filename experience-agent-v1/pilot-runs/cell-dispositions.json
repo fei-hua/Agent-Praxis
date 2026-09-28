@@ -1,4 +1,4 @@
-﻿{
+{
   "dataset": "pilot_dry_execution",
   "manifest": "pilot-manifest-dry.json",
   "manifest_unchanged": true,
@@ -22,6 +22,26 @@
         "pilot-runs/pilotdry-PILOT-A01-R1-A-rep1.exec.log"
       ],
       "note": "两 run 均非 Agent 行为失败；原 run 的 first_decision=EXPLORE 永不进入任何统计。按 Recovery Rule v1 唯一一次 replacement 已用尽 ⇒ 永久 EXCLUDED，不补跑。"
+    },
+    "PILOT-A01|R1|C_frozen": {
+      "status": "EXCLUDED",
+      "exclusion_class": "UNRESOLVED_INFRASTRUCTURE",
+      "counted": false,
+      "original_run": "pilotdry-PILOT-A01-R1-C_frozen",
+      "original_class": "collection_error",
+      "original_subclass": "orchestrator_stale_prompt",
+      "replacement_run": "pilotdry-PILOT-A01-R1-C_frozen-rep1",
+      "replacement_class": "config_mismatch",
+      "retry_allowed": false,
+      "note": "按 Recovery Rule v1 原口径结账：两次失败均在 collect 阶段发现，原 run 已实际执行 Agent；无有效 observation ≠ 未消耗 attempt。永久排除，不再 retry。"
+    },
+    "PILOT-A01|R1|B": {
+      "status": "PENDING",
+      "counted": false,
+      "first_failure_run": "pilotdry-PILOT-A01-R1-B",
+      "first_failure_class": "config_mismatch",
+      "retry_allowed": true,
+      "note": "首次失败已记录；根因是预运行 plan 未绑定参考会话（已由 corrected plans 修复）。是否动用 replacement 额度待裁定。"
     }
   },
   "reconciliation": {

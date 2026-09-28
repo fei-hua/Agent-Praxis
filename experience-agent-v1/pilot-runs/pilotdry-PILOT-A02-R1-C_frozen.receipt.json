@@ -12,6 +12,6 @@
   "pilot_manifest": "pilot_dry_execution",
   "experience_snapshot_id": "SNAPSHOT_01",
   "plan_file": "pilot-runs\\pilotdry-PILOT-A02-R1-C_frozen.plan.json",
-  "tool_schema_verified": false,
-  "prepared_at": "2026-09-28T16:38:27.437Z"
+  "tool_schema_verified": true,
+  "prepared_at": "2026-09-28T17:23:45.045Z"
 }

@@ -12,6 +12,6 @@
   "pilot_manifest": "pilot_dry_execution",
   "experience_snapshot_id": null,
   "plan_file": "pilot-runs\\pilotdry-PILOT-B01-R1-B.plan.json",
-  "tool_schema_verified": false,
-  "prepared_at": "2026-09-28T16:38:28.122Z"
+  "tool_schema_verified": true,
+  "prepared_at": "2026-09-28T17:23:45.794Z"
 }

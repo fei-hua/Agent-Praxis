@@ -8,6 +8,15 @@
       "status": "UNRESOLVED_INFRASTRUCTURE",
       "replacement_failed_at": "2026-09-28T17:11:18.578Z",
       "note": "replacement 未产生会话（新增会话 0 个）⇒ 第二次基础设施失败；按 Recovery Rule v1 暂停 Pilot，不再自动重试"
+    },
+    "PILOT-A01|R1|C_frozen": {
+      "original": "pilotdry-PILOT-A01-R1-C_frozen",
+      "replacement": "pilotdry-PILOT-A01-R1-C_frozen-rep1",
+      "at": "2026-09-28T17:19:52.813Z",
+      "class": "collection_error",
+      "status": "UNRESOLVED_INFRASTRUCTURE",
+      "replacement_failed_at": "2026-09-28T17:20:32.531Z",
+      "note": "replacement 采集期 CONFIG_MISMATCH ⇒ 第二次失败；按 Recovery Rule v1 暂停 Pilot，不再自动重试"
     }
   }
 }

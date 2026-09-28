@@ -7,9 +7,9 @@
     "arm": "A",
     "snapshot_id": "none",
     "policy_hash": null,
-    "experiment_config_hash": "sha256:cbbe49e631d2b3c261e14b91b829574e4d5c40831892d4a1df46e2832435cf25",
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
     "harness_version": "0.1.7-rc.2",
-    "tool_schema_version": "UNVERIFIED_AT_PLAN_TIME"
+    "tool_schema_version": "tschema-dcdb10f5d21c"
   },
   "expected_delegation": true,
   "instruction": "",
@@ -18,7 +18,7 @@
     "reflection": false,
     "snapshot_id": "none"
   },
-  "tool_schema_verified": false,
+  "tool_schema_verified": true,
   "token_accounting_source": "diagnostic（Pilot 前必须接入 Harness/Provider 侧计数）",
-  "generated_at": "2026-09-28T16:38:30.725Z"
+  "generated_at": "2026-09-28T17:23:48.813Z"
 }

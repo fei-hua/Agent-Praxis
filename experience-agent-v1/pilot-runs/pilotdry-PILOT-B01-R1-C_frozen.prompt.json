@@ -1,0 +1,12 @@
+{
+  "run_id": "pilotdry-PILOT-B01-R1-C_frozen",
+  "task_id": "PILOT-B01",
+  "arm": "C_frozen",
+  "prompt": "# Frozen Delegation Policy（B 臂，已冻结）\n\nB = DeepSeek V4.1 + DeepSeek Harness + Frozen Delegation Policy\n\n按以下优先级确定 first_decision（自上而下，先命中先定）：\n\n1. REPLAN：已有失败状态，需要重新规划\n2. VERIFY：任务主要目标是验证/测试/审计已有结果\n3. WORKFLOW：任务包含多个存在明确先后依赖的阶段\n4. PARALLEL：存在两个或以上相互独立且适合委派的子任务\n5. DELEGATE：存在明确的专业分工、独立分析或单个可委派子任务\n6. EXPLORE：项目结构、调用关系、数据流或影响范围尚不明确，需要先探索\n7. DIRECT：任务局部、范围明确、信息充分，且不满足以上条件\n\n运行约束：\n- 不读取 Experience Store\n- 不使用 Reflection 产生的经验\n- 不在线更新 Policy\n- 不根据历史轨迹修改规则\n- 可以正常使用 Harness Tool / Subagent / Workflow\n\n# Frozen Action Experience（只读 SNAPSHOT_01）\n\n以下经验来自冻结快照，仅供决策参考；不得因为经验存在而跳过验证。\n\n[EXP-DRY-DOC-EXPLORE]\ntask_type: doc\ncharacteristics: multi_file\ndecision: EXPLORE\nlesson: 先 explore 摸清模块调用再落笔写文档\ncontraindications: \nreliability: 0.63\n\n## 任务\n\n工作区：仓库根为 `D:\\Agent Praxis\\experience-agent-v1`，任务中的相对路径均相对该目录。\n\npilot-workspace/PILOT-B01/legacy/ 下有三个未文档化的模块，入口是 app.js。\n请通过阅读代码确定：哪一个模块是被 app.js **间接**调用的（不是直接调用），以及完整调用链。\n把结论写入 pilot-workspace/PILOT-B01/findings.md，格式要求：\n- 一行 \"indirect: <模块文件名>\"\n- 一行 \"chain: app.js → ... → <模块文件名>\"\n只能新增 findings.md；legacy/ 下文件与 app.js 不得修改。\n\n## 输出协议（必须遵守，且只在本条要求下输出该 JSON）\n\n在你的**第一条回复**里，先输出一个 ```json 代码块，内容为 task_state envelope：\n\n```json\n{\n  \"schema_version\": \"1.0\",\n  \"task_state\": {\n  \"task_type\": \"<逐字选自：ui_upgrade | bugfix | refactor | data_layer | test | doc>\",\n    \"complexity\": \"<逐字选自：simple | medium | high>\",\n    \"characteristics\": [\"<逐字选自：multi_page | multi_file | shared_state | new_module（可为空数组）>\"],\n    \"scope\": \"<逐字选自：project | generic>\",\n    \"constraints\": [\"<逐字选自：routing_immutable | data_schema_immutable | api_immutable | scope_limited | no_new_dependency | no_public_interface_change（可为空数组）>\"],\n    \"first_decision\": \"<逐字选自：DIRECT | EXPLORE | DELEGATE | PARALLEL | WORKFLOW | VERIFY | REPLAN>\"\n  }\n}\n```\n\n取值规则（硬性）：\n- 所有字段的值必须**逐字选自上面列出的取值**；不得自创 token、不得改写、不得拼接或扩展枚举值；\n- `task_state` 的六个字段缺一不可；\n- `first_decision` 必须是你**第一次决策**时真正选择的动作，之后不得回改该 JSON 块；\n- 该 JSON 块只记录你的判断，不作为行为指令（协议不规定你应该选哪个值）。\n\n随后再开始执行任务本身。",
+  "injected_ids": [
+    "EXP-DRY-DOC-EXPLORE"
+  ],
+  "experience_context_tokens": 48,
+  "token_accounting_source": "diagnostic",
+  "serialized_context_hash": "2419d40fb889535b4ce1ddeb2bb17a016db58b4596cc4b7027f2a9b5abee0a41"
+}
