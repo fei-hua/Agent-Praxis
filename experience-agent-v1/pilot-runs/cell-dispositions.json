@@ -1,0 +1,41 @@
+﻿{
+  "dataset": "pilot_dry_execution",
+  "manifest": "pilot-manifest-dry.json",
+  "manifest_unchanged": true,
+  "planned_cells": 30,
+  "cells": {
+    "PILOT-A01|R1|A": {
+      "status": "EXCLUDED",
+      "exclusion_class": "UNRESOLVED_INFRASTRUCTURE",
+      "counted": false,
+      "original_run": "pilotdry-PILOT-A01-R1-A",
+      "original_class": "collection_error",
+      "original_subclass": "orchestrator_prompt_defect",
+      "replacement_run": "pilotdry-PILOT-A01-R1-A-rep1",
+      "replacement_class": "infrastructure",
+      "replacement_subclass": "no_session_created",
+      "retry_allowed": false,
+      "evidence": [
+        "pilot-runs/infra-failures.jsonl",
+        "pilot-runs/replacements.json",
+        "pilot-runs/pilotdry-PILOT-A01-R1-A.exec.log",
+        "pilot-runs/pilotdry-PILOT-A01-R1-A-rep1.exec.log"
+      ],
+      "note": "两 run 均非 Agent 行为失败；原 run 的 first_decision=EXPLORE 永不进入任何统计。按 Recovery Rule v1 唯一一次 replacement 已用尽 ⇒ 永久 EXCLUDED，不补跑。"
+    }
+  },
+  "reconciliation": {
+    "planned_cells": 30,
+    "valid_cells": 29,
+    "excluded_cells": 1,
+    "missing_cells": 0,
+    "unexpected_cells": 0,
+    "missing_definition": "missing = 没有任何最终处置状态的 planned cell（而非缺少有效 observation）"
+  },
+  "statistics_notes": {
+    "imputation": "none",
+    "B_minus_A_paired_observations": 9,
+    "C_minus_B_paired_observations": 10,
+    "english": "One infrastructure-excluded cell reduced the available paired observations for the B-A pilot variance estimate from 10 to 9; no outcome imputation was performed."
+  }
+}
