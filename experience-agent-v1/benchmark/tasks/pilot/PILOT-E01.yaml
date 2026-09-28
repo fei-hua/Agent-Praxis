@@ -1,0 +1,32 @@
+id: PILOT-E01
+category: E
+status: draft
+source: synthetic-pilot
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  【已知失败状态】上一次执行 `node pilot-workspace/PILOT-E01/run-migration.js` 失败并中止，
+  现场：迁移配置缺失导致脚本在读取配置阶段抛错。
+  请重新规划并修复，使其输出 MIGRATION OK 且退出码 0。
+  要求：
+  1. 先运行该脚本确认当前失败；
+  2. 定位并修复问题（可以新增/修正 PILOT-E01/ 下的配置或实现文件）；
+  3. 不得删除或注释 run-migration.js 中的任何断言；不得修改 verify-migration.js。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - migration_ok
+    - assertions_intact
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/PILOT-E01/config.json
+allowed_paths:
+  - pilot-workspace/PILOT-E01/**
+protected_paths:
+  - pilot-workspace/PILOT-E01/run-migration.js
+  - pilot-workspace/PILOT-E01/verify-migration.js

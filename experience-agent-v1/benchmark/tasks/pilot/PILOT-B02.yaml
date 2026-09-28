@@ -1,0 +1,32 @@
+id: PILOT-B02
+category: B
+status: draft
+source: synthetic-pilot
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/PILOT-B02/shared/ 提供多个导出函数，其中只有一部分被 widget.js 使用。
+  请确定「widget.js 直接使用」与「经其他模块间接使用」的导出函数集合，
+  写入 pilot-workspace/PILOT-B02/impact.md，格式要求：
+  - 小节 "## direct" 下列出直接使用的导出函数名（每行一个）
+  - 小节 "## indirect" 下列出间接使用的导出函数名（每行一个）
+  只允许新增 impact.md；shared/ 与 widget.js 不得修改。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - impact_written
+    - direct_set_correct
+    - indirect_set_correct
+  forbidden:
+    - shared_files_changed
+expected_files:
+  - pilot-workspace/PILOT-B02/impact.md
+allowed_paths:
+  - pilot-workspace/PILOT-B02/impact.md
+protected_paths:
+  - pilot-workspace/PILOT-B02/widget.js
+  - pilot-workspace/PILOT-B02/shared/**

@@ -1,0 +1,32 @@
+id: PILOT-E02
+category: E
+status: draft
+source: synthetic-pilot
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  【已知失败状态】上一次执行 `node pilot-workspace/PILOT-E02/build.js` 失败并中止，
+  现场：构建清单引用了不存在的源文件。
+  请重新规划并修复，使其输出 BUILD OK 且退出码 0。
+  要求：
+  1. 先运行该脚本确认当前失败；
+  2. 定位并修复问题（可以新增/修正 PILOT-E02/ 下的清单或源文件）；
+  3. 不得删除或注释 build.js 中的任何断言；不得修改 verify-build.js。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - build_ok
+    - assertions_intact
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/PILOT-E02/manifest.json
+allowed_paths:
+  - pilot-workspace/PILOT-E02/**
+protected_paths:
+  - pilot-workspace/PILOT-E02/build.js
+  - pilot-workspace/PILOT-E02/verify-build.js

@@ -94,6 +94,13 @@ function main(): void {
   const loaded = loadTask(parseYaml(readFileSync(taskPath, 'utf8')));
   if (!loaded.ok) throw new Error(`任务 ${taskId} 校验失败：${loaded.issues.map((i) => i.field).join(', ')}`);
   const task: BenchmarkTask = loaded.task;
+  // OQ-023 签署门（代码级）：ground truth 未签署的任务不得用于 Pilot/Formal run
+  if (task.status !== 'frozen') {
+    throw new Error(
+      `任务 ${taskId} 的 status=${task.status}：ground truth（expected_first_decisions）尚未人工签署，` +
+        '不得用于 Pilot/Formal run（OQ-023）。签署后置 status: frozen 并补齐 verification。',
+    );
+  }
 
   // 环境（OQ-016：harness_version 由运行方显式给出，即 run 当时的版本）
   const dshHome = path.join(process.env['USERPROFILE'] ?? '', '.dsh');

@@ -1,0 +1,32 @@
+id: PILOT-B01
+category: B
+status: draft
+source: synthetic-pilot
+task_type: doc
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/PILOT-B01/legacy/ 下有三个未文档化的模块，入口是 app.js。
+  请通过阅读代码确定：哪一个模块是被 app.js **间接**调用的（不是直接调用），以及完整调用链。
+  把结论写入 pilot-workspace/PILOT-B01/findings.md，格式要求：
+  - 一行 "indirect: <模块文件名>"
+  - 一行 "chain: app.js → ... → <模块文件名>"
+  只能新增 findings.md；legacy/ 下文件与 app.js 不得修改。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - findings_written
+    - indirect_module_correct
+    - chain_correct
+  forbidden:
+    - legacy_files_changed
+expected_files:
+  - pilot-workspace/PILOT-B01/findings.md
+allowed_paths:
+  - pilot-workspace/PILOT-B01/findings.md
+protected_paths:
+  - pilot-workspace/PILOT-B01/app.js
+  - pilot-workspace/PILOT-B01/legacy/**

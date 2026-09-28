@@ -670,10 +670,35 @@ answer:
 
 ---
 
+## OQ-023：Pilot/Formal 任务的 ground truth 由谁定义与签署
+field: benchmark/tasks/pilot/*.yaml 的 expected_first_decisions / expected_delegation
+context: >-
+  OQ-021 裁决要求「expected_delegation 必须由人工提前定义，不得由该 Policy 自动生成」。
+  但 10 个 Pilot 任务的**任务书与期望决策由谁起草、谁签署**未定义。风险明确：
+  起草方若同时是实现 B 臂 Policy 的一方，可能无意中让 Policy 定义了自己的成功基准
+  （CDA 的分母即 ground truth，一旦被顺手对齐，H1/H2 全部失效）。
+proposal: >-
+  采用「开发方起草 + 人工签署 + 代码级门禁」三段式：
+  (1) 任务 YAML 增加 status: draft | frozen（缺省 draft）；
+  (2) draft 可加载，但 scripts/pilot-plan.ts **拒绝**为其生成 run plan；
+  (3) 人工逐条确认 expected_first_decisions 后改为 frozen，并补齐 verification
+      （required/forbidden 标签 → 纯代码检查）；冻结后任务定义与期望值不得再改。
+  请人工确认签署人/签署方式，以及是否需要逐条签字（本簿可按任务 id 记录签署时间）。
+phase: pilot
+blocking: true
+owner: human
+status: open
+created_at: 2026-09-27
+answered_at:
+answer:
+
+---
+
 ## 清查：未裁决 OQ 清单（2026-09-27，裁决后更新）
 
 **已裁决 18 条**：OQ-001 / 002 / 003 / 004 / 005 / 006 / 007 / 008 / 009 / 010 / 011 / 012 / 013 / 016 / 018 / 019 / 020 / 021
-**未裁决 4 条**（全部 `blocking: false`），盘点如下：
+**未裁决 5 条**：OQ-023 `blocking: true`（Pilot 任务 ground truth 的签署流程，签署前不得开跑）；
+其余 4 条为 `blocking: false`。盘点如下：
 
 | OQ | 问题 | 若不定会怎样 | 建议裁决口径 | 覆盖 issue |
 |---|---|---|---|---|

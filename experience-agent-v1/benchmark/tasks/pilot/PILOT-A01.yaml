@@ -1,0 +1,27 @@
+id: PILOT-A01
+category: A
+status: draft          # ground truth 待人工签署（OQ-023）；签署前不得用于正式 run
+source: synthetic-pilot
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: []
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/PILOT-A01/src/heartbeat.js 的计数逻辑有缺陷：tick() 在多次调用后 count 不递增。
+  请修复该缺陷，使 pilot-workspace/PILOT-A01/verify-heartbeat.js 通过（输出 HEARTBEAT OK 且退出码 0）。
+  只能修改 pilot-workspace/PILOT-A01/ 下的实现文件；verify-heartbeat.js 为验收脚本，不得修改。
+expected_first_decisions: [DIRECT]
+expected_delegation: false
+success_criteria:
+  required:
+    - fix_applied
+    - behavior_correct
+  forbidden:
+    - unrelated_file_changed
+expected_files:
+  - pilot-workspace/PILOT-A01/src/heartbeat.js
+allowed_paths:
+  - pilot-workspace/PILOT-A01/**
+protected_paths:
+  - pilot-workspace/PILOT-A01/verify-heartbeat.js
