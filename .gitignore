@@ -4,6 +4,8 @@ node_modules/
 dist/
 *.log
 _scratch_*.ts
+_scratch_*.mjs
+_scratch_*.js
 
 # 运行时数据（实验产物按需另行归档；SNAPSHOT 等冻结产物将来需显式提交）
 telemetry/trajectories/*.jsonl.tmp
