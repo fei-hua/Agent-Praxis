@@ -32,7 +32,7 @@ const DELIVERABLES: Array<[string, string, string]> = [
   ['T7 5 个 Subagent', 'agents/registry.ts', 'DRY-03（ui-reviewer ×1）、DRY-04（explorer+tester ×2）调用与返回均已记录'],
   ['T8 first_decision logging', 'core/task-state.ts readFirstDecision + telemetry/extract.ts', '每条 task_state 事件带 first_decision；重放可索引（EXPLORE→REPLAN 见于 DRY-05）'],
   ['T9 Snapshot 机制', 'experience/snapshot.ts', 'snapshots/SNAPSHOT_01.db（0444 只读 + readOnly 连接），每次 run 记录 experience_snapshot_id'],
-  ['T10 5 Dry-run verification', 'scripts/dryrun-{setup,judge,collect,accept}.ts', '本报告 §4.2 全部 PASS'],
+  ['T10 5 Dry-run verification', 'scripts/dryrun-{setup,judge,collect,accept}.ts + scripts/pilot-plan.ts', '本报告 §4.2 全部 PASS；Pilot 复用同一采集路径（--arm/--manifest）'],
 ];
 
 /**

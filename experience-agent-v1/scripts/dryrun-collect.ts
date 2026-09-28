@@ -1,14 +1,21 @@
 /**
- * scripts/dryrun-collect.ts — 单个 dry-run 的轨迹组装（T2/T8/T10 采集侧）
+ * scripts/dryrun-collect.ts — 轨迹组装（dry-run 与 Pilot 共用采集路径；T2/T8/T10 采集侧）
  *
  * 用法：
+ *   # dry-run（arm 记 null，OQ-008）
  *   node scripts/dryrun-collect.ts --task DRY-01 --run-id run-2026-09-27-DRY-01 \
- *     --primary <sessionId> [--children <id1,id2>] --judge <judge-DRY-01.json>
+ *     --primary <sessionId> [--children <id1,id2>] --judge <judge-DRY-01.json> \
+ *     --harness-version 0.1.5-rc.3
+ *
+ *   # Pilot（必须给出 --arm；建议同时给出 --manifest 以启用执行前门禁）
+ *   node scripts/dryrun-collect.ts --task PILOT-01 --tasks-dir benchmark/tasks/pilot \
+ *     --arm C_frozen --manifest pilot-run-manifest.json --expected-first-decisions ...
  *
  * 流程（全部真实记录，不做 LLM 推断）：
- *   会话日志 → task_state 提取（代码直读 first_decision）→ SNAPSHOT_01 检索
+ *   会话日志 → task_state 提取（代码直读 first_decision）→ 按臂决定是否检索（SNAPSHOT_01 只读）
  *   → env 版本（OQ-016：tool_schema_version = 运行时 ToolSchema canonical hash）
- *   → experiment_config_hash（OQ-009）→ assembleRun → typed JSONL 落盘
+ *   → experiment_config_hash（OQ-009）→ run manifest 门禁（CONFIG_MISMATCH → 不落盘）
+ *   → CDA（冻结口径）→ assembleRun → typed JSONL 落盘
  */
 
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
@@ -16,6 +23,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { load as parseYaml } from 'js-yaml';
 import { loadTask, type BenchmarkTask } from '../benchmark/tasks.ts';
+import { cdaScore, expectedDelegation } from '../benchmark/cda.ts';
 import { loadSnapshot } from '../experience/snapshot.ts';
 import {
   retrieve,
@@ -27,6 +35,11 @@ import { PLACEHOLDER_CALIBRATION } from '../experience/calibration.ts';
 import type { Experience } from '../experience/schema.ts';
 import { buildExperimentConfig, experimentConfigHash, type EnvironmentCompatibility } from '../core/experiment-config.ts';
 import { computeToolSchemaVersion, toModelVisibleSchemas } from '../core/tool-schema-version.ts';
+import type { Arm } from '../core/enums.ts';
+import { assertPilotArm } from '../core/arms.ts';
+import { assertRunManifest, type RunManifest } from '../core/run-manifest.ts';
+import { buildArmRunPlan } from '../policies/arm-prompt.ts';
+import type { ExperienceTokenAccounting } from '../core/token-accounting.ts';
 import { extractTaskStates } from '../telemetry/extract.ts';
 import { findSessionLog, decodeSessionLog } from '../telemetry/session-log.ts';
 import { assembleRun } from '../telemetry/assemble.ts';
@@ -34,7 +47,7 @@ import { TrajectoryRecorder, type RetrievedExperienceRef, type TrajectoryEvent }
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(HERE, '..');
-const TASKS_DIR = path.join(PROJECT_ROOT, 'benchmark', 'tasks', 'dry-run');
+const TASKS_DIR_DEFAULT = path.join(PROJECT_ROOT, 'benchmark', 'tasks', 'dry-run');
 const SNAP_DIR = path.join(PROJECT_ROOT, 'snapshots');
 const TRAJ_DIR = path.join(PROJECT_ROOT, 'telemetry', 'trajectories');
 const HARNESS_PKG = 'C:\\Users\\asus\\AppData\\Local\\npm-cache\\_npx\\1e7f6d9597241db0\\node_modules\\@deepseek-ai\\dsh\\package.json';
@@ -54,9 +67,10 @@ function main(): void {
     throw new Error('必填参数：--task --run-id --primary --judge');
   }
   const explicitChildren = (arg('children') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+  const tasksDir = arg('tasks-dir') ?? TASKS_DIR_DEFAULT;
 
   // 任务定义
-  const taskDoc = parseYaml(readFileSync(path.join(TASKS_DIR, `${taskId}.yaml`), 'utf8'));
+  const taskDoc = parseYaml(readFileSync(path.join(tasksDir, `${taskId}.yaml`), 'utf8'));
   const loaded = loadTask(taskDoc);
   if (!loaded.ok) throw new Error(`任务 ${taskId} 校验失败：${loaded.issues.map((i) => i.field).join(', ')}`);
   const task: BenchmarkTask = loaded.task;
@@ -77,54 +91,70 @@ function main(): void {
   if (taskStates.length === 0) throw new Error(`run ${runId}：会话中没有可校验的 task_state（OQ-010）`);
   const profile = taskStates[0]!.envelope.task_state;
 
-  // 检索（SNAPSHOT_01 只读；冻结公式链 §5.2–§5.7）
-  const snap = loadSnapshot(SNAP_DIR, 'SNAPSHOT_01');
-  const store = snap.openReadOnly();
-  const query: RetrievalQuery = {
-    task_type: profile.task_type,
-    complexity: profile.complexity,
-    characteristics: profile.characteristics,
-    constraints: profile.constraints,
-    scope: profile.scope,
-    project_id: 'experience-agent-v1', // OQ-014：Phase 0 单项目，全部候选同项目
+  // 实验臂：Pilot 采集必填（--arm）；dry-run 省略 ⇒ arm = null（OQ-008）
+  const armArg = arg('arm');
+  const armPlan = armArg ? buildArmRunPlan(armArg as Arm) : null;
+  if (armPlan) assertPilotArm(armPlan.arm); // Pilot 采集只支持 A / B / C_frozen
+
+  // 检索：仅当该臂注入经验时执行（C_frozen）；A / B 不注入经验 ⇒ 不做检索
+  let retrieved: RetrievedExperienceRef[] = [];
+  let tokenAccounting: ExperienceTokenAccounting = {
+    experience_item_tokens: [],
+    experience_context_tokens: 0,
+    experience_count: 0,
+    // 未注入经验 ⇒ 无上下文记账；口径仍标注为诊断（Phase 0 未注入 Harness 侧计数器）
+    token_accounting_source: 'diagnostic',
   };
-  const toCandidate = (e: Experience): CandidateExperience => ({
-    id: e.id,
-    task_type: e.task_type,
-    complexity: e.complexity,
-    characteristics: e.characteristics,
-    constraints: e.constraints,
-    scope: e.scope,
-    project_id: 'experience-agent-v1',
-    situation: e.situation,
-    lesson: e.lesson,
-    decision: e.decision,
-    contraindications: e.contraindications,
-    independent_support: e.independent_support,
-    conflict_count: e.conflict_count,
-  });
-  const candidates = store.listRetrievable().map(toCandidate);
-  const queryText = [task.prompt, profile.task_type, profile.characteristics.join(' ')].join(' ');
-  const lexical = store.bm25(queryText);
-  const result = retrieve({
-    query,
-    candidates,
-    lexical,
-    calibration: PLACEHOLDER_CALIBRATION, // OQ-013：正式标定在 SNAPSHOT_01 冻结后按 nearest-rank 跑一次；Phase 0 dry-run 用占位常数
-    environment: 'compatible', // Phase 0 dry-run 同环境（OQ-003 规则 1）
-    contraindicationSimilarity: ruledContraindicationSimilarity,
-    // OQ-011：dry-run 属诊断场景，未注入 Harness 侧计数器 → 记账来源如实标为 'diagnostic'
-  });
-  const retrieved: RetrievedExperienceRef[] = result.in_context.map((s, i) => ({
-    id: s.candidate.id,
-    final_score: s.final_score,
-    retrieval_status: s.retrieval_status,
-    relevance_score: s.relevance_score,
-    reliability_score: s.reliability_score,
-    contraindication_factor: s.contraindication_factor,
-    // OQ-011：逐条 token 数（与 in_context 顺序一致）
-    tokens: result.token_accounting.experience_item_tokens[i] ?? 0,
-  }));
+  if (!armPlan || armPlan.inject_experience) {
+    const snap = loadSnapshot(SNAP_DIR, 'SNAPSHOT_01');
+    const store = snap.openReadOnly();
+    const query: RetrievalQuery = {
+      task_type: profile.task_type,
+      complexity: profile.complexity,
+      characteristics: profile.characteristics,
+      constraints: profile.constraints,
+      scope: profile.scope,
+      project_id: 'experience-agent-v1', // OQ-014：Phase 0 单项目，全部候选同项目
+    };
+    const toCandidate = (e: Experience): CandidateExperience => ({
+      id: e.id,
+      task_type: e.task_type,
+      complexity: e.complexity,
+      characteristics: e.characteristics,
+      constraints: e.constraints,
+      scope: e.scope,
+      project_id: 'experience-agent-v1',
+      situation: e.situation,
+      lesson: e.lesson,
+      decision: e.decision,
+      contraindications: e.contraindications,
+      independent_support: e.independent_support,
+      conflict_count: e.conflict_count,
+    });
+    const candidates = store.listRetrievable().map(toCandidate);
+    const queryText = [task.prompt, profile.task_type, profile.characteristics.join(' ')].join(' ');
+    const lexical = store.bm25(queryText);
+    const result = retrieve({
+      query,
+      candidates,
+      lexical,
+      calibration: PLACEHOLDER_CALIBRATION, // OQ-013：正式标定在 SNAPSHOT_01 冻结后按 nearest-rank 跑一次；此前用占位常数
+      environment: 'compatible', // 同环境 run（OQ-003 规则 1）
+      contraindicationSimilarity: ruledContraindicationSimilarity,
+      // OQ-011：未注入 Harness 侧计数器 ⇒ 记账来源如实标为 'diagnostic'
+    });
+    retrieved = result.in_context.map((s, i) => ({
+      id: s.candidate.id,
+      final_score: s.final_score,
+      retrieval_status: s.retrieval_status,
+      relevance_score: s.relevance_score,
+      reliability_score: s.reliability_score,
+      contraindication_factor: s.contraindication_factor,
+      // OQ-011：逐条 token 数（与 in_context 顺序一致）
+      tokens: result.token_accounting.experience_item_tokens[i] ?? 0,
+    }));
+    tokenAccounting = result.token_accounting;
+  }
 
   // env（OQ-016 / OQ-003 裁决）
   // 溯源要求：harness_version 必须是 **run 当时**实际使用的版本，**不得**读采集时的本机安装版本。
@@ -151,6 +181,32 @@ function main(): void {
   };
   const configHash = experimentConfigHash(buildExperimentConfig(env));
 
+  // Run isolation（人工冻结 2026-09-27）：Pilot run 记录 manifest；提供声明文件则执行前门禁
+  let runManifest: RunManifest | null = null;
+  if (armPlan) {
+    const runtimeManifest: RunManifest = {
+      arm: armPlan.arm,
+      snapshot_id: armPlan.snapshot_id,
+      policy_hash: armPlan.policy_hash,
+      experiment_config_hash: configHash,
+      harness_version: harnessVersion,
+      tool_schema_version: env.tool_schema_version,
+    };
+    const manifestPath = arg('manifest');
+    if (manifestPath) {
+      const declared = JSON.parse(readFileSync(manifestPath, 'utf8')) as RunManifest;
+      // 不一致 → CONFIG_MISMATCH → 抛错，轨迹不落盘（宁可丢一次 run，不污染实验）
+      assertRunManifest(declared, runtimeManifest);
+      runManifest = declared;
+    } else {
+      runManifest = runtimeManifest;
+    }
+  }
+
+  // CDA（冻结口径）：expected 由任务 YAML 人工定义，actual 代码直读 task_state.first_decision
+  const expDelegation = armPlan ? expectedDelegation(task.expected_first_decisions) : null;
+  const cda = expDelegation === null ? null : cdaScore(expDelegation, taskStates[0]!.first_decision);
+
   // judge 输入（§9.2 判定结果，由 dryrun-judge 产出）
   const judge = JSON.parse(readFileSync(judgePath, 'utf8')) as {
     success_criteria_results: Array<{ criterion: string; passed: boolean; evidence?: string }>;
@@ -162,11 +218,15 @@ function main(): void {
   const { events, record } = assembleRun({
     runId,
     task,
+    arm: armPlan?.arm ?? null,
+    runManifest,
+    expectedDelegation: expDelegation,
+    cda,
     primaryLog,
     childLogs,
     retrieved,
-    tokenAccounting: result.token_accounting,
-    experienceSnapshotId: 'SNAPSHOT_01',
+    tokenAccounting,
+    experienceSnapshotId: armPlan ? armPlan.snapshot_id : 'SNAPSHOT_01',
     experimentConfigHash: configHash,
     env,
     verification: {

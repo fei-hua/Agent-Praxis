@@ -13,6 +13,8 @@
 import type { BenchmarkTask } from '../benchmark/tasks.ts';
 import type { DecodedSessionLog, RawSessionEvent } from './session-log.ts';
 import { sumUsage, type ExperienceTokenAccounting } from '../core/token-accounting.ts';
+import type { Arm } from '../core/enums.ts';
+import type { RunManifest } from '../core/run-manifest.ts';
 import {
   deriveFailures,
   deriveReplans,
@@ -40,6 +42,15 @@ import type {
 export interface AssembleRunInput {
   runId: string;
   task: BenchmarkTask;
+  /**
+   * 实验臂：dry-run 传 null（OQ-008）；Pilot/Formal 传 core/arms.ts 中已冻结的真实臂值。
+   */
+  arm?: Arm | null;
+  /** Run isolation：本次 run 的 manifest（Pilot/Formal 必填；dry-run 为 null） */
+  runManifest?: RunManifest | null;
+  /** CDA 冻结口径：期望委派轴与单次得分（dry-run 为 null） */
+  expectedDelegation?: boolean | null;
+  cda?: 0 | 1 | null;
   /** 执行会话（主 agent）的日志 */
   primaryLog: DecodedSessionLog;
   /** 委派子会话日志（DELEGATE/PARALLEL/WORKFLOW 成员） */
@@ -142,7 +153,10 @@ export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[
   const record: RunRecord = {
     run_id: runId,
     task_id: task.id,
-    arm: null, // OQ-008：dry-run 不取 arm 值
+    arm: input.arm ?? null, // OQ-008：dry-run 为 null
+    run_manifest: input.runManifest ?? null,
+    expected_delegation: input.expectedDelegation ?? null,
+    cda: input.cda ?? null,
     task_state: firstState.envelope,
     first_tool_call: toolCalls[0] ?? null,
     experience_snapshot_id: input.experienceSnapshotId,
@@ -184,13 +198,14 @@ export function assembleRun(input: AssembleRunInput): { events: TrajectoryEvent[
     ts: firstTs,
     run_id: runId,
     task_id: task.id,
-    arm: null,
+    arm: input.arm ?? null,
     experience_snapshot_id: input.experienceSnapshotId,
     harness_version: input.env.harness_version,
     tool_schema_version: input.env.tool_schema_version,
     framework_version: input.env.framework_version,
     model_id: record.model_id,
     experiment_config_hash: input.experimentConfigHash,
+    run_manifest: input.runManifest ?? null,
   });
 
   for (const ts of taskStates) {

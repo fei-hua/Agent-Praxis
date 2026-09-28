@@ -22,6 +22,7 @@ import { appendFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import type { Arm, FirstDecision, RetrievalStatus } from '../core/enums.ts';
 import type { TokenAccountingSource } from '../core/token-accounting.ts';
+import type { RunManifest } from '../core/run-manifest.ts';
 import type { TaskStateEnvelope } from '../core/task-state.ts';
 
 // ---------- 事件负载类型 ----------
@@ -128,7 +129,11 @@ interface EventBase {
 export interface RunStartEvent extends EventBase {
   type: 'run_start';
   task_id: string;
-  arm: Arm | null; // OQ-008：dry-run 取值未裁决，不造值
+  /**
+   * OQ-008：dry-run 记为 null（不造 enum 值）；
+   * Pilot/Formal 必须取 core/arms.ts 中已冻结的真实臂值。
+   */
+  arm: Arm | null;
   experience_snapshot_id: string;
   harness_version: string;
   tool_schema_version: string;
@@ -136,6 +141,11 @@ export interface RunStartEvent extends EventBase {
   model_id: string;
   /** OQ-009 裁决：SHA256(canonical_json(experiment_config))，"sha256:<hex>" */
   experiment_config_hash: string;
+  /**
+   * Run isolation 硬规则（人工冻结 2026-09-27）：run 启动即记录 manifest，
+   * 执行前用它做 CONFIG_MISMATCH 门禁；dry-run 为 null。
+   */
+  run_manifest: RunManifest | null;
 }
 
 export interface TaskStateEvent extends EventBase {
@@ -235,6 +245,12 @@ export interface RunRecord {
   run_id: string;
   task_id: string;
   arm: Arm | null; // OQ-008
+  /** Run isolation 硬规则：本次 run 的 manifest（dry-run 为 null） */
+  run_manifest: RunManifest | null;
+  /** CDA 冻结口径：期望委派轴（由 benchmark 任务 YAML 人工定义；dry-run 为 null） */
+  expected_delegation: boolean | null;
+  /** CDA 冻结口径：单次 run 得分（0/1；dry-run 为 null） */
+  cda: 0 | 1 | null;
   task_state: TaskStateEnvelope;
   first_tool_call: ToolCallRecord | null;
   experience_snapshot_id: string;

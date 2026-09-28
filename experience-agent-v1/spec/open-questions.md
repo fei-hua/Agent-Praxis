@@ -682,9 +682,13 @@ answer:
 | OQ-017 | `stale` 的 N（超过 N 个任务未命中） | 经验生命周期迁移（→ stale）不可执行 | 给出 N，或给出完整的 stale 判定规则 | #5 |
 | OQ-022 | `deliberate verification failure` 的判定口径 | 该排除项无法从事件本身识别；当前靠显式排除输入，未提供即计入（宁可多计不漏计） | 给出自动判定口径（VERIFY 决策 + 指定检查命令，或任务定义标记） | #5 |
 
-> **ID/内容对照提醒（2026-09-27）**：人工在建议顺序中提到「OQ-015 = stale N」「OQ-017 = token/version 边界」，
-> 与本登记簿的编号不一致（本簿：OQ-015 = T1 采集通道；OQ-017 = stale 的 N；且「token/version 边界」不对应
-> 任何未裁决条目）。此处按**内容**保留各自编号，等待人工确认是否需要改编号或改内容映射。
+> **ID/内容对照（人工确认 2026-09-27）**：人工此前在建议顺序中把「stale N」写成 OQ-015、把 OQ-017 写成
+> 「token/version 边界」，属笔误。**确认按内容走、编号不动**：本簿 `OQ-015 = T1 采集通道`、
+> `OQ-017 = stale 的 N`；「token/version 边界」已由 **OQ-011 / OQ-018 / M4** 覆盖，**不新增编号**。
+>
+> **编号治理原则（人工 2026-09-27）**：`OQ 编号 = 身份 ID`。内容澄清/状态变化只更新状态与备注，
+> **不得为了「编号连续」或「方便分类」重命名 ID**——GitHub Issue、commit message、
+> experiment-design / open-questions / acceptance report 之间要保持历史可追溯。
 
 **本轮已落定的、Pilot 前必须冻结的口径**：
 
@@ -699,8 +703,10 @@ answer:
   infrastructure），排除业务结果不符但仍可继续、需求澄清、普通 replanning、deliberate verification failure；
   `failure_count` 按 trajectory event 统计、同一根因只计一次。`failure → replan` 链必须闭合。
 
-**建议顺序（人工 2026-09-27）**：OQ-019（已裁决）→ Issue #8 三臂编排 → Pilot；
-随后 OQ-014（scope 组合）、OQ-015（采集通道）、OQ-017（stale 的 N）、OQ-022（deliberate failure 口径）。
+**建议顺序（人工 2026-09-27，修正编号后）**：
+`OQ-019 failure 定义（已完成）` → `Issue #8 A/B/C_frozen 编排` → `OQ-014 scope 组合` →
+`OQ-015 T1 采集通道` → `OQ-017 stale 的 N`；OQ-022（deliberate failure 口径）随 Pilot 判定流程处理。
+该顺序不影响架构冻结。
 **新增问题的分流规则（人工 2026-09-27）**：影响「指标定义 / arm 隔离 / 数据可复现 / 统计假设」→ 登记 OQ；
 不影响 → 记为 Issue。Pilot 前冻结阶段不再扩大规格。
 本清单与 GitHub Issue [#4](https://github.com/fei-hua/Agent-Praxis/issues/4)、

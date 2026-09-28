@@ -17,6 +17,7 @@ import { test } from 'node:test';
 import { ARM_DEFINITIONS, PILOT_ARMS, armDefinition, assertPilotArm } from '../core/arms.ts';
 import { assertRunManifest, verifyRunManifest, type RunManifest } from '../core/run-manifest.ts';
 import { armCda, cdaScore, expectedDelegation, isDelegationAction, taskCda } from '../benchmark/cda.ts';
+import { buildArmRunPlan, composeArmPrompt } from '../policies/arm-prompt.ts';
 import { countFailures, deriveFailures } from '../telemetry/extract.ts';
 import { checkFailureReconstructable } from '../telemetry/acceptance.ts';
 import { FAILURE_CLASSES, type TrajectoryEvent } from '../telemetry/trajectory.ts';
@@ -210,6 +211,47 @@ test('OQ-019：failure_count 对同一根因的重复日志只计一次', () => 
 
 test('OQ-019：四类之外的值会被验收检查器拒绝', () => {
   assert.deepEqual([...FAILURE_CLASSES], ['tool_execution', 'command_execution', 'agent_action', 'infrastructure']);
+});
+
+// ---------- 臂运行时装配（arm-prompt） ----------
+
+test('arm-prompt：A 臂不注入任何指令与经验；B 臂只注入 Policy；C_frozen 追加经验块', () => {
+  const planA = buildArmRunPlan('A');
+  assert.equal(planA.instruction, '');
+  assert.equal(planA.inject_experience, false);
+  assert.equal(planA.policy_hash, null, 'A 臂无 Policy ⇒ policy_hash 为 null');
+  assert.equal(planA.snapshot_id, 'none');
+  assert.equal(composeArmPrompt(planA), '');
+
+  const planB = buildArmRunPlan('B');
+  assert.ok(planB.instruction.includes('REPLAN'), 'B 臂注入冻结 Policy');
+  assert.equal(planB.inject_experience, false);
+  assert.equal(planB.snapshot_id, 'none');
+  assert.match(planB.policy_hash!, /^sha256:[0-9a-f]{64}$/);
+  assert.ok(!composeArmPrompt(planB).includes('Frozen Action Experience'));
+
+  const planC = buildArmRunPlan('C_frozen');
+  assert.equal(planC.inject_experience, true);
+  assert.equal(planC.reflection_enabled, false, 'Pilot 三臂均不做 Reflection 写回');
+  assert.equal(planC.snapshot_id, 'SNAPSHOT_01');
+  const promptC = composeArmPrompt(planC, '[EXP-1]\nlesson: x');
+  assert.ok(promptC.includes('REPLAN'), 'C 臂含 Policy');
+  assert.ok(promptC.includes('Frozen Action Experience'), 'C 臂含经验块');
+  assert.ok(promptC.includes('SNAPSHOT_01'));
+});
+
+test('arm-prompt：不注入经验的臂收到经验上下文必须报错（防止臂污染）', () => {
+  assert.throws(() => composeArmPrompt(buildArmRunPlan('A'), '[EXP-1]\nlesson: x'), /不注入经验/);
+  assert.throws(() => composeArmPrompt(buildArmRunPlan('B'), '[EXP-1]\nlesson: x'), /不注入经验/);
+  // 空上下文对 A/B 是合法的（等于没有经验）
+  assert.equal(composeArmPrompt(buildArmRunPlan('B'), '').includes('Frozen Action Experience'), false);
+});
+
+test('arm-prompt：D_online 开启 Reflection（属于 D 实验，不在 Pilot）', () => {
+  const planD = buildArmRunPlan('D_online');
+  assert.equal(planD.reflection_enabled, true);
+  assert.equal(planD.snapshot_id, 'evolving_store');
+  assert.throws(() => assertPilotArm('D_online'), /Pilot 只允许/);
 });
 
 // ---------- 验收检查器：failure 上下文（含 run 级 event_seq） ----------

@@ -37,12 +37,13 @@ dry-run 的执行本身是**真实 DSH 子会话**（不是 mock）：每个任�
 
 | 目录 | 职责 | 关键文件 |
 |---|---|---|
-| `core/` | 冻结枚举/常量、Task State 直读、canonical JSON、两个哈希 | `enums.ts` `frozen-constants.ts` `task-state.ts` `experiment-config.ts` `tool-schema-version.ts` |
-| `experience/` | 经验知识层 | `schema.ts`（无 reliability 字段）`reliability.ts`（§5.4 公式）`retrieval.ts`（检索链路）`store.ts`（FTS5）`snapshot.ts`（只读）`gate.ts`（确定性质量门） |
+| `core/` | 冻结枚举/常量、Task State 直读、canonical JSON、哈希、臂定义、run 门禁、token 口径 | `enums.ts` `frozen-constants.ts` `task-state.ts` `experiment-config.ts` `tool-schema-version.ts` `token-accounting.ts` `arms.ts` `run-manifest.ts` |
+| `experience/` | 经验知识层 | `schema.ts`（无 reliability 字段）`reliability.ts`（§5.4 公式）`retrieval.ts`（检索链路 + 160/800 预算）`store.ts`（FTS5）`snapshot.ts`（只读）`calibration.ts`（nearest-rank）`gate.ts`（确定性质量门） |
 | `agents/` | 5 个 Subagent 定义（人工裁决冻结） | `registry.ts` |
-| `telemetry/` | 观测层 | `session-log.ts`（zstd 拼接帧解码）`extract.ts` `trajectory.ts` `assemble.ts` `acceptance.ts` `replay.ts` |
-| `benchmark/` | 任务与判定 | `tasks.ts`（受控词表校验）`judge.ts`（§9.2/§9.3）`tasks/dry-run/*.yaml` |
-| `scripts/` | 一键流水线 | `dryrun-setup.ts` `dryrun-judge.ts` `dryrun-collect.ts` `dryrun-accept.ts` |
+| `policies/` | B 臂冻结策略与臂运行时装配 | `delegation-policy.ts`（7 条优先级 + 指纹）`arm-prompt.ts` |
+| `telemetry/` | 观测层 | `session-log.ts`（zstd 拼接帧解码）`extract.ts`（含 OQ-019 failure 分类）`trajectory.ts` `assemble.ts` `acceptance.ts` `replay.ts` |
+| `benchmark/` | 任务与判定 | `tasks.ts`（受控词表校验）`judge.ts`（§9.2/§9.3）`cda.ts`（CDA 冻结口径）`tasks/dry-run/*.yaml` |
+| `scripts/` | 流水线（dry-run 与 Pilot 共用） | `dryrun-setup.ts` `dryrun-judge.ts` `dryrun-collect.ts`（Pilot 传 `--arm`/`--manifest`）`pilot-plan.ts`（执行前门禁）`dryrun-accept.ts` |
 | `spec/` | 冻结规格与 OQ 登记簿 | `frozen.md` `experiment-design.md` `open-questions.md` |
 
 ## 关键不变式（改代码前先读）

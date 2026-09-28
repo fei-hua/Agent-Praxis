@@ -1,6 +1,6 @@
 # Phase 0 Dry-run 验收报告
 
-生成时间：2026-09-28T11:39:34.513Z
+生成时间：2026-09-28T11:45:00.972Z
 
 ## 集合级覆盖（OQ-007 授权要求：≥1 失败 + ≥1 replan）
 
@@ -11,7 +11,7 @@
 ## §4.2 五条验收（全部 PASS 才允许 Pilot）
 
 ### run-2026-09-27-DRY-01
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 30 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 6/6 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -21,7 +21,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 0，返回 0，未返回：[]
 
 ### run-2026-09-27-DRY-02
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 30 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 8/8 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 0 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -31,7 +31,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 0，返回 0，未返回：[]
 
 ### run-2026-09-27-DRY-03
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 30 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 14/14 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 1 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 0 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -41,7 +41,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 1，返回 1，未返回：[]
 
 ### run-2026-09-27-DRY-04
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 30 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 40/40 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 7 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 1 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原
@@ -51,7 +51,7 @@
 - [PASS] **4.3-2** Subagent 的调用与返回都被记录（OQ-006 名单内） — 调用 4，返回 4，未返回：[]
 
 ### run-2026-09-27-DRY-05
-- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 27 个字段有值或明确 null；run_start/run_end 事件齐全
+- [PASS] **4.2-1** trajectory schema 覆盖率 100%（§8.1 字段值或明确 null） — §8.1 全部 30 个字段有值或明确 null；run_start/run_end 事件齐全
 - [PASS] **4.2-2** tool call 与 tool result 配对率 100% — 10/10 配对（含子会话调用）
 - [PASS] **4.2-3** failure event 可重建（失败原因与上下文可从 trajectory 还原） — 2 个 failure 均含 class/reason/kind/context，且上下文指向轨迹中真实存在的对象
 - [PASS] **4.2-4** replan event 可重建（触发与前后决策可还原） — 1 个 replan 的 trigger_failure_id / decision_before / decision_after 均可还原

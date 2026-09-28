@@ -2,6 +2,9 @@
   "run_id": "run-2026-09-27-DRY-02",
   "task_id": "DRY-02",
   "arm": null,
+  "run_manifest": null,
+  "expected_delegation": null,
+  "cda": null,
   "task_state": {
     "schema_version": "1.0",
     "task_state": {

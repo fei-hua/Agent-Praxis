@@ -35,7 +35,7 @@ export interface AcceptanceReport {
 }
 
 const RUN_RECORD_FIELDS: Array<keyof RunRecord> = [
-  'run_id', 'task_id', 'arm', 'task_state', 'first_tool_call', 'experience_snapshot_id',
+  'run_id', 'task_id', 'arm', 'run_manifest', 'expected_delegation', 'cda', 'task_state', 'first_tool_call', 'experience_snapshot_id',
   'retrieved_experiences', 'tool_calls', 'tool_results', 'subagent_invocations',
   'verification_result', 'reflection_output', 'outcome', 'harness_version',
   'tool_schema_version', 'framework_version', 'model_id', 'experiment_config_hash',
