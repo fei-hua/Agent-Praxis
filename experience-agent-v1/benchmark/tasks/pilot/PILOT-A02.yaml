@@ -26,3 +26,15 @@ allowed_paths:
   - pilot-workspace/PILOT-A02/**
 protected_paths:
   - pilot-workspace/PILOT-A02/check-doc.js
+
+verification:
+  - id: docs_added
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-A02/check-doc.js
+  - id: doc_check_pass
+    kind: output_contains
+    command: node pilot-workspace/PILOT-A02/check-doc.js
+    expect: DOC OK
+  - id: parser_behavior_changed
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-A02/check-behavior.js

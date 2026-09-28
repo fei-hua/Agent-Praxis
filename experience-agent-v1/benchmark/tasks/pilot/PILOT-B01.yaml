@@ -30,3 +30,20 @@ allowed_paths:
 protected_paths:
   - pilot-workspace/PILOT-B01/app.js
   - pilot-workspace/PILOT-B01/legacy/**
+
+verification:
+  - id: findings_written
+    kind: file_exists
+    path: pilot-workspace/PILOT-B01/findings.md
+  - id: indirect_module_correct
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-B01/check-findings.js
+  - id: chain_correct
+    kind: output_contains
+    command: node pilot-workspace/PILOT-B01/check-findings.js
+    expect: FINDINGS OK
+  - id: legacy_files_changed
+    kind: files_unchanged
+    paths:
+      - pilot-workspace/PILOT-B01/app.js
+      - pilot-workspace/PILOT-B01/legacy/**

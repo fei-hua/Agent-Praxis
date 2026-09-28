@@ -25,3 +25,15 @@ allowed_paths:
   - pilot-workspace/PILOT-A01/**
 protected_paths:
   - pilot-workspace/PILOT-A01/verify-heartbeat.js
+
+verification:
+  - id: fix_applied
+    kind: file_changed
+    path: pilot-workspace/PILOT-A01/src/heartbeat.js
+  - id: behavior_correct
+    kind: output_contains
+    command: node pilot-workspace/PILOT-A01/verify-heartbeat.js
+    expect: HEARTBEAT OK
+  - id: unrelated_file_changed
+    kind: file_unchanged
+    path: pilot-workspace/PILOT-A01/verify-heartbeat.js

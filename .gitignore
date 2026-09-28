@@ -12,6 +12,9 @@ telemetry/trajectories/*.jsonl.tmp
 dry-run-workspace/.judge-stdout.txt
 dry-run-workspace/.judge-stderr.txt
 
+# Pilot 工作区：每次 run 前由 scripts/pilot-setup.ts 确定性重建（种子在 benchmark/pilot-seeds.ts），不入库
+pilot-workspace/
+
 # 编辑器/系统
 .DS_Store
 Thumbs.db

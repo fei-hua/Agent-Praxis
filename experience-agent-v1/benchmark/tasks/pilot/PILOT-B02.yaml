@@ -30,3 +30,20 @@ allowed_paths:
 protected_paths:
   - pilot-workspace/PILOT-B02/widget.js
   - pilot-workspace/PILOT-B02/shared/**
+
+verification:
+  - id: impact_written
+    kind: file_exists
+    path: pilot-workspace/PILOT-B02/impact.md
+  - id: direct_set_correct
+    kind: command_exit_zero
+    command: node pilot-workspace/PILOT-B02/check-impact.js
+  - id: indirect_set_correct
+    kind: output_contains
+    command: node pilot-workspace/PILOT-B02/check-impact.js
+    expect: IMPACT OK
+  - id: shared_files_changed
+    kind: files_unchanged
+    paths:
+      - pilot-workspace/PILOT-B02/widget.js
+      - pilot-workspace/PILOT-B02/shared/**

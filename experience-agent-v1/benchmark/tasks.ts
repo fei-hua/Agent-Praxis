@@ -27,13 +27,25 @@ export const TASK_CATEGORIES = ['A', 'B', 'C', 'D', 'E'] as const;
 export type TaskCategory = (typeof TASK_CATEGORIES)[number];
 
 /**
- * 类别 → 该类别所属的**委派轴**（§9.1 + Q3/Q4 裁决 2026-09-27）。
- * A/B/E → 非委派；C/D → 委派。
+ * 类别 → 该类别**允许出现**的期望决策候选集（§9.1 + 人工签署结论 2026-09-27）。
  *
- * 校验规则（人工 Q4 裁决）：允许多值等价集，但集合内每个取值必须与类别**同属一个委派轴**。
- * 理由：CDA 只看委派轴（Q3 裁决：EXPLORE 不与 DELEGATE/PARALLEL/WORKFLOW 等价），
- * 因此轴一致是测量有效性所需的全部约束；等价集本身在 Pilot 前冻结，不得事后调整。
+ * 与「布尔委派属性」共同构成校验（人工 2026-09-27 收紧要求）：
+ *   (1) 集合必须是候选集的子集；
+ *   (2) 集合内每个取值的**布尔委派属性**必须与类别一致。
+ *
+ * 只有 (2) 会过宽：`{DIRECT, REPLAN}` 布尔属性都是 false 却被误当合法等价集，
+ * 因此必须叠加 (1)。A 类的 `EXPLORE` 是**人工签署放行的等价路径**（PILOT-A02），
+ * 因此进入 A 的候选集；这不改变任何已签署的 ground truth。
  */
+export const CATEGORY_CANDIDATE_DECISIONS: Readonly<Record<TaskCategory, readonly FirstDecision[]>> = {
+  A: ['DIRECT', 'EXPLORE'], // EXPLORE 由人工签署放行（A02：单文件"先读后写"的合理路径差异）
+  B: ['EXPLORE'],
+  C: ['DELEGATE', 'PARALLEL', 'WORKFLOW'],
+  D: ['PARALLEL', 'WORKFLOW'],
+  E: ['REPLAN'],
+};
+
+/** 类别的布尔委派属性（§3.1 委派轴；A/B/E = false，C/D = true） */
 export const CATEGORY_DELEGATION_AXIS: Readonly<Record<TaskCategory, boolean>> = {
   A: false,
   B: false,
@@ -49,7 +61,8 @@ export type VerificationKind =
   | 'file_exists'
   | 'file_changed'
   | 'file_unchanged'
-  | 'files_unchanged';
+  | 'files_unchanged'
+  | 'file_contains';
 
 export interface TaskVerificationCheck {
   /** 对应 success_criteria.required / forbidden 中的标签 */
@@ -57,6 +70,8 @@ export interface TaskVerificationCheck {
   kind: VerificationKind;
   command?: string;
   expect?: string;
+  /** file_contains：expect 至少出现次数（缺省 1） */
+  min_count?: number;
   path?: string;
   paths?: string[];
 }
@@ -164,13 +179,23 @@ export function loadTask(
   if (expectedOk) {
     derivedDelegation = expectedDelegation(expected as FirstDecision[]);
     if (category !== undefined && (TASK_CATEGORIES as readonly string[]).includes(category)) {
+      const cand = CATEGORY_CANDIDATE_DECISIONS[category as TaskCategory];
       const axis = CATEGORY_DELEGATION_AXIS[category as TaskCategory];
-      const wrong = (expected as FirstDecision[]).filter((d) => isDelegationAction(d) !== axis);
-      if (wrong.length > 0) {
+      // (1) 候选集约束：挡掉「布尔属性一致但语义不属于该类别」的组合（例如 A 类的 {DIRECT, REPLAN}）
+      const outside = (expected as FirstDecision[]).filter((d) => !cand.includes(d));
+      if (outside.length > 0) {
         push(
           'expected_first_decisions',
-          `类别 ${category} 的期望值必须与类别同属委派轴（axis delegation=${String(axis)}）；` +
-            `越轴取值：[${wrong.join(', ')}]（§9.1 + Q3/Q4 裁决）`,
+          `类别 ${category} 的期望值必须 ∈ 候选集 [${cand.join(', ')}]；越界取值：[${outside.join(', ')}]（§9.1）`,
+        );
+      }
+      // (2) 布尔委派属性约束：等价集必须与类别同属一个委派轴
+      const wrongAxis = (expected as FirstDecision[]).filter((d) => isDelegationAction(d) !== axis);
+      if (wrongAxis.length > 0) {
+        push(
+          'expected_first_decisions',
+          `类别 ${category} 的期望值必须与类别同属委派轴（delegation=${String(axis)}）；` +
+            `越轴取值：[${wrongAxis.join(', ')}]（§3.1 + Q3 裁决）`,
         );
       }
     }
@@ -232,6 +257,7 @@ export function loadTask(
         'file_changed',
         'file_unchanged',
         'files_unchanged',
+        'file_contains',
       ];
       for (const [i, raw] of rawVerification.entries()) {
         const c = (raw ?? {}) as Record<string, unknown>;
@@ -247,6 +273,17 @@ export function loadTask(
         if (kind === 'output_contains' && (typeof c['expect'] !== 'string' || c['expect'] === '')) {
           push(`verification[${i}].expect`, 'output_contains 必须提供 expect');
         }
+        if (kind === 'file_contains') {
+          if (typeof c['path'] !== 'string' || c['path'] === '') {
+            push(`verification[${i}].path`, 'file_contains 必须提供 path');
+          }
+          if (typeof c['expect'] !== 'string' || c['expect'] === '') {
+            push(`verification[${i}].expect`, 'file_contains 必须提供 expect');
+          }
+          if (c['min_count'] !== undefined && (typeof c['min_count'] !== 'number' || c['min_count'] < 1)) {
+            push(`verification[${i}].min_count`, '若提供必须为 ≥ 1 的数字');
+          }
+        }
         if (
           (kind === 'file_exists' || kind === 'file_unchanged' || kind === 'file_changed') &&
           (typeof c['path'] !== 'string' || c['path'] === '')
@@ -261,6 +298,7 @@ export function loadTask(
           kind: kind as VerificationKind,
           ...(typeof c['command'] === 'string' ? { command: c['command'] } : {}),
           ...(typeof c['expect'] === 'string' ? { expect: c['expect'] } : {}),
+          ...(typeof c['min_count'] === 'number' ? { min_count: c['min_count'] } : {}),
           ...(typeof c['path'] === 'string' ? { path: c['path'] } : {}),
           ...(toStringArray(c['paths']) ? { paths: toStringArray(c['paths'])! } : {}),
         });

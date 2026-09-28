@@ -55,3 +55,44 @@ node scripts/dryrun-collect.ts --task PILOT-C01 --tasks-dir benchmark/tasks/pilo
 ```
 
 Pilot 规模：`10 任务 × 3 次重复 × A/B/C_frozen = 90 次 run`（`spec/experiment-design.md` §5）。
+
+---
+
+## 运行基础设施（#6，进行中）
+
+| 组件 | 文件 | 状态 |
+|---|---|---|
+| 种子与独立 checker | `benchmark/pilot-seeds.ts` | 批次 1 完成：**A/B 类 4 个任务**（A01/A02/B01/B02），共 15 个种子文件 |
+| 确定性重建（Run 隔离） | `scripts/pilot-setup.ts` | ✅ 先清空 `pilot-workspace/` 再重建基线，并写 SHA-256 清单 `seed-hashes.json` |
+| 通用判定器 | `scripts/pilot-verify.ts` | ✅ 读 `verification[]` → 每项 PASS/FAIL/**CONFIG_ERROR**，另做 protected_paths 基线比对 |
+| `verification` 映射 | 各任务 YAML | 批次 1 的 4 个任务已补齐；C/D/E 类 6 个待做 |
+
+### 已实测的三条路径
+
+| 场景 | 结果 |
+|---|---|
+| 解题态（产物正确） | `task_success = true`，退出码 **0** |
+| 重建基线后（未解题） | `task_success = false`，退出码 **1**（证明 Run 间不继承改动） |
+| 未提供 `verification` / 无种子覆盖 | **`VERIFICATION_CONFIG_ERROR`**，退出码 **3**（基础设施错误，不算模型失败） |
+
+### 工作区模块解析边界（必须保留）
+
+`pilot-workspace/package.json` 是种子的一部分（`{"type":"commonjs"}`）。种子与 checker 用 CommonJS，
+而父项目 `package.json` 是 `"type": "module"`——缺这一条会让所有 `.js` 被按 ESM 解析、
+`require` 直接报错。**Phase 0 的 M3 异常（DRY-04 tester 首跑）根因即此**，此处已固化以避免复发。
+
+### 判定器设计要点（对应人工验收标准）
+
+- **#2 与 Agent 解耦**：checker 只检查任务结果（行为断言 / 产物内容 / 边界哈希），不检查 Agent 采取了什么动作；
+- **#3 Forbidden 反向检查**：`成功 ⇔ 全部 required = PASS ∧ 全部 forbidden = 未触发 ∧ 无 protected_path 违规`；
+  边界依据 = 种子基线 + 当前哈希比对（`protected_paths` 自动展开 glob）；
+- **#4 配置错误不算 FAIL**：缺 checker / 类型未知 / 基线缺失 / 参数非法 / `node <script>` 形式不合法
+  → `VERIFICATION_CONFIG_ERROR`（退出码 3），避免把 benchmark bug 记到模型头上；
+- **#5 单一实现**：Acquisition / Pilot / Validation 共用 `scripts/pilot-verify.ts`；
+  Phase 0 的 `dryrun-judge.ts` 属已冻结的历史证据，不参与后续阶段（dry-run 也不属于实验数据）。
+
+### 本 issue 剩余
+
+- 🔲 C/D/E 类 6 个任务的种子与 checker（batch 2）
+- 🔲 对应 `verification` 块
+- 🔲 `status: draft` → `frozen`（在 OQ-014 之后执行）
