@@ -1,0 +1,22 @@
+{
+  "run_id": "pilotdry-PILOT-A01-R1-A-rep1",
+  "task_id": "PILOT-A01",
+  "replicate": 1,
+  "arm": "A",
+  "arm_order_index": 0,
+  "group_id": "PILOT-A01|R1",
+  "seed_id": "seed-PILOT-A01-571135156bbe",
+  "seed_hash": "571135156bbe088834033163dc2bd8bda7dea4b53198605335ff7a5aec2a8fcb",
+  "workspace_baseline_hash": "6aeee38c14e90b9187bfb0d30edd5339345075e331eb3fe93a68e93213a309f6",
+  "manifest_hash": "08017fbb41d503bd049730da18d7d4e1151f9f498377ac44a5b6f06531f452ef",
+  "pilot_manifest": "pilot_dry_execution",
+  "experience_snapshot_id": null,
+  "plan_file": "pilot-runs\\pilotdry-PILOT-A01-R1-A.plan.json",
+  "tool_schema_verified": false,
+  "prepared_at": "2026-09-28T17:11:02.867Z",
+  "replacement_of": "pilotdry-PILOT-A01-R1-A",
+  "replacement_index": 1,
+  "replacement_cell": "PILOT-A01|R1|A",
+  "harness_version": "0.1.7-rc.2",
+  "protocol_contract_test": "PASS（tests/protocol-contract.test.ts，6/6）"
+}

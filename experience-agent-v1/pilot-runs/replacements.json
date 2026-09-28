@@ -1,0 +1,13 @@
+{
+  "cells": {
+    "PILOT-A01|R1|A": {
+      "original": "pilotdry-PILOT-A01-R1-A",
+      "replacement": "pilotdry-PILOT-A01-R1-A-rep1",
+      "at": "2026-09-28T17:11:02.875Z",
+      "class": "collection_error",
+      "status": "UNRESOLVED_INFRASTRUCTURE",
+      "replacement_failed_at": "2026-09-28T17:11:18.578Z",
+      "note": "replacement 未产生会话（新增会话 0 个）⇒ 第二次基础设施失败；按 Recovery Rule v1 暂停 Pilot，不再自动重试"
+    }
+  }
+}

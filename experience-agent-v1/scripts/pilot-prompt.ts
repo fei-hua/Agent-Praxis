@@ -19,6 +19,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { load as parseYaml } from 'js-yaml';
 import { FROZEN } from '../core/frozen-constants.ts';
+import { COMPLEXITY, CONSTRAINTS_VOCAB, FIRST_DECISION, SCOPE } from '../core/enums.ts';
+import { SPEC_EXAMPLE_VOCAB } from '../core/vocab.ts';
 import { loadTask, type BenchmarkTask } from '../benchmark/tasks.ts';
 import {
   retrieve,
@@ -144,17 +146,22 @@ export function composeRunPrompt(opts: {
     '{',
     `  "schema_version": "${FROZEN.task_state_schema_version}",`,
     '  "task_state": {',
-    `    "task_type": "<∈ ${['ui_upgrade', 'bugfix', 'refactor', 'data_layer', 'test', 'doc'].join('|')}>",`,
-    '    "complexity": "<simple|medium|high>",',
-    '    "characteristics": ["<multi_page|multi_file|shared_state|new_module 的子集>"],',
-    '    "scope": "<project|generic>",',
-    '    "constraints": ["<约束 token 子集>"],',
-    '    "first_decision": "<DIRECT|EXPLORE|DELEGATE|PARALLEL|WORKFLOW|VERIFY|REPLAN>"',
+    `  "task_type": "<逐字选自：${SPEC_EXAMPLE_VOCAB.task_type.join(' | ')}>",`,
+    `    "complexity": "<逐字选自：${COMPLEXITY.join(' | ')}>",`,
+    `    "characteristics": ["<逐字选自：${SPEC_EXAMPLE_VOCAB.characteristics.join(' | ')}（可为空数组）>"],`,
+    `    "scope": "<逐字选自：${SCOPE.join(' | ')}>",`,
+    `    "constraints": ["<逐字选自：${CONSTRAINTS_VOCAB.join(' | ')}（可为空数组）>"],`,
+    `    "first_decision": "<逐字选自：${FIRST_DECISION.join(' | ')}>"`,
     '  }',
     '}',
     '```',
     '',
-    '`first_decision` 必须是你**第一次决策**时真正选择的动作，之后不得回改该 JSON 块。',
+    '取值规则（硬性）：',
+    '- 所有字段的值必须**逐字选自上面列出的取值**；不得自创 token、不得改写、不得拼接或扩展枚举值；',
+    '- `task_state` 的六个字段缺一不可；',
+    '- `first_decision` 必须是你**第一次决策**时真正选择的动作，之后不得回改该 JSON 块；',
+    '- 该 JSON 块只记录你的判断，不作为行为指令（协议不规定你应该选哪个值）。',
+    '',
     '随后再开始执行任务本身。',
   ].join('\n');
 
