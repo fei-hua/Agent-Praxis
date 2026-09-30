@@ -1,0 +1,25 @@
+# 正式实验任务模板（作者复制后改名，例如 FORMAT-F01-A1.yaml）
+# 纪律：GT、expected_first_decisions、verification 一旦签署即冻结，不得因试跑结果调整。
+id: FORMAL-F01-A1            # 必须与 slots.json 的 task_id 完全一致
+title: <简短标题>
+category: A                  # A|B|C|D|E，必须与 slots.json 中该槽的 category 一致
+status: draft                # draft → frozen（需 GT 签署；formal 运行拒绝 draft）
+gt_signed_by: ""             # 签署人（冻结前必须填写）
+gt_signed_at: ""             # ISO 时间戳
+expected_first_decisions:    # 签署的期望第一步决策等价集（可多值）
+  - DIRECT
+expected_delegation: false   # 该任务是否**期望**发生委派（与候选集/布尔轴校验一致）
+instruction: |
+  <交给 Agent 的任务描述：不得包含委派指令（与 Pilot 的 Q1 裁决一致）>
+allowed_paths:
+  - pilot-workspace/FORMAL-F01-A1/
+protected_paths:
+  - pilot-workspace/FORMAL-F01-A1/verify.js
+verification:
+  - kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-A1/verify.js
+seeds:
+  - path: pilot-workspace/package.json
+    content: |
+      {"type":"commonjs"}
+  # …该变体自己的种子文件（必须独立编写，不得从 Pilot 锚点复制 GT）

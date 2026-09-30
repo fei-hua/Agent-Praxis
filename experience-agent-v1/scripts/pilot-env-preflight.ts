@@ -8,6 +8,7 @@
  */
 
 import { existsSync, statSync } from 'node:fs';
+import { resolveDshBinary } from './lib/dsh-resolver.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { decodeSessionLog, findChildSessions, listSessions, type RawSessionEvent } from '../telemetry/session-log.ts';
@@ -96,7 +97,7 @@ add(1, 'command execution（workspace-write 沙箱通道）', toolCalls.length >
   `tool/call=${toolCalls.length} tool/result=${toolResults.length} 成功=${okResults.length}`);
 
 // 2) 沙箱工作区写入（探针做了 建/读/删）
-const wroteWorkspace = /_pfp2_probe\.txt/.test(probe.text);
+const wroteWorkspace = /_pfp\d*_probe\.txt/.test(probe.text);
 add(2, 'sandbox workspace write', probe.sandboxMode === 'workspace-write' && wroteWorkspace,
   `sandbox/mode=${probe.sandboxMode}；探针含工作区文件操作=${wroteWorkspace}`);
 
@@ -181,6 +182,27 @@ add(9, 'maxDepth 不阻断既定委派（未改 Harness 参数）', probe.depth 
       ? `launcher=elevated/outside-sandbox → session=${found.id.slice(0, 20)} sandbox=${found.mode} depth=${found.depth} format=v${found.version} 成功工具结果=${found.ok} 子会话=${found.kids}`
       : `未找到含启动器标记「${launcherMarker}」的会话`,
   );
+}
+
+// 12) 启动器 binary 身份门禁（人工要求 2026-09-29，**fail-closed**）
+//     与启动器共用同一份解析实现；RESOLVER_ERROR 必须显式 FAIL（不得降级成"版本不存在"）。
+{
+  const declared = arg('declared-harness-version') ?? '0.1.7-rc.2';
+  const r = resolveDshBinary(declared, { explicitBin: arg('dsh-bin') });
+  if (r.status === 'RESOLVED') {
+    add(
+      12,
+      'launcher binary identity（declared == resolved，且为 exact binary）',
+      true,
+      `declared=${r.declared} resolved=${r.resolvedVersion} binary=${r.binaryPath} match=true（本机另有：${r.available.filter((v) => v !== declared).join(', ') || '无'}）`,
+    );
+  } else if (r.status === 'VERSION_MISMATCH') {
+    add(12, 'launcher binary identity', false, `declared=${r.declared} 但 binary 自报 ${r.probedVersion}（${r.binaryPath}）`);
+  } else if (r.status === 'NOT_FOUND') {
+    add(12, 'launcher binary identity', false, `NOT_FOUND：本机无 ${r.declared}（可用：${r.available.join(', ') || '无'}）`);
+  } else {
+    add(12, 'launcher binary identity', false, `RESOLVER_ERROR：${r.message}`);
+  }
 }
 
 // 10) 确定性 seed 重建（附带项）

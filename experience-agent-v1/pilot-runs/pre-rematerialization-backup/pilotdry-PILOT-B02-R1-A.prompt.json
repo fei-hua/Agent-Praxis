@@ -1,0 +1,10 @@
+{
+  "run_id": "pilotdry-PILOT-B02-R1-A",
+  "task_id": "PILOT-B02",
+  "arm": "A",
+  "prompt": "## 任务\n\n工作区：仓库根为 `D:\\Agent Praxis\\experience-agent-v1`，任务中的相对路径均相对该目录。\n\npilot-workspace/PILOT-B02/shared/ 提供多个导出函数，其中只有一部分被 widget.js 使用。\n请确定「widget.js 直接使用」与「经其他模块间接使用」的导出函数集合，\n写入 pilot-workspace/PILOT-B02/impact.md，格式要求：\n- 小节 \"## direct\" 下列出直接使用的导出函数名（每行一个）\n- 小节 \"## indirect\" 下列出间接使用的导出函数名（每行一个）\n只允许新增 impact.md；shared/ 与 widget.js 不得修改。\n\n## 输出协议（必须遵守，且只在本条要求下输出该 JSON）\n\n在你的**第一条回复**里，先输出一个 ```json 代码块，内容为 task_state envelope：\n\n```json\n{\n  \"schema_version\": \"1.0\",\n  \"task_state\": {\n  \"task_type\": \"<逐字选自：ui_upgrade | bugfix | refactor | data_layer | test | doc>\",\n    \"complexity\": \"<逐字选自：simple | medium | high>\",\n    \"characteristics\": [\"<逐字选自：multi_page | multi_file | shared_state | new_module（可为空数组）>\"],\n    \"scope\": \"<逐字选自：project | generic>\",\n    \"constraints\": [\"<逐字选自：routing_immutable | data_schema_immutable | api_immutable | scope_limited | no_new_dependency | no_public_interface_change（可为空数组）>\"],\n    \"first_decision\": \"<逐字选自：DIRECT | EXPLORE | DELEGATE | PARALLEL | WORKFLOW | VERIFY | REPLAN>\"\n  }\n}\n```\n\n取值规则（硬性）：\n- 所有字段的值必须**逐字选自上面列出的取值**；不得自创 token、不得改写、不得拼接或扩展枚举值；\n- `task_state` 的六个字段缺一不可；\n- `first_decision` 必须是你**第一次决策**时真正选择的动作，之后不得回改该 JSON 块；\n- 该 JSON 块只记录你的判断，不作为行为指令（协议不规定你应该选哪个值）。\n\n随后再开始执行任务本身。",
+  "injected_ids": [],
+  "experience_context_tokens": 0,
+  "token_accounting_source": "diagnostic",
+  "serialized_context_hash": null
+}

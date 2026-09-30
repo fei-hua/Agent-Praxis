@@ -1,0 +1,18 @@
+﻿{
+  "run_id": "pilotdry-PILOT-A02-R1-B",
+  "session_id": "session-0d1bac19-9511-498c-97fe-53d029512eff",
+  "counted": false,
+  "valid_for_analysis": false,
+  "disposition": "PENDING_INVESTIGATION",
+  "tool_path": "nested spawn (repair -> pilot-verify -> checker grandchild)",
+  "original_failure": "task_success=false (exit=1)，由 pilot-collect-repair v1 记录",
+  "reason": "nested spawn 在受限沙箱下使 command 类检查退化为 FAIL；直接执行同一 checker 均通过，且 workspace drift=1（仅 Agent 产物）、无 seed 重建 ⇒ 该 FAIL 属工具缺陷产物，既非 Agent FAIL，也非 workspace 污染",
+  "evidence": [
+    "workspace drift = 1：pilot-workspace/PILOT-A02/src/parser.js（含 JSDoc @param/@returns）",
+    "node pilot-workspace/PILOT-A02/check-doc.js → DOC OK (exit 0)",
+    "node pilot-workspace/PILOT-A02/check-behavior.js → BEHAVIOR OK (exit 0)",
+    "seed-hashes.json mtime 17:24:41 < parser.js 17:24:49 < session log 17:24:54（无重建晚于 session）"
+  ],
+  "raw_trajectory_preserved_at": "telemetry/trajectories/pilotdry-PILOT-A02-R1-B.invalid-nested-spawn.jsonl",
+  "marked_at": "2026-09-27"
+}

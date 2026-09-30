@@ -1,0 +1,461 @@
+{
+  "run_id": "pilotdry-PILOT-E02-R1-A",
+  "task_id": "PILOT-E02",
+  "arm": "A",
+  "run_manifest": {
+    "arm": "A",
+    "snapshot_id": "none",
+    "policy_hash": null,
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c"
+  },
+  "expected_delegation": false,
+  "cda": 1,
+  "task_state": {
+    "schema_version": "1.0",
+    "task_state": {
+      "task_type": "bugfix",
+      "complexity": "medium",
+      "characteristics": [
+        "multi_file"
+      ],
+      "scope": "project",
+      "constraints": [
+        "scope_limited"
+      ],
+      "first_decision": "EXPLORE"
+    }
+  },
+  "first_tool_call": {
+    "call_id": "call_00_7nl6jPzmMCvp8FrLJvlN6659",
+    "tool_name": "pwsh",
+    "arguments": {
+      "command": "node pilot-workspace/PILOT-E02/build.js; \"EXIT=$LASTEXITCODE\"",
+      "description": "Run build script to confirm failure",
+      "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+    },
+    "from_session": "primary"
+  },
+  "experience_snapshot_id": "none",
+  "retrieved_experiences": [],
+  "tool_calls": [
+    {
+      "call_id": "call_00_7nl6jPzmMCvp8FrLJvlN6659",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node pilot-workspace/PILOT-E02/build.js; \"EXIT=$LASTEXITCODE\"",
+        "description": "Run build script to confirm failure",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_D0wgS9dCQHzHaYiAGIQ60981",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "pilot-workspace/PILOT-E02/**/*",
+        "path": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_KVh6CYd0g3rXORppoeeO4782",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Get-ChildItem -Recurse -Force \"pilot-workspace\\PILOT-E02\" | Select-Object FullName, Length | Format-Table -AutoSize",
+        "description": "List PILOT-E02 directory contents",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ZXZrwTThVaeqRBn3CU503748",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-E02\\build.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_v7JdEmIXTh8NE5ycSQwb9637",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-E02\\verify-build.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_El51xSVV1OAAkmXnZEVy1450",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-E02\\manifest.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_03_wNJXsf2aJLTFcgZD4apN8961",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-E02\\src\\app.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_1Wi48MpdDmkbL806zlVs6953",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Write-Output \"== pilot-workspace ==\"; Get-ChildItem -Force \"pilot-workspace\" | Select-Object Mode,Name; Write-Output \"== repo root ==\"; Get-ChildItem -Force \".\" | Select-Object Mode,Name; Write-Output \"== git status ==\"; git status --porcelain 2>&1; Write-Output \"== git log ==\"; git log --oneline -15 2>&1",
+        "description": "Explore workspace structure and git history",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_1Vj3BWvkPG03of0bJ7i50689",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\seed-hashes.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_GdrZMy0NtZEX8YpnYE5H0663",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\package.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_w0DSe7W7Ibb9AYGqOrez6588",
+      "tool_name": "grep",
+      "arguments": {
+        "pattern": "PILOT-E02",
+        "path": "D:\\Agent Praxis\\experience-agent-v1",
+        "include": "*.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_rfZhR3yFcuebxiPpBeYl1676",
+      "tool_name": "grep",
+      "arguments": {
+        "pattern": "missing\\.js",
+        "path": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_IyfIxyXNNVciJNSdU1qb3012",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "scripts/lib/**",
+        "path": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_rGOXOYEqnByhtHHHytpm1898",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-manifest.json",
+        "offset": 655,
+        "limit": 100
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_FJCU2eB4pxYO112SYuuR6418",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\benchmark\\pilot-seeds.ts",
+        "limit": 140,
+        "offset": 600
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_1jiOz6I97xJXEnyVO18A8049",
+      "tool_name": "grep",
+      "arguments": {
+        "path": "D:\\Agent Praxis\\experience-agent-v1\\benchmark\\pilot-seeds.ts",
+        "pattern": "E02|check|verify|protected|immutable|expect"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_oepLiKQuZPCyFNs8QC336770",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\benchmark\\pilot-seeds.ts",
+        "limit": 60
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_T5nn9UbwdKu7LPsX0vdY3440",
+      "tool_name": "grep",
+      "arguments": {
+        "path": "D:\\Agent Praxis\\experience-agent-v1\\docs",
+        "pattern": "E02|missing\\.js|清单引用|恢复"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ryt5jXhZbNZ05TISCbs85974",
+      "tool_name": "grep",
+      "arguments": {
+        "path": "D:\\Agent Praxis\\experience-agent-v1",
+        "pattern": "protected_paths|protectedPaths|workspaceFingerprint|fingerprint",
+        "include": "*.ts"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_fZn8lJkGx7IriEtP66kL9179",
+      "tool_name": "grep",
+      "arguments": {
+        "path": "D:\\Agent Praxis\\experience-agent-v1\\benchmark",
+        "pattern": "E02"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_W9gB1vsu6T1obZM0W2340119",
+      "tool_name": "glob",
+      "arguments": {
+        "path": "D:\\Agent Praxis\\experience-agent-v1",
+        "pattern": "**/*E02*"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Ft0YoT4akIgCbnowZ7jE1995",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\benchmark\\tasks\\pilot\\PILOT-E02.yaml"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_Pfvocl6F2u4Q1LW722bS8929",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\benchmark\\tasks\\pilot\\GROUND-TRUTH-REVIEW.md",
+        "limit": 80,
+        "offset": 20
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_5qI3Da5yrjSsOKHfATSZ5434",
+      "tool_name": "edit",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-E02\\manifest.json",
+        "old_string": "  \"targets\": [\"src/app.js\", \"src/missing.js\"]",
+        "new_string": "  \"targets\": [\"src/app.js\"]"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_s8eh1ru7VR0mfkZ9acTZ8302",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Write-Output \"== build.js ==\"; node pilot-workspace/PILOT-E02/build.js; Write-Output \"build exit=$LASTEXITCODE\"\nWrite-Output \"== verify-build.js ==\"; node pilot-workspace/PILOT-E02/verify-build.js; Write-Output \"verify exit=$LASTEXITCODE\"\nWrite-Output \"== assert count in build.js ==\"; (Select-String -Path 'pilot-workspace\\PILOT-E02\\build.js' -Pattern 'assert\\(' -AllMatches).Matches.Count\nWrite-Output \"== verify-build.js sha256 (expect 1eb31a6dbefd754f2b08279d30088b3d008455befab5ee03346e28b38cb4a11f) ==\"; (Get-FileHash 'pilot-workspace\\PILOT-E02\\verify-build.js' -Algorithm SHA256).Hash.ToLower()",
+        "description": "Run build and verify, check assertions and protected hash",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    }
+  ],
+  "tool_results": [
+    {
+      "call_id": "call_00_7nl6jPzmMCvp8FrLJvlN6659",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_D0wgS9dCQHzHaYiAGIQ60981",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_KVh6CYd0g3rXORppoeeO4782",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ZXZrwTThVaeqRBn3CU503748",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_v7JdEmIXTh8NE5ycSQwb9637",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_El51xSVV1OAAkmXnZEVy1450",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_03_wNJXsf2aJLTFcgZD4apN8961",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_1Wi48MpdDmkbL806zlVs6953",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_1Vj3BWvkPG03of0bJ7i50689",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_GdrZMy0NtZEX8YpnYE5H0663",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_w0DSe7W7Ibb9AYGqOrez6588",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_rfZhR3yFcuebxiPpBeYl1676",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_IyfIxyXNNVciJNSdU1qb3012",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_rGOXOYEqnByhtHHHytpm1898",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_FJCU2eB4pxYO112SYuuR6418",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_1jiOz6I97xJXEnyVO18A8049",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_oepLiKQuZPCyFNs8QC336770",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_T5nn9UbwdKu7LPsX0vdY3440",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ryt5jXhZbNZ05TISCbs85974",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_fZn8lJkGx7IriEtP66kL9179",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_W9gB1vsu6T1obZM0W2340119",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Ft0YoT4akIgCbnowZ7jE1995",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_Pfvocl6F2u4Q1LW722bS8929",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_5qI3Da5yrjSsOKHfATSZ5434",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_s8eh1ru7VR0mfkZ9acTZ8302",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    }
+  ],
+  "subagent_invocations": [],
+  "verification_result": {
+    "required": {
+      "build_ok": "PASS",
+      "assertions_intact": "PASS",
+      "verify_script_changed": "PASS"
+    },
+    "forbidden": {},
+    "success": true
+  },
+  "reflection_output": null,
+  "outcome": {
+    "tokens": 409715,
+    "subagent_calls": 0,
+    "wall_time_s": 41.167
+  },
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "tschema-dcdb10f5d21c",
+  "framework_version": "1.0",
+  "model_id": "deepseek-flash",
+  "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+  "input_tokens": 35474,
+  "output_tokens": 6881,
+  "total_tokens": 409715,
+  "cache_read_tokens": 367360,
+  "reasoning_tokens": null,
+  "experience_context_tokens": 0,
+  "token_accounting_source": "diagnostic",
+  "wall_time_ms": 41167,
+  "session_format_version": "v4",
+  "sandbox_mode": "workspace-write",
+  "delegation_depth": 0,
+  "success_criteria": [
+    "build_ok",
+    "assertions_intact",
+    "verify_script_changed"
+  ]
+}

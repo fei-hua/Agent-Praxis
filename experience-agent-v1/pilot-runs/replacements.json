@@ -17,6 +17,18 @@
       "status": "UNRESOLVED_INFRASTRUCTURE",
       "replacement_failed_at": "2026-09-28T17:20:32.531Z",
       "note": "replacement 采集期 CONFIG_MISMATCH ⇒ 第二次失败；按 Recovery Rule v1 暂停 Pilot，不再自动重试"
+    },
+    "PILOT-A01|R1|B": {
+      "original": "pilotdry-PILOT-A01-R1-B",
+      "replacement": "pilotdry-PILOT-A01-R1-B-rep1",
+      "at": "2026-09-28T17:34:46.672Z",
+      "class": "config_mismatch"
+    },
+    "PILOT-C01|R1|A": {
+      "original": "pilotdry-PILOT-C01-R1-A",
+      "replacement": "pilotdry-PILOT-C01-R1-A-rep1",
+      "at": "2026-09-29T15:40:55.759Z",
+      "class": "config_mismatch"
     }
   }
 }

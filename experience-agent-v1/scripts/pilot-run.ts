@@ -272,7 +272,20 @@ function prepare(manifest: PilotManifest, harnessVersion: string, limit: number 
       tool_schema_verified: plan['tool_schema_verified'] ?? null,
       prepared_at: new Date().toISOString(),
     };
-    writeFileSync(path.join(RUNS_DIR, `${run.run_id}.receipt.json`), JSON.stringify(receipt, null, 2) + '\n', 'utf8');
+    const receiptPath = path.join(RUNS_DIR, `${run.run_id}.receipt.json`);
+    // fail-closed 护栏（人工要求 2026-09-30）：prepare **不得覆盖已完成 run 的记录卡**
+    if (existsSync(receiptPath)) {
+      const existing = JSON.parse(readFileSync(receiptPath, 'utf8')) as Record<string, unknown>;
+      const hasRunData = existing['session_id'] !== undefined || Object.keys(existing).length > 20;
+      if (hasRunData && !process.argv.includes('--force')) {
+        failures.push(
+          `${run.run_id}: Refusing to overwrite completed receipt.\n` +
+            `Use --force only for intentional rematerialization.`,
+        );
+        continue;
+      }
+    }
+    writeFileSync(receiptPath, JSON.stringify(receipt, null, 2) + '\n', 'utf8');
     ok++;
   }
   console.log(`=== prepare（dataset=${manifest.dataset}）===`);

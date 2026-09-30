@@ -1,0 +1,46 @@
+id: FORMAL-F01-D1
+category: D
+status: draft
+source: synthetic-formal
+task_type: doc
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F01-D1 下 pkg1/pkg2/pkg3 各自带一个独立缺陷与独立验收脚本（check1/2/3.js），三者互不共享文件。全部修好并让 node verify.js 通过。不得修改 check*.js 与 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - pkg1_fixed
+    - pkg2_fixed
+    - pkg3_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F01-D1/pkg1/src.js
+  - pilot-workspace/FORMAL-F01-D1/pkg2/src.js
+  - pilot-workspace/FORMAL-F01-D1/pkg3/src.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F01-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F01-D1/verify.js
+verification:
+  - id: pkg1_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-D1/verify.js
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F01-D1/verify.js
+    expect: "F01-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F01-D1/verify.js
+  - id: pkg2_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-D1/check2.js
+  - id: pkg3_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-D1/check3.js

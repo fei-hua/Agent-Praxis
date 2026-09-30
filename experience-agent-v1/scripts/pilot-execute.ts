@@ -21,6 +21,12 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { decodeSessionLog, listSessions } from '../telemetry/session-log.ts';
 import { seedPilotWorkspace, loadSeedHashes, currentHash, PROJECT_ROOT } from './pilot-setup.ts';
+import { readJsonUtf8, writeJsonUtf8 } from './lib/json-io.ts';
+import { resolveDshBinary } from './lib/dsh-resolver.ts';
+import { captureWorkspaceFingerprint } from './lib/workspace-fingerprint.ts';
+import { loadTask } from '../benchmark/tasks.ts';
+import { verifyTask } from './pilot-verify.ts';
+import { load as parseYaml } from 'js-yaml';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const RUNS_DIR = path.join(PROJECT_ROOT, 'pilot-runs');
@@ -34,16 +40,21 @@ function arg(name: string): string | undefined {
   return i >= 0 ? process.argv[i + 1] : undefined;
 }
 
-/** 定位 dsh 可执行入口（bin.js），不依赖 PATH */
-function findDshBin(): string {
-  const explicit = arg('dsh-bin');
-  if (explicit && existsSync(explicit)) return explicit;
-  const base = path.join(process.env['LOCALAPPDATA'] ?? '', 'npm-cache', '_npx');
-  for (const dir of readdirSync(base)) {
-    const p = path.join(base, dir, 'node_modules', '@deepseek-ai', 'dsh', 'lib', 'bin.js');
-    if (existsSync(p)) return p;
+/**
+ * 依据 plan 声明的 harness_version 解析 exact binary（人工要求 2026-09-29）。
+ * 实现**只有一份**：scripts/lib/dsh-resolver.ts（与 preflight #12 共用）。
+ * 四种状态里除 RESOLVED 外一律中止，绝不"扫到哪个用哪个"。
+ */
+function resolveDshBin(declaredVersion: string): { bin: string; resolvedVersion: string; probed: string[] } {
+  const r = resolveDshBinary(declaredVersion, { explicitBin: arg('dsh-bin') });
+  if (r.status === 'RESOLVED') return { bin: r.binaryPath, resolvedVersion: r.resolvedVersion, probed: r.probed };
+  if (r.status === 'VERSION_MISMATCH') {
+    throw new Error(`CONFIG_MISMATCH：声明 ${r.declared} 但 binary 自报 ${r.probedVersion}（${r.binaryPath}）—— 不得启动`);
   }
-  throw new Error('未找到 dsh bin.js（可用 --dsh-bin 显式指定）');
+  if (r.status === 'NOT_FOUND') {
+    throw new Error(`CONFIG_MISMATCH：本机没有声明版本 ${r.declared}（可用：${r.available.join(', ') || '无'}）—— 不得启动`);
+  }
+  throw new Error(`RESOLVER_ERROR：${r.message} —— 不得启动`);
 }
 
 function run(script: string, args: string[], timeoutMs = 900_000): { code: number; out: string } {
@@ -106,7 +117,18 @@ const prompt = readFileSync(promptFile, 'utf8');
 
 const known = new Set(listSessions(DSH_HOME).map((s) => s.sessionId));
 const startedAt = Date.now();
-const bin = findDshBin();
+const { bin, resolvedVersion, probed } = resolveDshBin(harnessVersion);
+console.log(`  启动器解析：declared=${harnessVersion} resolved=${resolvedVersion}（探测到：${probed.join(' | ')}）`);
+// 立刻把"到底用哪个 binary"写入 receipt（即便后续采集失败也留证）
+writeJsonUtf8(receiptFile, {
+  ...readJsonUtf8<Record<string, unknown>>(receiptFile),
+  declared_harness_version: harnessVersion,
+  resolved_harness_version: resolvedVersion,
+  resolved_binary_path: bin,
+});
+report['declared_harness_version'] = harnessVersion;
+report['resolved_harness_version'] = resolvedVersion;
+report['resolved_binary_path'] = bin;
 const execLog = path.join(RUNS_DIR, `${runId}.exec.log`);
 {
   const fd = openSync(execLog, 'w');
@@ -123,6 +145,26 @@ const execLog = path.join(RUNS_DIR, `${runId}.exec.log`);
   }
 }
 report['executed_at'] = new Date().toISOString();
+
+// ---------- 3.5) Agent-exit final workspace fingerprint（人工要求 2026-09-27） ----------
+// 在 **Agent 进程退出的瞬间**采集 workspace 文件清单 + SHA-256，并立即写入 receipt。
+// 之后任何 post-processing repair 都必须先比对：current == recorded，否则 COLLECTION_ERROR；
+// 禁止 repair 先重新 seed 再 verify（那已经不是原 observation）。
+const fingerprint = captureWorkspaceFingerprint(WS);
+{
+  const r = readJsonUtf8<Record<string, unknown>>(receiptFile);
+  Object.assign(r, {
+    workspace_final_fingerprint: fingerprint,
+    workspace_fingerprint_time: fingerprint.captured_at,
+    workspace_sha256: fingerprint.manifest_sha256,
+    workspace_file_manifest: fingerprint.files,
+    workspace_file_count: fingerprint.file_count,
+    workspace_final_fingerprint_capture: 'agent_exit',
+  });
+  writeJsonUtf8(receiptFile, r);
+}
+report['workspace_sha256'] = fingerprint.manifest_sha256;
+console.log(`  Agent-exit fingerprint 已记录：${fingerprint.manifest_sha256.slice(0, 16)}…（${fingerprint.file_count} files @ ${fingerprint.captured_at}）`);
 
 // ---------- 4) 定位本次 run 的会话（新增 + depth 0 + 含 task_state） ----------
 const fresh = listSessions(DSH_HOME)
@@ -158,15 +200,36 @@ if (!sessionId) {
 report['session_id'] = sessionId;
 Object.assign(report, sessionMeta);
 
-// ---------- 5) verify（generic verifier；在 Agent 产物上运行） ----------
-const verify = run('pilot-verify.ts', ['--task', plan.task_id, '--tasks-dir', TASKS_DIR, '--out', WS], 300_000);
-report['verify_exit'] = verify.code;
+// ---------- 5) verify（**进程内** verifyTask；与 pilot-collect-repair 共用同一实现） ----------
+// 人工要求（2026-09-27）：消除 execute → spawn pilot-verify → checker 的 nested spawn 路径。
+// 经验证据：同 workspace / 同 session 下，nested spawn 会让 command 类检查退化为 FAIL，
+// 而进程内调用给出正确判定。checker 仍是单层受控子进程（verifyTask 内部）。
+const loadedTask = loadTask(parseYaml(readFileSync(path.join(TASKS_DIR, `${plan.task_id}.yaml`), 'utf8')));
+if (!loadedTask.ok) throw new Error(`任务 ${plan.task_id} 校验失败：${loadedTask.issues.map((i) => i.field).join(', ')}`);
+const verifyResult = verifyTask(loadedTask.task);
 const judgeFile = path.join(WS, `judge-${plan.task_id}.json`);
-if (verify.code === 3) {
-  console.log(`[基础设施/配置错误] VERIFICATION_CONFIG_ERROR —— 不计入正式数据\n${verify.out.split('\n').slice(-5).join('\n')}`);
+writeJsonUtf8(judgeFile, {
+  task_id: verifyResult.task_id,
+  success_criteria_results: [
+    ...Object.entries(verifyResult.required).map(([criterion, v]) => ({ criterion, passed: v === 'PASS' })),
+    ...Object.entries(verifyResult.forbidden).map(([criterion, violated]) => ({ criterion, passed: !violated })),
+  ],
+  forbidden_file_changes: verifyResult.protected_path_violations,
+  verification_tool_called: true,
+  subagent_invocations: 0,
+  wall_time_ms: 0,
+  verification_status: verifyResult.verification_status,
+  config_errors: verifyResult.config_errors,
+});
+console.log('  verify（进程内 verifyTask）：');
+for (const c of verifyResult.checks) console.log(`    [${c.status}] ${c.id} (${c.kind}) — ${c.detail}`);
+if (verifyResult.verification_status === 'VERIFICATION_CONFIG_ERROR') {
+  console.log(`[基础设施/配置错误] VERIFICATION_CONFIG_ERROR —— 不计为 Agent FAIL，不计入正式数据`);
+  for (const e of verifyResult.config_errors) console.log(`    - ${e}`);
   process.exit(3);
 }
-report['verdict'] = verify.code === 0 ? 'PASS' : 'FAIL';
+report['verify_result'] = verifyResult.success;
+report['verdict'] = verifyResult.success ? 'PASS' : 'FAIL';
 
 // ---------- 6) collect（写轨迹 + manifest 二次门禁） ----------
 const collect = run('dryrun-collect.ts', [
@@ -188,7 +251,7 @@ if (collect.code !== 0) {
 }
 
 // ---------- 7) 从产出的 run record 读回环境事实，回填 receipt ----------
-const trajFile = path.join(TRAJ_DIR, `run-${runId}.jsonl`);
+const trajFile = path.join(TRAJ_DIR, `${runId}.jsonl`);
 let record: Record<string, unknown> | null = null;
 if (existsSync(trajFile)) {
   const lines = readFileSync(trajFile, 'utf8').split('\n').filter((l) => l.trim() !== '');
@@ -210,11 +273,22 @@ if (record) {
   receipt['reasoning_tokens'] = record['reasoning_tokens'];
   receipt['token_accounting_source'] = record['token_accounting_source'];
   receipt['cda'] = record['cda'];
-  receipt['task_success'] = record['success_criteria'] ? undefined : undefined;
+  // 人工要求（2026-09-27）：扩充回填清单（全部来自真实 session/trajectory，不使用默认值）
+  receipt['total_tokens'] = record['total_tokens'];
+  receipt['task_state'] = record['task_state'];
+  receipt['success_criteria'] = record['success_criteria'];
+  receipt['expected_delegation'] = record['expected_delegation'];
+  receipt['experience_context_tokens'] = record['experience_context_tokens'];
+  // 人工要求 2026-09-30：C 臂已出现实际经验注入 ⇒ 注入明细必须在**记录卡层**与轨迹层一致
+  receipt['retrieved_experiences'] = record['retrieved_experiences'];
+  receipt['task_success'] = verifyResult.success;
   receipt['tool_schema_verified'] = record['tool_schema_version'] !== 'UNVERIFIED_AT_PLAN_TIME';
   receipt['session_id'] = sessionId;
   receipt['collected_at'] = new Date().toISOString();
-  writeFileSync(receiptFile, JSON.stringify(receipt, null, 2) + '\n', 'utf8');
+  // **关键修复（clobber）**：不得用进程早期读取的陈旧 receipt 对象整体覆盖——
+  // 那会抹掉 step 3.5 写入的 Agent-exit 指纹字段（workspace_sha256 / file_manifest / capture）。
+  // 语义：以磁盘上的最新 receipt（含指纹）为基线，本次回填字段覆盖其上，一次写入。
+  writeJsonUtf8(receiptFile, { ...readJsonUtf8<Record<string, unknown>>(receiptFile), ...receipt });
 }
 
 // 边界复查：protected_paths 是否被改动（与基线比对；verify 已判过，这里只报告事实）
@@ -226,7 +300,7 @@ report['seed_drift_files'] = drifted.length;
 console.log(`=== run ${runId} ===`);
 console.log(`  arm=${plan.arm} task=${plan.task_id} session=${sessionId}`);
 console.log(`  format=${sessionMeta['session_format_version']} sandbox=${sessionMeta['sandbox_mode']} depth=${sessionMeta['delegation_depth']}`);
-console.log(`  verify=${report['verdict']}（exit=${verify.code}）  collect=OK`);
+console.log(`  verify=${report['verdict']}（exit=${verifyResult.verification_status}）  collect=OK`);
 if (record) {
   console.log(`  wall_time_ms=${record['wall_time_ms']} tool_schema=${record['tool_schema_version']} tokens=${record['total_tokens']} cda=${record['cda']}`);
   console.log(`  success_criteria=${JSON.stringify(record['success_criteria'])}`);

@@ -1,0 +1,8 @@
+{
+  "arm": "A",
+  "snapshot_id": "none",
+  "policy_hash": null,
+  "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "tschema-dcdb10f5d21c"
+}

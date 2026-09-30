@@ -1,0 +1,36 @@
+id: FORMAL-F01-B2
+category: B
+status: draft
+source: synthetic-formal
+task_type: doc
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F01-B2 的合计与明细不一致（见 REPORT.md），需要先定位舍入发生在哪一层再修复。不得修改 verify.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - rounding_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F01-B2/src/fmt.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F01-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F01-B2/verify.js
+verification:
+  - id: rounding_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-B2/verify.js
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F01-B2/verify.js
+    expect: "F01-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F01-B2/verify.js

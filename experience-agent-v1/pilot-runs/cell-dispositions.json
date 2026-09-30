@@ -42,6 +42,16 @@
       "first_failure_class": "config_mismatch",
       "retry_allowed": true,
       "note": "首次失败已记录；根因是预运行 plan 未绑定参考会话（已由 corrected plans 修复）。是否动用 replacement 额度待裁定。"
+    },
+    "PILOT-B01|R1|C_frozen": {
+      "status": "VALID",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "counted": true,
+      "replacement_used": false,
+      "run_id": "pilotdry-PILOT-B01-R1-C_frozen",
+      "session_id": "session-ac3d9c68-da4b-4053-aa70-2ae879daa798",
+      "task_success": true,
+      "note": "observation 有效（轨迹与 task success 已验证、无 workspace 污染）；缺口仅在 receipt 证据层：driver 末尾用陈旧对象整体覆盖，导致 workspace_sha256 / workspace_file_manifest / fingerprint_capture / total_tokens / task_state / success_criteria / expected_delegation 缺失。字段保持 missing、未手工回填；agent-exit 指纹 3a64fc0c…（37 files）保留于原始运行日志作为审计证据。"
     }
   },
   "reconciliation": {

@@ -1,0 +1,309 @@
+{
+  "run_id": "pilotdry-PILOT-C02-R1-B",
+  "task_id": "PILOT-C02",
+  "arm": "B",
+  "run_manifest": {
+    "arm": "B",
+    "snapshot_id": "none",
+    "policy_hash": "sha256:91185f5bbf72ae4af0fb07486968962d2e8cb12e095053a00c5e721bbe0bea42",
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c"
+  },
+  "expected_delegation": true,
+  "cda": 0,
+  "task_state": {
+    "schema_version": "1.0",
+    "task_state": {
+      "task_type": "bugfix",
+      "complexity": "medium",
+      "characteristics": [
+        "multi_file"
+      ],
+      "scope": "project",
+      "constraints": [
+        "api_immutable",
+        "scope_limited"
+      ],
+      "first_decision": "VERIFY"
+    }
+  },
+  "first_tool_call": {
+    "call_id": "call_00_LE3JBYBTpJvXDHVtf6GQ8118",
+    "tool_name": "glob",
+    "arguments": {
+      "pattern": "pilot-workspace/PILOT-C02/**",
+      "path": "D:\\Agent Praxis\\experience-agent-v1"
+    },
+    "from_session": "primary"
+  },
+  "experience_snapshot_id": "none",
+  "retrieved_experiences": [],
+  "tool_calls": [
+    {
+      "call_id": "call_00_LE3JBYBTpJvXDHVtf6GQ8118",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "pilot-workspace/PILOT-C02/**",
+        "path": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_TptpFScyYjeGEFUEb3aq3984",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node --version; Get-ChildItem -Force 'D:\\Agent Praxis\\experience-agent-v1' | Select-Object Mode,Name",
+        "description": "Check node version and repo root listing"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ld3StjwBSYY1xX20z1ci7181",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Get-ChildItem -Recurse -Force 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace' | Select-Object FullName,Length | Format-Table -AutoSize",
+        "description": "List pilot-workspace tree"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_H2Q6Cyg91JRUbzgyhB1z5377",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\src\\auth.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_m5re9Le2l7nrh4OrWshK1897",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\verify-auth.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_K59OaTCyea3HSTXvb73R7781",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\check-api.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_FqwWEXeIdcBzLKlGd82W4514",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Write-Output '--- verify-auth (before) ---'; node verify-auth.js; Write-Output \"exit=$LASTEXITCODE\"; Write-Output '--- check-api (before) ---'; node check-api.js; Write-Output \"exit=$LASTEXITCODE\"",
+        "description": "Run baseline auth verification scripts",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_5ZgZqBYRvMz1fbwKibdl5283",
+      "tool_name": "write",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\src\\auth.js",
+        "content": "'use strict';\n// 已修正：补齐输入校验与错误处理（api_immutable：导出名与签名保持不变）\n//\n// 安全说明：\n// - 所有校验函数对任意输入都返回布尔值，不抛异常、不静默吞掉错误；\n// - 非字符串/非数字等类型不匹配一律判为非法（fail-closed）；\n// - 校验保持纯函数，不做隐式类型转换（避免 '20'、20.5 等被放过）。\nconst EMAIL_MAX_LENGTH = 254;\nconst EMAIL_PATTERN = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nconst AGE_MIN = 1;\nconst AGE_MAX = 120;\n\nfunction validateEmail(email) {\n  if (typeof email !== 'string') return false; // undefined、null、数字等一律非法\n  if (email.length === 0 || email.length > EMAIL_MAX_LENGTH) return false;\n  if (/\\s/.test(email)) return false; // 含空白字符（含空格）非法\n  return EMAIL_PATTERN.test(email);\n}\n\nfunction validateAge(age) {\n  if (typeof age !== 'number') return false; // '20' 等字符串非法\n  if (!Number.isFinite(age) || !Number.isInteger(age)) return false; // NaN/Infinity/20.5 非法\n  return age >= AGE_MIN && age <= AGE_MAX;\n}\n\nfunction login(email, age) {\n  // 显式短路求值，确保返回严格的布尔 ok；不吞掉异常，也不做越权的默认放行。\n  return { ok: validateEmail(email) && validateAge(age) };\n}\n\nmodule.exports = { validateEmail, validateAge, login };\n"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_aaPhoVcQAGIhfb4t6h6y8305",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Write-Output '--- verify-auth (after) ---'; node verify-auth.js; Write-Output \"exit=$LASTEXITCODE\"; Write-Output '--- check-api (after) ---'; node check-api.js; Write-Output \"exit=$LASTEXITCODE\"",
+        "description": "Re-run auth verification after fix",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Sdn0okqoqqQAH8g2WfJq3743",
+      "tool_name": "write",
+      "arguments": {
+        "content": "# PILOT-C02 安全审查报告：`src/auth.js` 输入校验与错误处理\n\n- 审查对象：`pilot-workspace/PILOT-C02/src/auth.js`\n- 审查重点：输入校验缺失、异常吞掉、越权路径\n- 约束：`api_immutable` —— 导出名与函数签名不得改变\n- 验收：`verify-auth.js` 与 `check-api.js` 均通过（AUTH OK / API OK）\n\n## 一、审查结论\n\n修复前 `validateEmail` 与 `validateAge` 均为 `return true;` 的空实现，所有非法输入都会被判定为合法，`login` 因此对任意输入返回 `ok=true`。修复后两个校验函数改为 fail-closed 的严格校验，`login` 对非法输入返回 `ok=false`，且导出名集合与函数签名保持不变。\n\n## 二、风险清单\n\n1. **风险：输入校验完全缺失（校验函数恒真）**\n   - 位置：原 `validateEmail`、`validateAge`。\n   - 表现：两者无条件 `return true`，`validateEmail('bad')`、`validateEmail('')`、`validateEmail(undefined)`、`validateAge(0)`、`validateAge(121)`、`validateAge('20')` 全部通过。\n   - 影响：任何未经验证的输入都会进入下游逻辑，等同于完全放弃输入边界，是典型的注入/脏数据入口。\n   - 修正：`validateEmail` 增加类型、长度、空白字符与格式校验；`validateAge` 增加类型、有限性、整数与 `[1,120]` 区间校验。\n\n2. **风险：越权路径（`login` 仅做格式校验即放行）**\n   - 位置：`login(email, age)`。\n   - 表现：`login` 仅依赖两个格式校验函数的结果就返回 `{ ok: true }`，不含任何凭据、账号状态或权限判定；修复前更是恒真放行。\n   - 影响：只要输入满足格式（修复前甚至无需满足），调用方即可得到 `ok=true` 的“登录成功”语义，形成未授权访问路径；格式合法不等于身份可信。\n   - 修正：保持签名不变的前提下，`login` 显式短路求值，任一校验失败即 `ok=false`，不再有默认放行分支；同时明确格式校验不能替代认证/授权，需由上层补充凭据校验（见“遗留建议”）。\n\n3. **风险：错误处理缺失与异常吞掉隐患**\n   - 位置：原校验函数与 `login` 的调用链。\n   - 表现：一方面类型不匹配的输入（如 `undefined`、`'20'`）被静默判为合法，错误被吞掉而无任何反馈；另一方面校验逻辑对异常输入没有防御，一旦下游出现异常，`login` 无保护地向上抛出。\n   - 影响：调用方无法区分“输入非法”和“系统错误”，既可能掩盖真实故障，也可能因未捕获异常导致进程崩溃。\n   - 修正：校验函数对所有输入类型显式返回布尔值（不抛异常、不隐式转换），`login` 不再吞掉错误判断；错误语义保持为明确的 `ok=false`。\n\n4. **风险：缺少长度与边界限制（资源耗尽/DoS）**\n   - 位置：原 `validateEmail`。\n   - 表现：对超长字符串无任何限制，正则与字符串处理可能被超长输入放大开销。\n   - 影响：可被用于构造超长邮箱字段，造成不必要的内存/CPU 消耗。\n   - 修正：增加 `EMAIL_MAX_LENGTH = 254` 上限，超长输入直接判非法。\n\n5. **风险：隐式类型转换与正则误判**\n   - 位置：原校验实现。\n   - 表现：未区分字符串与数字类型，`'20'` 这类字符串年龄会被当作合法；正则若过松会放过非法邮箱、过严会拒绝合法邮箱。\n   - 影响：类型混淆导致校验语义与调用方预期不一致，可能被绕过。\n   - 修正：使用 `typeof` 严格判型，年龄要求 `Number.isInteger` 且有限，邮箱使用 `^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$` 并显式拒绝空白字符。\n\n## 三、修正后行为（与验收一致）\n\n| 输入 | 结果 |\n| --- | --- |\n| `validateEmail('a@b.com')` | `true` |\n| `validateEmail('bad')` / `validateEmail('')` / `validateEmail('a b@c.com')` / `validateEmail(undefined)` | `false` |\n| `validateAge(1)` / `validateAge(20)` / `validateAge(120)` | `true` |\n| `validateAge(0)` / `validateAge(121)` / `validateAge(20.5)` / `validateAge('20')` | `false` |\n| `login('a@b.com', 20)` | `{ ok: true }` |\n| `login('bad', 20)` | `{ ok: false }` |\n\n## 四、遗留建议（未改变对外 API）\n\n- 格式校验不能替代认证：生产实现应由上层校验密码/令牌、账号状态与角色权限，避免仅凭格式合法即视为登录成功。\n- 邮箱校验建议结合业务采用标准库或规范化（trim + 大小写归一）策略，并明确国际化邮箱的支持范围。\n- 建议为认证失败增加可观测性（审计日志/限流），但不得改变现有函数签名与返回值语义。\n",
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\security-review.md"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_DvLploGZYkW7ktMeTYHC5919",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "cd 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02'\nnode verify-auth.js; \"verify-auth exit=$LASTEXITCODE\"\nnode check-api.js; \"check-api exit=$LASTEXITCODE\"\n$doc = Get-Content -Raw security-review.md\n$riskCount = ([regex]::Matches($doc, '风险')).Count\n\"risk_mentions=$riskCount\"\nnode -e \"const a=require('./src/auth');console.log('arity',a.validateEmail.length,a.validateAge.length,a.login.length);console.log('keys',Object.keys(a).sort().join(','));console.log('extra',JSON.stringify(a.login('bad',20)),JSON.stringify(a.login('a@b.com',20)))\"",
+        "description": "Final acceptance and signature verification"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_n7mETD2GGTD1pBgWURA49058",
+      "tool_name": "grep",
+      "arguments": {
+        "pattern": "风险",
+        "path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\security-review.md"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_T8vpQt077WoRqButeJxT1111",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "cd 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02'\n$bytes = [System.IO.File]::ReadAllBytes('security-review.md')\n\"size=$($bytes.Length)\"\n\"first3=$($bytes[0]),$($bytes[1]),$($bytes[2])\"\n$text = [System.Text.Encoding]::UTF8.GetString($bytes)\n$count = 0; $i = 0\nwhile (($i = $text.IndexOf([char]0x98CE, $i)) -ge 0) { $count++; $i++ }\n\"U+98CE_count=$count\"\n\"has_marker=\" + $text.Contains(([char]0x98CE).ToString() + ([char]0x9669).ToString())",
+        "description": "Inspect review file bytes and risk keyword count"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_m7TAmi57ZQUt40L3DWZs3849",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\security-review.md",
+        "limit": 45
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_JiLBRgu883VExA1vvF6V1376",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "$p = 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-C02\\security-review.md'\n$bytes = [System.IO.File]::ReadAllBytes($p)\n\"size=$($bytes.Length) bom=$($bytes[0]),$($bytes[1]),$($bytes[2])\"\n$text = [System.Text.Encoding]::UTF8.GetString($bytes)\n$count = 0; $i = 0\nwhile (($i = $text.IndexOf(([char]0x98CE).ToString() + ([char]0x9669).ToString(), $i)) -ge 0) { $count++; $i += 2 }\n\"risk_item_count=$count\"",
+        "description": "Confirm UTF-8 encoding and risk keyword count"
+      },
+      "from_session": "primary"
+    }
+  ],
+  "tool_results": [
+    {
+      "call_id": "call_00_LE3JBYBTpJvXDHVtf6GQ8118",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_TptpFScyYjeGEFUEb3aq3984",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ld3StjwBSYY1xX20z1ci7181",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_H2Q6Cyg91JRUbzgyhB1z5377",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_m5re9Le2l7nrh4OrWshK1897",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_K59OaTCyea3HSTXvb73R7781",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_FqwWEXeIdcBzLKlGd82W4514",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_5ZgZqBYRvMz1fbwKibdl5283",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_aaPhoVcQAGIhfb4t6h6y8305",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Sdn0okqoqqQAH8g2WfJq3743",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_DvLploGZYkW7ktMeTYHC5919",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_n7mETD2GGTD1pBgWURA49058",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_T8vpQt077WoRqButeJxT1111",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_m7TAmi57ZQUt40L3DWZs3849",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_JiLBRgu883VExA1vvF6V1376",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    }
+  ],
+  "subagent_invocations": [],
+  "verification_result": {
+    "required": {
+      "validation_fixed": "PASS",
+      "review_written": "PASS",
+      "verify_pass": "PASS",
+      "public_api_changed": "PASS"
+    },
+    "forbidden": {},
+    "success": true
+  },
+  "reflection_output": null,
+  "outcome": {
+    "tokens": 160763,
+    "subagent_calls": 0,
+    "wall_time_s": 45.803
+  },
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "tschema-dcdb10f5d21c",
+  "framework_version": "1.0",
+  "model_id": "deepseek-flash",
+  "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+  "input_tokens": 8772,
+  "output_tokens": 8631,
+  "total_tokens": 160763,
+  "cache_read_tokens": 143360,
+  "reasoning_tokens": null,
+  "experience_context_tokens": 0,
+  "token_accounting_source": "diagnostic",
+  "wall_time_ms": 45803,
+  "session_format_version": "v4",
+  "sandbox_mode": "workspace-write",
+  "delegation_depth": 0,
+  "success_criteria": [
+    "validation_fixed",
+    "review_written",
+    "verify_pass",
+    "public_api_changed"
+  ]
+}

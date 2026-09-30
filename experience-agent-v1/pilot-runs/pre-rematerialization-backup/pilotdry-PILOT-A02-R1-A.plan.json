@@ -1,0 +1,24 @@
+{
+  "run_id": "pilotdry-PILOT-A02-R1-A",
+  "task_id": "PILOT-A02",
+  "arm": "A",
+  "repetition": 1,
+  "manifest": {
+    "arm": "A",
+    "snapshot_id": "none",
+    "policy_hash": null,
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c"
+  },
+  "expected_delegation": false,
+  "instruction": "",
+  "injection": {
+    "experience": false,
+    "reflection": false,
+    "snapshot_id": "none"
+  },
+  "tool_schema_verified": true,
+  "token_accounting_source": "diagnostic（Pilot 前必须接入 Harness/Provider 侧计数）",
+  "generated_at": "2026-09-28T17:23:45.214Z"
+}

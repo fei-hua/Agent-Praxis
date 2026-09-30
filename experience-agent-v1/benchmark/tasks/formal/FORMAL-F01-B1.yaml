@@ -1,0 +1,36 @@
+id: FORMAL-F01-B1
+category: B
+status: draft
+source: synthetic-formal
+task_type: doc
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F01-B1 的 test.js 失败，但任务书不指出缺陷位于哪个阶段。定位并修复，使 node verify.js 通过。不得修改 verify.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - pipeline_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F01-B1/src/normalize.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F01-B1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F01-B1/verify.js
+verification:
+  - id: pipeline_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-B1/verify.js
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F01-B1/verify.js
+    expect: "F01-B1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F01-B1/verify.js

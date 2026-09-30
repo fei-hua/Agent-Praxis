@@ -1,0 +1,5 @@
+﻿node_modules/
+*.log
+pilot-runs/.exec-stdout.txt
+pilot-runs/.exec-stderr.txt
+.DS_Store

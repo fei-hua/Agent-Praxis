@@ -1,0 +1,241 @@
+{
+  "run_id": "pilotdry-PILOT-B01-R1-C_frozen",
+  "task_id": "PILOT-B01",
+  "arm": "C_frozen",
+  "run_manifest": {
+    "arm": "C_frozen",
+    "snapshot_id": "SNAPSHOT_01",
+    "policy_hash": "sha256:91185f5bbf72ae4af0fb07486968962d2e8cb12e095053a00c5e721bbe0bea42",
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c"
+  },
+  "expected_delegation": false,
+  "cda": 1,
+  "task_state": {
+    "schema_version": "1.0",
+    "task_state": {
+      "task_type": "doc",
+      "complexity": "simple",
+      "characteristics": [
+        "multi_file"
+      ],
+      "scope": "project",
+      "constraints": [
+        "scope_limited"
+      ],
+      "first_decision": "EXPLORE"
+    }
+  },
+  "first_tool_call": {
+    "call_id": "call_00_GIrM7q8c5i4BKpROMWv90404",
+    "tool_name": "glob",
+    "arguments": {
+      "pattern": "pilot-workspace/PILOT-B01/**/*",
+      "path": "D:\\Agent Praxis\\experience-agent-v1"
+    },
+    "from_session": "primary"
+  },
+  "experience_snapshot_id": "SNAPSHOT_01",
+  "retrieved_experiences": [
+    {
+      "id": "EXP-DRY-DOC-EXPLORE",
+      "final_score": 0.3792723352971346,
+      "retrieval_status": "MATCHED",
+      "relevance_score": 0.6,
+      "reliability_score": 0.6321205588285577,
+      "contraindication_factor": 1,
+      "tokens": 48
+    }
+  ],
+  "tool_calls": [
+    {
+      "call_id": "call_00_GIrM7q8c5i4BKpROMWv90404",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "pilot-workspace/PILOT-B01/**/*",
+        "path": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_J6NzeVEdieTclBabFhtm5648",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Get-ChildItem -Recurse -Force \"D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\" | Select-Object FullName, Length",
+        "description": "List PILOT-B01 directory tree"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Lu72uwn3bw3QiHEceD1J3477",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\\app.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_70gNLoewoQ0324bg729Z3504",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\\legacy\\theme.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_XoCG93svRjxLjIlcQX8q1883",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\\legacy\\time-format.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_03_WImgynYHQmwqyu4YBdQy9262",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\\legacy\\ui-clock.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_04_U6IMucZYtKDw4WAO6qqP3230",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\\check-findings.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Twb6znNrjsXZpw0ZUbBV5762",
+      "tool_name": "grep",
+      "arguments": {
+        "path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01",
+        "pattern": "require\\(|theme|time-format|ui-clock",
+        "include": "*.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_wzche5cetv0cjgTd92c78159",
+      "tool_name": "write",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01\\findings.md",
+        "content": "# PILOT-B01 — Indirect Call Analysis\n\n## Conclusion\n\nindirect: time-format.js\nchain: app.js → ui-clock.js → time-format.js\n\n## Evidence\n\n- `app.js:3` — `require('./legacy/ui-clock')` — direct call to `ui-clock.js`.\n- `legacy/ui-clock.js:2` — `require('./time-format')` — `time-format.js` is reached only\n  transitively, so it is the **indirect** module with respect to `app.js`.\n- `legacy/theme.js` — exports `theme`, but no module in the tree requires it; it is orphaned\n  (not called directly or indirectly by `app.js`).\n"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_7Bcd3VTqZkXPEGpNkou50267",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node check-findings.js",
+        "description": "Run findings acceptance checker",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-B01"
+      },
+      "from_session": "primary"
+    }
+  ],
+  "tool_results": [
+    {
+      "call_id": "call_00_GIrM7q8c5i4BKpROMWv90404",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_J6NzeVEdieTclBabFhtm5648",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Lu72uwn3bw3QiHEceD1J3477",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_70gNLoewoQ0324bg729Z3504",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_XoCG93svRjxLjIlcQX8q1883",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_03_WImgynYHQmwqyu4YBdQy9262",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_04_U6IMucZYtKDw4WAO6qqP3230",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_Twb6znNrjsXZpw0ZUbBV5762",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_wzche5cetv0cjgTd92c78159",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_7Bcd3VTqZkXPEGpNkou50267",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    }
+  ],
+  "subagent_invocations": [],
+  "verification_result": {
+    "required": {
+      "findings_written": "PASS",
+      "indirect_module_correct": "PASS",
+      "chain_correct": "PASS",
+      "legacy_files_changed": "PASS"
+    },
+    "forbidden": {},
+    "success": true
+  },
+  "reflection_output": null,
+  "outcome": {
+    "tokens": 53362,
+    "subagent_calls": 0,
+    "wall_time_s": 16.775
+  },
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "tschema-dcdb10f5d21c",
+  "framework_version": "1.0",
+  "model_id": "deepseek-flash",
+  "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+  "input_tokens": 2877,
+  "output_tokens": 2357,
+  "total_tokens": 53362,
+  "cache_read_tokens": 48128,
+  "reasoning_tokens": null,
+  "experience_context_tokens": 48,
+  "token_accounting_source": "diagnostic",
+  "wall_time_ms": 16775,
+  "session_format_version": "v4",
+  "sandbox_mode": "workspace-write",
+  "delegation_depth": 0,
+  "success_criteria": [
+    "findings_written",
+    "indirect_module_correct",
+    "chain_correct",
+    "legacy_files_changed"
+  ]
+}

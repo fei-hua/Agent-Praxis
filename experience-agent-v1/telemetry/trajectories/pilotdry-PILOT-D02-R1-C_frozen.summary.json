@@ -1,0 +1,481 @@
+{
+  "run_id": "pilotdry-PILOT-D02-R1-C_frozen",
+  "task_id": "PILOT-D02",
+  "arm": "C_frozen",
+  "run_manifest": {
+    "arm": "C_frozen",
+    "snapshot_id": "SNAPSHOT_01",
+    "policy_hash": "sha256:91185f5bbf72ae4af0fb07486968962d2e8cb12e095053a00c5e721bbe0bea42",
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c"
+  },
+  "expected_delegation": true,
+  "cda": 1,
+  "task_state": {
+    "schema_version": "1.0",
+    "task_state": {
+      "task_type": "refactor",
+      "complexity": "medium",
+      "characteristics": [
+        "multi_file"
+      ],
+      "scope": "project",
+      "constraints": [
+        "scope_limited",
+        "no_new_dependency",
+        "data_schema_immutable"
+      ],
+      "first_decision": "PARALLEL"
+    }
+  },
+  "first_tool_call": {
+    "call_id": "call_00_ZyoWnr9HLw5iOYn1dI175086",
+    "tool_name": "subagent",
+    "arguments": {
+      "description": "Dependency diff to upgrade-notes.md",
+      "prompt": "You are working in an existing repository. Repository root: D:\\Agent Praxis\\experience-agent-v1 (all relative paths below are relative to that root).\n\nGOAL: Produce a dependency-upgrade assessment document.\n\nSTEPS:\n1. Read pilot-workspace/PILOT-D02/deps/pinned.json and pilot-workspace/PILOT-D02/deps/latest.json (use the read tool).\n2. Compare them dependency by dependency: every package whose version differs, plus packages only present in one of the two files.\n3. Write the assessment to pilot-workspace/PILOT-D02/upgrade-notes.md (create/overwrite that file).\n\nCONTENT REQUIREMENTS for upgrade-notes.md:\n- A short header stating what was compared (source = deps/pinned.json, target = deps/latest.json).\n- One entry per changed/added/removed dependency, in a markdown table or bullet list, each with: package name, from-version, to-version, and a line classifying the change (major / minor / patch / added / removed) derived from the actual version numbers (semver major.minor.patch).\n- For every MAJOR (or otherwise risky) bump, an explicit \"Breaking change / compatibility risk\" note that is grounded in the actual change you observe. Do NOT invent changelog details you cannot support from the data: if you cannot know the library's real changelog, say what the semver bump implies and what must be verified, rather than fabricating specific API names.\n- A final \"Upgrade order / recommended actions\" section.\n- Note explicitly in the document that no new dependencies may be added and that deps/ is read-only.\n\nHARD CONSTRAINTS:\n- Do NOT modify anything under pilot-workspace/PILOT-D02/deps/ (read-only input).\n- Do NOT add, install, or fetch any dependency; no package manager commands, no network.\n- Do NOT modify compat-check.js.\n- Only create the single new file pilot-workspace/PILOT-D02/upgrade-notes.md.\n\nWhen done, reply with: the absolute path of the file you wrote, the count of changed/added/removed dependencies, and the list of major bumps you flagged.",
+      "run_in_background": false
+    },
+    "from_session": "primary"
+  },
+  "experience_snapshot_id": "SNAPSHOT_01",
+  "retrieved_experiences": [],
+  "tool_calls": [
+    {
+      "call_id": "call_00_ZyoWnr9HLw5iOYn1dI175086",
+      "tool_name": "subagent",
+      "arguments": {
+        "description": "Dependency diff to upgrade-notes.md",
+        "prompt": "You are working in an existing repository. Repository root: D:\\Agent Praxis\\experience-agent-v1 (all relative paths below are relative to that root).\n\nGOAL: Produce a dependency-upgrade assessment document.\n\nSTEPS:\n1. Read pilot-workspace/PILOT-D02/deps/pinned.json and pilot-workspace/PILOT-D02/deps/latest.json (use the read tool).\n2. Compare them dependency by dependency: every package whose version differs, plus packages only present in one of the two files.\n3. Write the assessment to pilot-workspace/PILOT-D02/upgrade-notes.md (create/overwrite that file).\n\nCONTENT REQUIREMENTS for upgrade-notes.md:\n- A short header stating what was compared (source = deps/pinned.json, target = deps/latest.json).\n- One entry per changed/added/removed dependency, in a markdown table or bullet list, each with: package name, from-version, to-version, and a line classifying the change (major / minor / patch / added / removed) derived from the actual version numbers (semver major.minor.patch).\n- For every MAJOR (or otherwise risky) bump, an explicit \"Breaking change / compatibility risk\" note that is grounded in the actual change you observe. Do NOT invent changelog details you cannot support from the data: if you cannot know the library's real changelog, say what the semver bump implies and what must be verified, rather than fabricating specific API names.\n- A final \"Upgrade order / recommended actions\" section.\n- Note explicitly in the document that no new dependencies may be added and that deps/ is read-only.\n\nHARD CONSTRAINTS:\n- Do NOT modify anything under pilot-workspace/PILOT-D02/deps/ (read-only input).\n- Do NOT add, install, or fetch any dependency; no package manager commands, no network.\n- Do NOT modify compat-check.js.\n- Only create the single new file pilot-workspace/PILOT-D02/upgrade-notes.md.\n\nWhen done, reply with: the absolute path of the file you wrote, the count of changed/added/removed dependencies, and the list of major bumps you flagged.",
+        "run_in_background": false
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_KvSA0xBF2B0RLjuwXmzk5211",
+      "tool_name": "subagent",
+      "arguments": {
+        "description": "Run compat-check and capture output",
+        "prompt": "You are working in an existing repository. Repository root: D:\\Agent Praxis\\experience-agent-v1 (all relative paths below are relative to that root).\n\nGOAL: Run an existing compatibility-check script and persist its complete output.\n\nSTEPS:\n1. Inspect pilot-workspace/PILOT-D02/compat-check.js with the read tool (do NOT modify it).\n2. From the repository root, run exactly: node pilot-workspace/PILOT-D02/compat-check.js\n   Use the pwsh tool with workdir set to the repository root. Capture BOTH stdout and stderr, and the exit code.\n3. Write the COMPLETE raw output (stdout followed by stderr, plus a line recording the exit code) to pilot-workspace/PILOT-D02/compat-result.txt. Write it verbatim — do not summarize, truncate, or reformat the script's own output.\n\nHARD CONSTRAINTS:\n- Do NOT modify pilot-workspace/PILOT-D02/compat-check.js, anything under pilot-workspace/PILOT-D02/deps/, or any other existing file.\n- Do NOT add, install, or fetch any dependency (no npm install, no network).\n- Only create the single new file pilot-workspace/PILOT-D02/compat-result.txt.\n- The expected outcome of a successful run is that the output contains \"COMPAT OK\". If it does not, report the failure verbatim instead of trying to fix the script.\n\nWhen done, reply with: the exit code, whether the output contained \"COMPAT OK\" (true/false), the exact full output text, and the absolute path of the file you wrote.",
+        "run_in_background": false
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_PGcORJpIca6L2wgscKkh8693",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\compat-result.txt"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_0lTZP3bpVqTxdRlYkpyi1189",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\upgrade-notes.md"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_ReXEGjZi77zU6J3b1LaM7702",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "git -C 'D:\\Agent Praxis\\experience-agent-v1' status --porcelain; Write-Output \"---diff-stat---\"; git -C 'D:\\Agent Praxis\\experience-agent-v1' diff --stat",
+        "description": "Check git status for unintended modifications"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_jh3apPouxNlkKtigvAjc0995",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\deps\\pinned.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_813KcS7ci7xXQI60Ni4I7012",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\deps\\latest.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_v3JkRPVRKrhuDxH44vKT9603",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node pilot-workspace/PILOT-D02/compat-check.js; Write-Output \"EXIT=$LASTEXITCODE\"",
+        "description": "Re-run compat-check to verify output",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_03_8YqWyHW8BPkFnVk0fEJj5863",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "git -C 'D:\\Agent Praxis\\experience-agent-v1' status --porcelain -- pilot-workspace/PILOT-D02; Write-Output \"--- ls ---\"; Get-ChildItem -Force 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02' | Select-Object Name,Length; Write-Output \"--- ignore ---\"; git -C 'D:\\Agent Praxis\\experience-agent-v1' check-ignore -v pilot-workspace/PILOT-D02/upgrade-notes.md pilot-workspace/PILOT-D02/deps/pinned.json",
+        "description": "Inspect PILOT-D02 status and ignore rules"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_VWVQtGkr5XskGPCO3y7M3515",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node pilot-workspace/PILOT-D02/check-notes.js; Write-Output \"EXIT=$LASTEXITCODE\"",
+        "description": "Run provided notes acceptance checker",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_NMpSRFwtxwvpAhKxIoYd7226",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "pilot-workspace/PILOT-D02/**/*",
+        "path": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_MFrdl7CFtB9joAWa8OgF7015",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Get-ChildItem -Force -Recurse 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02' | Select-Object FullName,Length | Format-Table -AutoSize; Write-Output \"--- changelogs ---\"; Get-Content 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\deps\\changelogs.json' -Raw",
+        "description": "List PILOT-D02 tree and show changelogs.json"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_FQqg6iChTefjn1nyci9j8546",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\deps\\pinned.json"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_01_r0TxV0i4Oj1NFaqUfm1C8171",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\deps\\latest.json"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_jGCibiFWfCZOqK9GsH9U6413",
+      "tool_name": "glob",
+      "arguments": {
+        "pattern": "pilot-workspace/PILOT-D02/**/*"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_01_9b3F7iIO8H0l1A2388GZ6468",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "Get-ChildItem -Recurse -Force 'D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02' | Select-Object FullName, Length",
+        "description": "List PILOT-D02 directory contents"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_LSKPJ4egmmWEnzTPNStO7989",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\deps\\changelogs.json"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_01_W0KLHkQEEBSSX6EQREFc3667",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\compat-check.js"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_02_rILhrCktcLhc3d7ZFFPm4115",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\check-notes.js"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_6atFRWewsv9e1DPhEAJm5760",
+      "tool_name": "write",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\upgrade-notes.md",
+        "content": "# Dependency Upgrade Assessment — PILOT-D02\n\n**Comparison basis**\n\n- Source (current / pinned): `deps/pinned.json`\n- Target (candidate / latest): `deps/latest.json`\n- Supporting changelog data consulted: `deps/changelogs.json` (read-only input)\n\nEvery dependency in the two files was compared by its `major.minor.patch` version\nstring. Result: **2 changed dependencies** (0 added, 0 removed). Package sets are\nidentical (`libx`, `liby` present in both files).\n\n## Changed dependencies\n\n| Package | From | To | Change class | Notes |\n|---------|------|----|--------------|-------|\n| `libx` | 1.2.0 | 2.0.0 | **major** | Major version 1 → 2; breaking by semver definition. |\n| `liby` | 0.9.1 | 0.9.3 | patch | Minor (9) unchanged, patch 1 → 3. |\n\nNo dependency is present in only one of the two files, so there is nothing to\nclassify as *added* or *removed*.\n\n## Breaking change / compatibility risk\n\n### `libx` 1.2.0 → 2.0.0 — MAJOR (risky)\n\nThe version jump changes the major component (1 → 2), which by semver means the\nlibrary is free to make incompatible API changes. This is a **Breaking change /\ncompatibility risk** and it cannot be treated as a drop-in replacement.\n\n`deps/changelogs.json` records the following for `libx` `2.0.0`:\n\n- `REMOVED oldApi()`\n- `CHANGED run() signature`\n\nConcrete implications grounded in that data:\n\n- Any call site that still invokes `oldApi()` will break, because the entry states\n  the API was removed.\n- Any call site of `run()` must be checked and updated, because its signature\n  changed; existing argument lists/return handling may no longer compile or may\n  fail at runtime.\n\nWhat must be verified before adopting `libx` 2.0.0:\n\n- Locate and enumerate all consumers of `oldApi()` and `run()` in this project.\n- Confirm whether a replacement for `oldApi()` exists in 2.0.0, or migrate the\n  call sites off it.\n- Re-check the exact new `run()` signature against each caller.\n- Beyond these two documented items, the major bump means other unspecified\n  incompatible changes are possible; the project's own test/compat suite must be\n  run against 2.0.0.\n\n### `liby` 0.9.1 → 0.9.3 — patch (non-breaking)\n\n`liby` 0.9.1 → 0.9.3 is a patch-level upgrade: the minor component stays at 9 and\nonly the patch component moves (1 → 3). By semver this is a non-breaking,\nbackward-compatible change, and `deps/changelogs.json` describes `0.9.3` only as\n`FIXED null handling` — a bug fix, with no removed or changed API named.\n\nResidual risk to verify (not a semver break): a fix to null handling is a behavior\nchange, so any code path that currently passes or relies on null values should be\nre-tested to confirm the new behavior is the intended one. Because `liby` is still\npre-1.0 (0.x), even patch releases can occasionally carry behavioral adjustments,\nso the fix should be validated rather than assumed inert.\n\n## Upgrade order / recommended actions\n\n1. **Take `liby` 0.9.1 → 0.9.3 first.** It is the lowest-risk change (patch, no\n   named API removal) and is independent of `libx`. Land it on its own and re-run\n   the compatibility suite so a regression is easy to attribute.\n2. **Handle `libx` 1.2.0 → 2.0.0 as a separate, code-touching change.** First\n   enumerate call sites of `oldApi()` and `run()`, apply the required migrations\n   for the removal and the signature change, then upgrade the version.\n3. **Do not bundle the two upgrades in one step**; keeping them separate isolates\n   the major bump as the likely source of any failure.\n4. **Re-run the project's acceptance/compat checks after each step** and keep the\n   working state until the next step is verified.\n5. If the `libx` migration cannot be completed now, keep `libx` pinned at 1.2.0 and\n   upgrade only `liby`; do not force the major bump.\n\n## Constraints for this assessment\n\n- **No new dependencies may be added.** This is a version-only comparison of the\n  existing pinned set.\n- **`deps/` is read-only.** `deps/pinned.json`, `deps/latest.json`, and\n  `deps/changelogs.json` were only read, never modified. This document is the only\n  file created, and `compat-check.js` is untouched.\n"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_q2QQpRRQUGBHL2vrhPRu3167",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node check-notes.js; Write-Output \"---\"; node compat-check.js",
+        "description": "Run notes and compat acceptance checks",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02"
+      },
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_ET_4A0fYRgAF7kHNNzfzbKc4828",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\compat-check.js"
+      },
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_TJ8qoybngn0uFMttEsOv3882",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "$out = node pilot-workspace/PILOT-D02/compat-check.js 2>&1; $code = $LASTEXITCODE; Write-Output \"---STDOUT+STDERR---\"; $out | ForEach-Object { $_.ToString() }; Write-Output \"---EXITCODE---\"; Write-Output $code",
+        "description": "Run compat-check script and capture output",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_BCBS6Qdz7V6kgNWy8eu96738",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "$o = node pilot-workspace/PILOT-D02/compat-check.js 2>$null; $c = $LASTEXITCODE; $e = node pilot-workspace/PILOT-D02/compat-check.js 2>&1 1>$null; Write-Output \"STDOUT_LINES=$($o.Count)\"; Write-Output \"STDERR_TEXT=[$e]\"; Write-Output \"EXIT=$c\"",
+        "description": "Verify stdout and stderr streams separately",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1"
+      },
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_pFZDw6xAK70p9rfetx2j0023",
+      "tool_name": "write",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\compat-result.txt",
+        "content": "ok - 依赖数量一致\nok - liby 为补丁级升级\nCOMPAT OK\nexit code: 0\n"
+      },
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_ET_0H4cmTEeA7GvMs5TnsWu7472",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-D02\\compat-result.txt"
+      },
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    }
+  ],
+  "tool_results": [
+    {
+      "call_id": "call_00_ZyoWnr9HLw5iOYn1dI175086",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_KvSA0xBF2B0RLjuwXmzk5211",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_PGcORJpIca6L2wgscKkh8693",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_0lTZP3bpVqTxdRlYkpyi1189",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_ReXEGjZi77zU6J3b1LaM7702",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_jh3apPouxNlkKtigvAjc0995",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_813KcS7ci7xXQI60Ni4I7012",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_02_v3JkRPVRKrhuDxH44vKT9603",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_03_8YqWyHW8BPkFnVk0fEJj5863",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_VWVQtGkr5XskGPCO3y7M3515",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_NMpSRFwtxwvpAhKxIoYd7226",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_MFrdl7CFtB9joAWa8OgF7015",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_FQqg6iChTefjn1nyci9j8546",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_01_r0TxV0i4Oj1NFaqUfm1C8171",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_jGCibiFWfCZOqK9GsH9U6413",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_01_9b3F7iIO8H0l1A2388GZ6468",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_LSKPJ4egmmWEnzTPNStO7989",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_01_W0KLHkQEEBSSX6EQREFc3667",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_02_rILhrCktcLhc3d7ZFFPm4115",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_6atFRWewsv9e1DPhEAJm5760",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_q2QQpRRQUGBHL2vrhPRu3167",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "fc931f02-3c29-46cf-9a96-69de5be9eb24"
+    },
+    {
+      "call_id": "call_00_ET_4A0fYRgAF7kHNNzfzbKc4828",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_TJ8qoybngn0uFMttEsOv3882",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_BCBS6Qdz7V6kgNWy8eu96738",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_pFZDw6xAK70p9rfetx2j0023",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    },
+    {
+      "call_id": "call_00_ET_0H4cmTEeA7GvMs5TnsWu7472",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "708b13a2-253f-4e8d-a793-615eacc13709"
+    }
+  ],
+  "subagent_invocations": [
+    {
+      "invocation_id": "fc931f02-3c29-46cf-9a96-69de5be9eb24",
+      "agent_name": "Dependency diff to upgrade-notes.md",
+      "task_brief": "{\"description\":\"Dependency diff to upgrade-notes.md\",\"prompt\":\"You are working in an existing repository. Repository root: D:\\\\Agent Praxis\\\\experience-agent-v1 (all relative paths below are relative to that root).\\n\\nGOAL: Produce a dependency-upgrade assessment document.\\n\\nSTEPS:\\n1. Read pilot-workspace/PILOT-D02/deps/pinned.json and pilot-workspace/PILOT-D02/deps/latest.json (use the read too…"
+    },
+    {
+      "invocation_id": "708b13a2-253f-4e8d-a793-615eacc13709",
+      "agent_name": "Run compat-check and capture output",
+      "task_brief": "{\"description\":\"Run compat-check and capture output\",\"prompt\":\"You are working in an existing repository. Repository root: D:\\\\Agent Praxis\\\\experience-agent-v1 (all relative paths below are relative to that root).\\n\\nGOAL: Run an existing compatibility-check script and persist its complete output.\\n\\nSTEPS:\\n1. Inspect pilot-workspace/PILOT-D02/compat-check.js with the read tool (do NOT modify it…"
+    }
+  ],
+  "verification_result": {
+    "required": {
+      "notes_written": "PASS",
+      "compat_result_written": "PASS",
+      "deps_changed": "PASS"
+    },
+    "forbidden": {},
+    "success": true
+  },
+  "reflection_output": null,
+  "outcome": {
+    "tokens": 200126,
+    "subagent_calls": 2,
+    "wall_time_s": 45.232
+  },
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "tschema-dcdb10f5d21c",
+  "framework_version": "1.0",
+  "model_id": "deepseek-flash",
+  "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+  "input_tokens": 16506,
+  "output_tokens": 9796,
+  "total_tokens": 200126,
+  "cache_read_tokens": 173824,
+  "reasoning_tokens": null,
+  "experience_context_tokens": 0,
+  "token_accounting_source": "diagnostic",
+  "wall_time_ms": 45232,
+  "session_format_version": "v4",
+  "sandbox_mode": "workspace-write",
+  "delegation_depth": 0,
+  "success_criteria": [
+    "notes_written",
+    "compat_result_written",
+    "deps_changed"
+  ]
+}

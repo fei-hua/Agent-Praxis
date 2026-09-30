@@ -1,0 +1,8 @@
+{
+  "arm": "B",
+  "snapshot_id": "none",
+  "policy_hash": "sha256:91185f5bbf72ae4af0fb07486968962d2e8cb12e095053a00c5e721bbe0bea42",
+  "experiment_config_hash": "sha256:cbbe49e631d2b3c261e14b91b829574e4d5c40831892d4a1df46e2832435cf25",
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "UNVERIFIED_AT_PLAN_TIME"
+}

@@ -1,0 +1,36 @@
+id: FORMAL-F01-A1
+category: A
+status: draft
+source: synthetic-formal
+task_type: doc
+complexity: simple
+scope: generic
+characteristics: []
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F01-A1/src/math.js 的 sum/mean 计算错误。修正它，使 sum([1,2,3])===6、mean([2,4])===3。不得修改 verify.js。
+expected_first_decisions: [DIRECT]
+expected_delegation: false
+success_criteria:
+  required:
+    - math_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F01-A1/src/math.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F01-A1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F01-A1/verify.js
+verification:
+  - id: math_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-A1/verify.js
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F01-A1/verify.js
+    expect: "F01-A1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F01-A1/verify.js

@@ -1,0 +1,155 @@
+{
+  "run_id": "pilotdry-PILOT-A02-R1-A",
+  "task_id": "PILOT-A02",
+  "arm": "A",
+  "run_manifest": {
+    "arm": "A",
+    "snapshot_id": "none",
+    "policy_hash": null,
+    "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c"
+  },
+  "expected_delegation": false,
+  "cda": 1,
+  "task_state": {
+    "schema_version": "1.0",
+    "task_state": {
+      "task_type": "doc",
+      "complexity": "simple",
+      "characteristics": [],
+      "scope": "generic",
+      "constraints": [
+        "scope_limited"
+      ],
+      "first_decision": "EXPLORE"
+    }
+  },
+  "first_tool_call": {
+    "call_id": "call_00_fOpippPHwhyRxdt8Ycwx3166",
+    "tool_name": "read",
+    "arguments": {
+      "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-A02\\src\\parser.js"
+    },
+    "from_session": "primary"
+  },
+  "experience_snapshot_id": "none",
+  "retrieved_experiences": [],
+  "tool_calls": [
+    {
+      "call_id": "call_00_fOpippPHwhyRxdt8Ycwx3166",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-A02\\src\\parser.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_WYvS3YVENPGSaG0mLGJq3201",
+      "tool_name": "read",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-A02\\check-doc.js"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_BOS5NCPEMMYgFl2suWPT4312",
+      "tool_name": "edit",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-A02\\src\\parser.js",
+        "old_string": "function parsePairs(text) {",
+        "new_string": "/**\n * 将 `key=value,key2=value2` 形式的字符串解析为普通对象。\n * 以逗号分隔键值对，键与值均去除首尾空白；键为空的对会被忽略，\n * 缺少 `=` 的值按空字符串处理。\n * @param {string} text 待解析的原始文本，例如 `'a=1, b=2'`。\n * @returns {Object<string, string>} 解析出的键值映射对象。\n */\nfunction parsePairs(text) {"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_ZoZ6mhyBT60tds7WpU0U8158",
+      "tool_name": "edit",
+      "arguments": {
+        "file_path": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-A02\\src\\parser.js",
+        "old_string": "function normalizeKey(key) {",
+        "new_string": "/**\n * 规范化键名：去除首尾空白、转为小写，并把连续空白替换为下划线。\n * @param {string} key 待规范化的原始键名。\n * @returns {string} 规范化后的键名。\n */\nfunction normalizeKey(key) {"
+      },
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ET_KDWpBhhZqx4mmArCL7SP5363",
+      "tool_name": "pwsh",
+      "arguments": {
+        "command": "node check-doc.js; \"exit=$LASTEXITCODE\"",
+        "description": "Run doc verification script",
+        "workdir": "D:\\Agent Praxis\\experience-agent-v1\\pilot-workspace\\PILOT-A02"
+      },
+      "from_session": "primary"
+    }
+  ],
+  "tool_results": [
+    {
+      "call_id": "call_00_fOpippPHwhyRxdt8Ycwx3166",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_WYvS3YVENPGSaG0mLGJq3201",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_BOS5NCPEMMYgFl2suWPT4312",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_01_ZoZ6mhyBT60tds7WpU0U8158",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    },
+    {
+      "call_id": "call_00_ET_KDWpBhhZqx4mmArCL7SP5363",
+      "ok": true,
+      "result_summary": "",
+      "from_session": "primary"
+    }
+  ],
+  "subagent_invocations": [],
+  "verification_result": {
+    "required": {
+      "docs_added": "PASS",
+      "doc_check_pass": "PASS",
+      "parser_behavior_changed": "PASS"
+    },
+    "forbidden": {},
+    "success": true
+  },
+  "reflection_output": null,
+  "outcome": {
+    "tokens": 30030,
+    "subagent_calls": 0,
+    "wall_time_s": 8.735
+  },
+  "harness_version": "0.1.7-rc.2",
+  "tool_schema_version": "tschema-dcdb10f5d21c",
+  "framework_version": "1.0",
+  "model_id": "deepseek-flash",
+  "experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+  "input_tokens": 2007,
+  "output_tokens": 1015,
+  "total_tokens": 30030,
+  "cache_read_tokens": 27008,
+  "reasoning_tokens": null,
+  "experience_context_tokens": 0,
+  "token_accounting_source": "diagnostic",
+  "wall_time_ms": 8735,
+  "session_format_version": "v4",
+  "sandbox_mode": "workspace-write",
+  "delegation_depth": 0,
+  "success_criteria": [
+    "docs_added",
+    "doc_check_pass",
+    "parser_behavior_changed"
+  ]
+}

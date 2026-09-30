@@ -1,0 +1,2 @@
+轨迹写入：D:\Agent Praxis\experience-agent-v1\telemetry\trajectories\pilotdry-PILOT-A01-R1-B-rep1.jsonl（events=14）
+config_hash=sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f tool_schema=tschema-dcdb10f5d21c retrieved=0
