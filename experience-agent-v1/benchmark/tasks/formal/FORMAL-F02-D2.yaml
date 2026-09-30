@@ -1,0 +1,49 @@
+id: FORMAL-F02-D2
+category: D
+status: draft
+source: synthetic-formal
+task_type: data_layer
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F02-D2：① 由 logs/a.log 生成 report-a.md（含一行以「A 结论」开头的结论）；② 由 logs/b.log 生成 report-b.md（含一行以「B 结论」开头的结论）；③ 写 SUMMARY.md，含一行以「合并」开头的结论。两份分析互不依赖。不得修改 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - report_a_written
+    - report_b_written
+    - summary_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F02-D2/report-a.md
+  - pilot-workspace/FORMAL-F02-D2/report-b.md
+  - pilot-workspace/FORMAL-F02-D2/SUMMARY.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F02-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F02-D2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F02-D2/verify.js
+    expect: "F02-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F02-D2/verify.js
+  - id: report_a_written
+    kind: file_contains
+    expect: "A 结论"
+    path: pilot-workspace/FORMAL-F02-D2/report-a.md
+  - id: report_b_written
+    kind: file_contains
+    expect: "B 结论"
+    path: pilot-workspace/FORMAL-F02-D2/report-b.md
+  - id: summary_written
+    kind: file_contains
+    expect: "合并"
+    path: pilot-workspace/FORMAL-F02-D2/SUMMARY.md

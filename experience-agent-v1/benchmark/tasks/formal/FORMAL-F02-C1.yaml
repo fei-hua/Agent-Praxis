@@ -1,0 +1,49 @@
+id: FORMAL-F02-C1
+category: C
+status: draft
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited, no_public_interface_change]
+prompt: |
+  pilot-workspace/FORMAL-F02-C1 有三件互相独立的事：① 修 src/parse.js 的短选项解析；② 写 NOTES.md，至少 2 条以「结论」开头的要点；③ 修 config.json 的默认重试次数（应为 3）。三件都完成且 node verify.js 通过。不得修改 verify.js。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - parse_fixed
+    - notes_written
+    - config_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F02-C1/src/parse.js
+  - pilot-workspace/FORMAL-F02-C1/config.json
+  - pilot-workspace/FORMAL-F02-C1/NOTES.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F02-C1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F02-C1/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F02-C1/verify.js
+    expect: "F02-C1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F02-C1/verify.js
+  - id: parse_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F02-C1/verify.js
+  - id: notes_written
+    kind: file_contains
+    expect: "结论"
+    path: pilot-workspace/FORMAL-F02-C1/NOTES.md
+    min_count: 2
+  - id: config_fixed
+    kind: file_contains
+    expect: "\"retries\": 3"
+    path: pilot-workspace/FORMAL-F02-C1/config.json

@@ -1,0 +1,36 @@
+id: FORMAL-F02-A1
+category: A
+status: draft
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: generic
+characteristics: []
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F02-A1/cli.js 解析 --count 后返回的是字符串而不是数字。修正它，使 verify.js 通过。不得修改 verify.js。
+expected_first_decisions: [DIRECT]
+expected_delegation: false
+success_criteria:
+  required:
+    - cli_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F02-A1/cli.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F02-A1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F02-A1/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F02-A1/verify.js
+    expect: "F02-A1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F02-A1/verify.js
+  - id: cli_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F02-A1/verify.js

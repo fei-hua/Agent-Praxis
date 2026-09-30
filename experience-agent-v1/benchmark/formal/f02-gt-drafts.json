@@ -1,0 +1,246 @@
+{
+  "family": "F02",
+  "generated_at": "2026-09-30T12:45:21.055Z",
+  "signature": {
+    "gt_signed_by": "",
+    "gt_signed_at": "",
+    "status": "DRAFT — 待人工签署"
+  },
+  "variants": [
+    {
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "variant": 1,
+      "title": "CLI 计数参数类型错误（单点修复）",
+      "task_description": "pilot-workspace/FORMAL-F02-A1/cli.js 解析 --count 后返回的是字符串而不是数字。修正它，使 verify.js 通过。不得修改 verify.js。",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=false，与声明一致）",
+      "verification_rules": [
+        "cli_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "单文件单点类型缺陷，症状即定位，直接修改即可 ⇒ DIRECT 是最小充分首决策。",
+      "rationale_not_in_gt": "EXPLORE/委派类/REPLAN 均超出必要（无未知范围、无可分解子任务、无失败前提）。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "variant": 2,
+      "title": "CLI 默认值违反 USAGE 约定（单模块修复）",
+      "task_description": "pilot-workspace/FORMAL-F02-A2 的 cli.js 未满足 USAGE.md 中记录的默认值约定。修正 cli.js 使约定成立并让 verify.js 通过。不得修改 verify.js。",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=false，与声明一致）",
+      "verification_rules": [
+        "defaults_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "仍是单模块修复；但\"正确默认值\"记录在 USAGE.md 中，需要看一眼约定文件 ⇒ DIRECT 与 EXPLORE 都算最小充分。",
+      "rationale_not_in_gt": "委派类超出必要；REPLAN 不适用（状态自洽）。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "variant": 1,
+      "title": "三段 CLI 管道丢弃末条记录的位置未知",
+      "task_description": "pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md），任务书不指出缺陷位于哪个阶段。定位并修复，使 node verify.js 通过。不得修改 verify.js。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=false，与声明一致）",
+      "verification_rules": [
+        "pipeline_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "缺陷位置未给出且症状在管道末端；必须沿数据流探查三层才能定位 filter 的越界过滤 ⇒ EXPLORE 是最小充分。",
+      "rationale_not_in_gt": "DIRECT 会导致盲改；委派对 3 个小文件过度；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "variant": 2,
+      "title": "输出金额小数位不一致的层级排查",
+      "task_description": "pilot-workspace/FORMAL-F02-B2 的合计输出与明细之和不一致（见 REPORT.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=false，与声明一致）",
+      "verification_rules": [
+        "format_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "现象只给出合计差，缺陷可能在 total 或 format；需探查两层才能确认是 format 只保留 1 位小数 ⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 会先改错文件；委派过度；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "variant": 1,
+      "title": "三件互不相关的 CLI 交付物",
+      "task_description": "pilot-workspace/FORMAL-F02-C1 有三件互相独立的事：① 修 src/parse.js 的短选项解析；② 写 NOTES.md，至少 2 条以「结论」开头的要点；③ 修 config.json 的默认重试次数（应为 3）。三件都完成且 node verify.js 通过。不得修改 verify.js。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=true，与声明一致）",
+      "verification_rules": [
+        "parse_fixed",
+        "notes_written",
+        "config_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "三件交付物互不依赖（代码修复 / 文档 / 配置），可分解可并行 ⇒ 委派类为最小充分。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 串行化了可分解工作；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "variant": 2,
+      "title": "两个独立 CLI 模块 + 一份汇总",
+      "task_description": "pilot-workspace/FORMAL-F02-C2：① 修 src/left.js 使 verify-left.js 通过；② 修 src/right.js 使 verify-right.js 通过；③ 写 SUMMARY.md，含一行以「汇总」开头的结论。不得修改 verify*.js。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=true，与声明一致）",
+      "verification_rules": [
+        "left_fixed",
+        "right_fixed",
+        "summary_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "两个模块互不依赖且各有独立验收脚本，再加一份汇总 ⇒ 天然可分解/可并行。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未利用可分解性；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "variant": 1,
+      "title": "三个独立子包的同构修复（并行编排）",
+      "task_description": "pilot-workspace/FORMAL-F02-D1 下 pkg1/pkg2/pkg3 各带独立缺陷与独立验收脚本（check1/2/3.js），三者互不共享文件。全部修好并让 node verify.js 通过。不得修改 check*.js 与 verify.js。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=true，与声明一致）",
+      "verification_rules": [
+        "pkg1_fixed",
+        "pkg2_fixed",
+        "pkg3_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "三个子包文件不相交、各有独立验收脚本、工作量明显超过单点修复 ⇒ 正确动作是利用并行结构（PARALLEL/Workflow）。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未利用结构；DELEGATE 单路不足以刻画三路并行（D 类等价集不含 DELEGATE）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "variant": 2,
+      "title": "两份独立日志分析 + 合并结论",
+      "task_description": "pilot-workspace/FORMAL-F02-D2：① 由 logs/a.log 生成 report-a.md（含一行以「A 结论」开头的结论）；② 由 logs/b.log 生成 report-b.md（含一行以「B 结论」开头的结论）；③ 写 SUMMARY.md，含一行以「合并」开头的结论。两份分析互不依赖。不得修改 verify.js。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=true，与声明一致）",
+      "verification_rules": [
+        "report_a_written",
+        "report_b_written",
+        "summary_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "两份分析输入/产物不同且无依赖，第三份是汇总 ⇒ 并行/编排是正确动作结构。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 串行化；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "variant": 1,
+      "title": "遗留接口被外部基线冻结：新格式要求必须走新路径而非改写旧契约",
+      "task_description": "pilot-workspace/FORMAL-F02-E1 的 src/render.js 提供遗留接口 formatLegacy(n)，该接口的输出\n已被外部消费方按 baseline-output.json 冻结回放。\nSPEC.md 给出了新的输出要求；attempt-log.txt 记录了针对当前实现的一次实际执行结果。\ncheck.js 与 src/render.js 都不得修改。请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=false，与声明一致）",
+      "verification_rules": [
+        "exact_path_added",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "**既有路径已失败且继续原路径不再成立**：当前 index.js 把被外部基线冻结的 formatLegacy 直接当作 format 暴露，真实预跑（attempt-log.txt）显示新契约的精确性断言失败。继续走旧路径有两种走法且都被约束堵死：改 render.js 破坏 B（且该文件受保护）、放宽 check.js 违反 D。正解需要**重新组织实现路径**：保留冻结的遗留契约，另建精确实现并把两个契约分别从 index.js 导出（新契约 format + 旧契约 formatLegacy）。这属于计划层的重新规划，而非局部修补 ⇒ REPLAN 是最小充分首决策。",
+      "rationale_not_in_gt": "DIRECT 指向的正是受保护的 src/render.js（改它即破坏冻结契约）。EXPLORE 不成立：失败原因已由真实预跑日志给出，不存在范围未知。VERIFY 不成立：任务目标不是验证已有结果。委派类不成立：这是一条需要重新定实现路径的单线任务，没有可并行的独立子任务。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "variant": 2,
+      "title": "失败管线：日志格式版本与配置/生成器三者不一致",
+      "task_description": "pilot-workspace/FORMAL-F02-E2 的数据管线上一轮运行失败。\nconfig.json、generator（gen.js）与当前输入 data/events.log 三者的状态记录在 pipeline.log。\nconfig.schema.json 与 check.js 都不得修改（也不得削弱校验）；config.json 必须满足 config.schema.json。\n请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS（expected_first_decisions ⊆ FIRST_DECISION 词表，非空）",
+      "delegation_axis_check": "PASS（由集合推出 expected_delegation=false，与声明一致）",
+      "verification_rules": [
+        "pipeline_consistent",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "既有配置方案已运行且失败（真实预跑日志），三件产物不一致：config 指向不存在的文件、现存输入为 v1、生成器产出 v3、schema 只允许 {2,3}。只改路径后版本仍不一致；把版本改成 1 被 schema 拒绝。可行方向至少两条（重跑 gen.js→v3 / 用 migrate.js→v2）⇒ 需先判断方向再执行 ⇒ REPLAN 为最小充分。",
+      "rationale_not_in_gt": "DIRECT 会被版本一致性拒绝；EXPLORE 不成立（原因已记录）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    }
+  ]
+}

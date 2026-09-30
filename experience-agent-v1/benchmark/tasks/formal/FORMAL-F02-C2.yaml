@@ -1,0 +1,49 @@
+id: FORMAL-F02-C2
+category: C
+status: draft
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F02-C2：① 修 src/left.js 使 verify-left.js 通过；② 修 src/right.js 使 verify-right.js 通过；③ 写 SUMMARY.md，含一行以「汇总」开头的结论。不得修改 verify*.js。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - left_fixed
+    - right_fixed
+    - summary_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F02-C2/src/left.js
+  - pilot-workspace/FORMAL-F02-C2/src/right.js
+  - pilot-workspace/FORMAL-F02-C2/SUMMARY.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F02-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F02-C2/verify.js
+  - pilot-workspace/FORMAL-F02-C2/verify-left.js
+  - pilot-workspace/FORMAL-F02-C2/verify-right.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F02-C2/verify.js
+    expect: "F02-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F02-C2/verify.js
+  - id: left_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F02-C2/verify-left.js
+  - id: right_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F02-C2/verify-right.js
+  - id: summary_written
+    kind: file_contains
+    expect: "汇总"
+    path: pilot-workspace/FORMAL-F02-C2/SUMMARY.md

@@ -1,0 +1,36 @@
+id: FORMAL-F02-B2
+category: B
+status: draft
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F02-B2 的合计输出与明细之和不一致（见 REPORT.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - format_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F02-B2/src/format.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F02-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F02-B2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F02-B2/verify.js
+    expect: "F02-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F02-B2/verify.js
+  - id: format_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F02-B2/verify.js
