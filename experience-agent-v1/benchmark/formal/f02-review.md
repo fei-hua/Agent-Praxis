@@ -72,7 +72,7 @@ pilot-workspace/FORMAL-F02-A2 的 cli.js 未满足 USAGE.md 中记录的默认�
 
 **任务描述**：
 ```
-pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md），任务书不指出缺陷位于哪个阶段。定位并修复，使 node verify.js 通过。不得修改 verify.js。
+pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。
 ```
 
 **expected_first_decisions**：`[EXPLORE]`　**expected_delegation**：`false`

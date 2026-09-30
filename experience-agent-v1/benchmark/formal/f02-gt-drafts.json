@@ -1,6 +1,6 @@
 {
   "family": "F02",
-  "generated_at": "2026-09-30T12:45:21.055Z",
+  "generated_at": "2026-09-30T12:49:42.101Z",
   "signature": {
     "gt_signed_by": "",
     "gt_signed_at": "",
@@ -58,7 +58,7 @@
       "category": "B",
       "variant": 1,
       "title": "三段 CLI 管道丢弃末条记录的位置未知",
-      "task_description": "pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md），任务书不指出缺陷位于哪个阶段。定位并修复，使 node verify.js 通过。不得修改 verify.js。",
+      "task_description": "pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。",
       "expected_first_decisions": [
         "EXPLORE"
       ],

@@ -84,7 +84,7 @@ const variants: Variant[] = [
     id: 'FORMAL-F02-B1', category: 'B', variant: 1, token: 'F02-B1 OK',
     title: '三段 CLI 管道丢弃末条记录的位置未知',
     taskType: 'bugfix', complexity: 'medium', scope: 'project', characteristics: ['multi_file'], constraints: ['scope_limited'],
-    prompt: 'pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md），任务书不指出缺陷位于哪个阶段。定位并修复，使 node verify.js 通过。不得修改 verify.js。',
+    prompt: 'pilot-workspace/FORMAL-F02-B1 的 run.js 输出条数少于输入（见 EXPECTED.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。',
     files: {
       'src/load.js': "function load(text) {\n  return text.split('\\n').filter((l) => l.trim() !== '');\n}\nmodule.exports = { load };\n",
       'src/filter.js': "function filter(lines) {\n  return lines.filter((l, i) => l.length > 0 && i < lines.length - 1);\n}\nmodule.exports = { filter };\n",
@@ -555,7 +555,8 @@ for (const { v, loaded } of loadResults) {
 writeFileSync(REVIEW, md.join('\n'), 'utf8');
 
 // ---------- 版本标识 ----------
-const versionFiles = [...variants.map((v) => path.join('benchmark', 'tasks', 'formal', `${v.id}.yaml`)), 'benchmark/formal-seeds-f02.ts', 'benchmark/formal/slots.json'].sort();
+// 统一 repo-relative path 为 '/'（人工要求 2026-09-30；此前 Windows 下混入 '\\'）
+const versionFiles = [...variants.map((v) => `benchmark/tasks/formal/${v.id}.yaml`), 'benchmark/formal-seeds-f02.ts', 'benchmark/formal/slots.json'].sort();
 const entries = versionFiles.map((f) => [f, createHash('sha256').update(readFileSync(path.join(ROOT, f))).digest('hex')] as const);
 const versionHash = createHash('sha256').update(entries.map(([f, h]) => f + ':' + h).join('\n')).digest('hex');
 writeJsonUtf8(path.join(ROOT, 'benchmark', 'formal', 'f02-version.json'), {
