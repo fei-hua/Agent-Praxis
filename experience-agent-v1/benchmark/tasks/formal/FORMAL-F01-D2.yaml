@@ -28,9 +28,6 @@ allowed_paths:
 protected_paths:
   - pilot-workspace/FORMAL-F01-D2/verify.js
 verification:
-  - id: report_a_written
-    kind: command_exit_zero
-    command: node pilot-workspace/FORMAL-F01-D2/verify.js
   - id: verify_pass
     kind: output_contains
     command: node pilot-workspace/FORMAL-F01-D2/verify.js
@@ -38,11 +35,15 @@ verification:
   - id: verify_script_changed
     kind: file_unchanged
     path: pilot-workspace/FORMAL-F01-D2/verify.js
+  - id: report_a_written
+    kind: file_contains
+    expect: "A 结论"
+    path: pilot-workspace/FORMAL-F01-D2/report-a.md
   - id: report_b_written
     kind: file_contains
     expect: "B 结论"
-    path: report-b.md
+    path: pilot-workspace/FORMAL-F01-D2/report-b.md
   - id: summary_written
     kind: file_contains
     expect: "合并"
-    path: SUMMARY.md
+    path: pilot-workspace/FORMAL-F01-D2/SUMMARY.md

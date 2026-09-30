@@ -8,7 +8,7 @@ scope: project
 characteristics: [multi_file]
 constraints: [scope_limited]
 prompt: |
-  pilot-workspace/FORMAL-F01-B2 的合计与明细不一致（见 REPORT.md），需要先定位舍入发生在哪一层再修复。不得修改 verify.js。
+  pilot-workspace/FORMAL-F01-B2 的合计与明细不一致（见 REPORT.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。
 expected_first_decisions: [EXPLORE]
 expected_delegation: false
 success_criteria:
@@ -24,9 +24,6 @@ allowed_paths:
 protected_paths:
   - pilot-workspace/FORMAL-F01-B2/verify.js
 verification:
-  - id: rounding_fixed
-    kind: command_exit_zero
-    command: node pilot-workspace/FORMAL-F01-B2/verify.js
   - id: verify_pass
     kind: output_contains
     command: node pilot-workspace/FORMAL-F01-B2/verify.js
@@ -34,3 +31,6 @@ verification:
   - id: verify_script_changed
     kind: file_unchanged
     path: pilot-workspace/FORMAL-F01-B2/verify.js
+  - id: rounding_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-B2/verify.js

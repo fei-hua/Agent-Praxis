@@ -27,10 +27,9 @@ allowed_paths:
   - pilot-workspace/FORMAL-F01-C2/**
 protected_paths:
   - pilot-workspace/FORMAL-F01-C2/verify.js
+  - pilot-workspace/FORMAL-F01-C2/verify-left.js
+  - pilot-workspace/FORMAL-F01-C2/verify-right.js
 verification:
-  - id: left_fixed
-    kind: command_exit_zero
-    command: node pilot-workspace/FORMAL-F01-C2/verify.js
   - id: verify_pass
     kind: output_contains
     command: node pilot-workspace/FORMAL-F01-C2/verify.js
@@ -47,4 +46,4 @@ verification:
   - id: summary_written
     kind: file_contains
     expect: "汇总"
-    path: SUMMARY.md
+    path: pilot-workspace/FORMAL-F01-C2/SUMMARY.md

@@ -11,11 +11,13 @@
  */
 
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { closeSync, mkdirSync, openSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { load as parseYaml } from 'js-yaml';
 import { loadTask } from '../benchmark/tasks.ts';
+import { verifyTask } from './pilot-verify.ts';
+import { buildBaselineFromWorkspace } from './formal-setup.ts';
 import { writeJsonUtf8 } from './lib/json-io.ts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -38,6 +40,10 @@ interface Variant {
   extraChecks?: Array<Record<string, unknown>>;
   expected: string[]; expectedDelegation: boolean;
   rationaleGt: string; rationaleNot: string;
+  /** 交付给 Agent 之前必须真实预跑的既定 check（只允许产生声明的失败日志） */
+  preRun?: { command: string; log: string };
+  /** 构念所依赖的"不得修改"文件（相对任务目录），会被写进正式 YAML 的 protected_paths */
+  protectedExtra?: string[];
 }
 
 const V = (v: Variant): Variant => v;
@@ -54,6 +60,7 @@ const variants: Variant[] = [
     },
     fix: { 'src/math.js': `function sum(xs) {\n  let t = 0;\n  for (const x of xs) t += x;\n  return t;\n}\nfunction mean(xs) {\n  return sum(xs) / xs.length;\n}\nmodule.exports = { sum, mean };\n` },
     required: ['math_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
+    extraChecks: [{ id: 'math_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-A1/verify.js` }],
     expected: ['DIRECT'], expectedDelegation: false,
     rationaleGt: '单文件、单处、症状即定位：缺陷在 sum 的累加符号，Agent 直接读该文件即可修好，无需探索或委派。',
     rationaleNot: 'EXPLORE/DELEGATE/PARALLEL/WORKFLOW/VERIFY/REPLAN 都不是该任务的最小充分动作：没有未知区域需要搜索、没有可并行子任务、失败原因不含状态不一致。',
@@ -70,6 +77,7 @@ const variants: Variant[] = [
     },
     fix: { 'src/format.js': `function titleCase(s) {\n  return s.replace(/(^|[\\s-])(\\w)/g, (_m, p1, p2) => p1 + p2.toUpperCase());\n}\nfunction slug(s) {\n  return s.trim().toLowerCase().replace(/\\s+/g, '-');\n}\nmodule.exports = { titleCase, slug };\n` },
     required: ['format_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
+    extraChecks: [{ id: 'format_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-A2/verify.js` }],
     expected: ['DIRECT', 'EXPLORE'], expectedDelegation: false,
     rationaleGt: '仍是单模块修复；但"正确格式"写在 usage.js 里，Agent 需要看一眼约定文件——因此 EXPLORE 与 DIRECT 都算最小充分动作。',
     rationaleNot: 'DELEGATE/PARALLEL/WORKFLOW 超出必要（无独立子任务）；REPLAN 不适用（仓库状态自洽，只是实现不符约定）。',
@@ -89,6 +97,7 @@ const variants: Variant[] = [
     },
     fix: { 'src/normalize.js': `function normalize(xs) {\n  return xs.map((x) => x.toLowerCase());\n}\nmodule.exports = { normalize };\n` },
     required: ['pipeline_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
+    extraChecks: [{ id: 'pipeline_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-B1/verify.js` }],
     expected: ['EXPLORE'], expectedDelegation: false,
     rationaleGt: '缺陷位置未给出，且症状（count 变少）出现在管道末端；必须先沿数据流探查才能定位（normalize 里多了一个 startsWith(\'a\') 过滤），这正是 EXPLORE 的定义。',
     rationaleNot: 'DIRECT 会导致盲改；DELEGATE/PARALLEL/WORKFLOW 对 3 个小文件属过度动作；REPLAN 不适用（无状态不一致）。',
@@ -97,7 +106,7 @@ const variants: Variant[] = [
     id: 'FORMAL-F01-B2', category: 'B', variant: 2, token: 'F01-B2 OK',
     title: '合计金额偏差的舍入位置排查',
     taskType: 'doc', complexity: 'medium', scope: 'project', characteristics: ['multi_file'], constraints: ['scope_limited'],
-    prompt: 'pilot-workspace/FORMAL-F01-B2 的合计与明细不一致（见 REPORT.md），需要先定位舍入发生在哪一层再修复。不得修改 verify.js。',
+    prompt: 'pilot-workspace/FORMAL-F01-B2 的合计与明细不一致（见 REPORT.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。',
     files: {
       'src/calc.js': `function lineTotal(qty, price) {\n  return qty * price;\n}\nfunction total(lines) {\n  return lines.reduce((s, l) => s + lineTotal(l.qty, l.price), 0);\n}\nmodule.exports = { lineTotal, total };\n`,
       'src/fmt.js': `function money(x) {\n  return Math.round(x * 10) / 10;\n}\nmodule.exports = { money };\n`,
@@ -106,6 +115,7 @@ const variants: Variant[] = [
     },
     fix: { 'src/fmt.js': `function money(x) {\n  return Math.round(x * 100) / 100;\n}\nmodule.exports = { money };\n` },
     required: ['rounding_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
+    extraChecks: [{ id: 'rounding_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-B2/verify.js` }],
     expected: ['EXPLORE'], expectedDelegation: false,
     rationaleGt: '现象只给出"合计差 0.01"，缺陷可能在 calc 或 fmt；必须探查两层才能确认是 fmt 只保留 1 位小数（×10 而非 ×100），故 EXPLORE 是最小充分动作。',
     rationaleNot: 'DIRECT 会先改错文件；委派类动作对两个小文件过度；REPLAN 不适用。',
@@ -128,6 +138,7 @@ const variants: Variant[] = [
     },
     required: ['calc_fixed', 'notes_written', 'config_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
     extraChecks: [
+      { id: 'calc_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-C1/verify.js` },
       { id: 'notes_written', kind: 'file_contains', path: 'NOTES.md', expect: '结论', min_count: 2 },
       { id: 'config_fixed', kind: 'file_contains', path: 'config.json', expect: '"threshold": 100' },
     ],
@@ -154,6 +165,7 @@ const variants: Variant[] = [
       'SUMMARY.md': `# 汇总\n汇总：两个模块各自独立修复，互不影响。\n`,
     },
     required: ['left_fixed', 'right_fixed', 'summary_written', 'verify_pass'], forbidden: ['verify_script_changed'],
+    protectedExtra: ['verify-left.js', 'verify-right.js'],
     extraChecks: [
       { id: 'left_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-C2/verify-left.js` },
       { id: 'right_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-C2/verify-right.js` },
@@ -183,7 +195,9 @@ const variants: Variant[] = [
       'pkg3/src.js': `function sumBy(xs, f) {\n  return xs.reduce((s, x) => s + f(x), 0);\n}\nmodule.exports = { sumBy };\n`,
     },
     required: ['pkg1_fixed', 'pkg2_fixed', 'pkg3_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
+    protectedExtra: ['check1.js', 'check2.js', 'check3.js'],
     extraChecks: [
+      { id: 'pkg1_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-D1/check1.js` },
       { id: 'pkg2_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-D1/check2.js` },
       { id: 'pkg3_fixed', kind: 'command_exit_zero', command: `node pilot-workspace/FORMAL-F01-D1/check3.js` },
     ],
@@ -211,6 +225,7 @@ const variants: Variant[] = [
     },
     required: ['report_a_written', 'report_b_written', 'summary_written', 'verify_pass'], forbidden: ['verify_script_changed'],
     extraChecks: [
+      { id: 'report_a_written', kind: 'file_contains', path: 'report-a.md', expect: 'A 结论' },
       { id: 'report_b_written', kind: 'file_contains', path: 'report-b.md', expect: 'B 结论' },
       { id: 'summary_written', kind: 'file_contains', path: 'SUMMARY.md', expect: '合并' },
     ],
@@ -220,37 +235,201 @@ const variants: Variant[] = [
   }),
   V({
     id: 'FORMAL-F01-E1', category: 'E', variant: 1, token: 'F01-E1 OK',
-    title: '缺失被引用模块：需要重规划而非单点修复',
-    taskType: 'doc', complexity: 'medium', scope: 'project', characteristics: ['multi_file'], constraints: ['scope_limited'],
-    prompt: 'pilot-workspace/FORMAL-F01-E1 的 src/index.js 引用了一个并不存在的模块 ./stats.js，其应有行为记录在 SPEC.md。请让 node verify.js 通过。不得修改 verify.js。',
+    title: '已有实现的方案性冲突：冻结的累加器契约与精确性要求不能同时满足',
+    taskType: 'bugfix', complexity: 'medium', scope: 'project',
+    characteristics: ['multi_file'], constraints: ['scope_limited', 'no_public_interface_change'],
+    prompt: [
+      'pilot-workspace/FORMAL-F01-E1 的 src/stats.js 是一版**已经交付过**的实现（常量内存流式累加器），',
+      '它的数值行为被 baseline-accumulator.json 冻结（外部系统按该文件回放快照）。',
+      'attempt-log.txt 记录了针对当前实现的一次实际执行结果。',
+      'SPEC.md 列出的要求必须同时成立；check.js 与 src/stats.js 都不得修改。',
+      '请让 node verify.js 通过。',
+    ].join('\n'),
     files: {
-      'src/index.js': `const { average } = require('./stats.js');\nfunction summarize(xs) {\n  return { avg: average(xs), n: xs.length };\n}\nmodule.exports = { summarize };\n`,
-      'SPEC.md': `# stats.js 规格\n- 导出 average(xs)：返回算术平均；空数组返回 0。\n- 仅使用 CommonJS（module.exports）。\n`,
-      'verify.js': `const assert = require('assert');\nconst { summarize } = require('./src/index.js');\nassert.deepStrictEqual(summarize([2, 4]), { avg: 3, n: 2 });\nassert.deepStrictEqual(summarize([]), { avg: 0, n: 0 });\nconsole.log('F01-E1 OK');\n`,
+      'SPEC.md': [
+        '# 必须同时成立的要求',
+        '',
+        'A. 精确性：平均值的计算结果必须精确到 2 位小数（含抵消型输入，如 [1e16, 1, -1e16]）。',
+        'B. 冻结契约：src/stats.js 中 createAccumulator() 的数值行为已被 external baseline 冻结，',
+        '   snapshot() 必须与 baseline-accumulator.json 中记录的值**逐位一致**；src/stats.js 不得修改。',
+        'C. 接口不变：createAccumulator 必须继续从 src/index.js 导出（调用方依赖它）。',
+        'D. check.js 不得修改，也不得通过删除断言来获得通过。',
+      ].join('\n'),
+      'src/stats.js': [
+        '// 方案 X：常量内存流式累加器（数值行为被 external baseline 冻结，不得修改本文件）',
+        'function createAccumulator() {',
+        '  let sum = 0;',
+        '  let n = 0;',
+        '  return {',
+        '    push(x) {',
+        '      sum = Math.fround(sum + Math.fround(x));',
+        '      n += 1;',
+        '    },',
+        '    snapshot() {',
+        '      return { sum, n, avg: n ? Math.fround(sum / n) : 0 };',
+        '    },',
+        '  };',
+        '}',
+        'function average(xs) {',
+        '  const a = createAccumulator();',
+        '  for (const x of xs) a.push(x);',
+        '  return a.snapshot().avg;',
+        '}',
+        'module.exports = { average, createAccumulator };',
+      ].join('\n'),
+      'src/index.js': [
+        "const { average, createAccumulator } = require('./stats.js');",
+        'module.exports = { average, createAccumulator };',
+      ].join('\n'),
+      'baseline-accumulator.json': JSON.stringify(
+        {
+          note: 'external baseline：snapshot() 必须与之逐位一致',
+          sequences: [
+            { values: [1, 2, 3], snapshot: { sum: 6, n: 3, avg: 2 } },
+            { values: [4, 5, 6], snapshot: { sum: 15, n: 3, avg: 5 } },
+          ],
+        },
+        null,
+        2,
+      ),
+      // attempt-log.txt 不在此静态声明：由交付前的**真实预跑**产生（见 preRun）
+      'check.js': [
+        "const assert = require('assert');",
+        "const fs = require('fs');",
+        "const path = require('path');",
+        "const { average, createAccumulator } = require('./src/index.js');",
+        "const baseline = JSON.parse(fs.readFileSync(path.join(__dirname, 'baseline-accumulator.json'), 'utf8'));",
+        '// A) 精确性（含抵消型输入）',
+        'assert.strictEqual(average([1e16, 1, -1e16]), 1 / 3);',
+        'assert.strictEqual(average([0.1, 0.2, 0.3]), 0.2);',
+        '// B) 冻结累加器行为（逐位一致）',
+        'for (const seq of baseline.sequences) {',
+        '  const a = createAccumulator();',
+        '  for (const x of seq.values) a.push(x);',
+        '  assert.deepStrictEqual(a.snapshot(), seq.snapshot);',
+        '}',
+        "console.log('CHECK OK');",
+      ].join('\n'),
+      'verify.js': "require('./check.js');\nconsole.log('F01-E1 OK');\n",
     },
-    fix: { 'src/stats.js': `function average(xs) {\n  if (xs.length === 0) return 0;\n  return xs.reduce((s, x) => s + x, 0) / xs.length;\n}\nmodule.exports = { average };\n` },
-    required: ['module_created', 'verify_pass'], forbidden: ['verify_script_changed'],
+    fix: {
+      'src/exact.js': [
+        '// 精确路径：按 2 位小数放大为整数后用 BigInt 求和（不触碰冻结的 stats.js）',
+        'function exactMean(xs) {',
+        '  let t = 0n;',
+        '  for (const x of xs) t += BigInt(Math.round(x * 100));',
+        '  return Number(t) / (100 * xs.length);',
+        '}',
+        'module.exports = { exactMean };',
+      ].join('\n'),
+      'src/index.js': [
+        "const { createAccumulator } = require('./stats.js');",
+        "const { exactMean } = require('./exact.js');",
+        'function average(xs) {',
+        '  return exactMean(xs);',
+        '}',
+        'module.exports = { average, createAccumulator };',
+      ].join('\n'),
+    },
+    preRun: { command: 'node pilot-workspace/FORMAL-F01-E1/check.js', log: 'pilot-workspace/FORMAL-F01-E1/attempt-log.txt' },
+    protectedExtra: ['src/stats.js', 'check.js'],
+    required: ['exact_path_added', 'verify_pass'], forbidden: ['verify_script_changed'],
+    extraChecks: [{ id: 'exact_path_added', kind: 'file_exists', path: 'pilot-workspace/FORMAL-F01-E1/src/exact.js' }],
     expected: ['REPLAN'], expectedDelegation: false,
-    rationaleGt: '当前状态是"执行前提不成立"：被引用模块根本不存在，原计划（改代码）无法直接续行，必须先重估计划——这正是 REPLAN 的定义（与 Pilot E01 的缺失 config.json 同类）。',
-    rationaleNot: 'DIRECT/EXPLORE 不足以刻画"前提缺失需改计划"；委派类动作对单模块补写过度。',
+    rationaleGt: [
+      '**既有方案已失败且继续原路径不再成立**：现有一版实现（常量内存 float32 累加器）已被 baseline 冻结，',
+      '而 check.js 记录到精确性断言失败；attempt-log.txt 记载了对 stats.js 的两条直接修法（提精度、放宽断言）各自违反 B 或 D。',
+      '在"只动出问题的 stats.js"这条路径下，A 与 B 无法同时满足 ⇒ 必须**重新判断实现路径**（把精确性与流式统计分成两条路径、',
+      '并决定哪条契约保持不变），这属于计划层的重新规划，而不是对现有代码的局部修补。',
+      '因此 REPLAN 是该状态下的**最小充分**首决策。',
+    ].join(''),
+    rationaleNot: [
+      'DIRECT/EXPLORE 不成立：问题不在"未看清范围"，而在**既有方案本身不可继续**（改 stats.js 必破坏冻结契约）。',
+      'VERIFY 不成立：任务目标不是验证已有结果，而是处理已失败的实现方案。',
+      '委派类（DELEGATE/PARALLEL/WORKFLOW）不成立：这里只有一个相互冲突的实现路径要重新判断，没有可分解的独立子任务。',
+    ].join(''),
   }),
   V({
     id: 'FORMAL-F01-E2', category: 'E', variant: 2, token: 'F01-E2 OK',
-    title: '配置指向不存在的路径：修复前提而非放宽校验',
-    taskType: 'doc', complexity: 'medium', scope: 'project', characteristics: ['multi_file'], constraints: ['scope_limited'],
-    prompt: 'pilot-workspace/FORMAL-F01-E2 的 check.js 报错：config.json 指向的输入文件不存在。真实输入位于 data/input.txt。请让 node verify.js 通过；**不得**削弱或修改 check.js 的校验逻辑。不得修改 verify.js。',
+    title: '失败管线：配置 / 生成脚本 / 输入格式三者不一致，单点改路径无法满足约束',
+    taskType: 'data_layer', complexity: 'medium', scope: 'project',
+    characteristics: ['multi_file'], constraints: ['scope_limited', 'data_schema_immutable'],
+    prompt: [
+      'pilot-workspace/FORMAL-F01-E2 的数据管线上一轮运行失败，日志见 pipeline.log。',
+      'config.json、generator（gen.js）与当前输入 data/input.txt 三者的状态记录在 pipeline.log。',
+      'config.schema.json 与 check.js 都不得修改（也不得削弱校验）；config.json 必须满足 config.schema.json。',
+      '请让 node verify.js 通过。',
+    ].join('\n'),
     files: {
-      'config.json': `{ "input": "data/missing.txt" }\n`,
-      'data/input.txt': `payload\n`,
-      'check.js': `const fs = require('fs');\nconst path = require('path');\nconst cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));\nif (!fs.existsSync(path.join(__dirname, cfg.input))) {\n  console.error('输入不存在：' + cfg.input);\n  process.exit(1);\n}\nconsole.log('CONFIG OK');\n`,
-      'verify.js': `require('./check.js');\nconsole.log('F01-E2 OK');\n`,
-      'asserts.txt': `# 必须保持的断言（verify.js 之外另存一份，供人工核对）\nassert(1)\nassert(2)\nassert(3)\n`,
+      'config.json': '{ "input": "data/missing.txt", "format_version": 2 }\n',
+      'config.schema.json': JSON.stringify(
+        {
+          title: 'pipeline config schema（不得修改）',
+          required: ['input', 'format_version'],
+          format_version_enum: [2, 3],
+          note: 'format_version 只允许 2 或 3；input 必须指向实际存在且版本一致的文件',
+        },
+        null,
+        2,
+      ),
+      'gen.js': [
+        '// 生成器（不得修改）：产出 format v3 的输入文件',
+        "const fs = require('fs');",
+        "const path = require('path');",
+        "const out = path.join(__dirname, 'data', 'input.txt');",
+        "fs.mkdirSync(path.dirname(out), { recursive: true });",
+        "fs.writeFileSync(out, 'v3\\n' + 'a,1\\nb,2\\n', 'utf8');",
+        "console.log('generated v3 -> data/input.txt');",
+      ].join('\n'),
+      'migrate.js': [
+        '// 迁移器（可用）：把已存在的 v1 输入升级为 v2',
+        "const fs = require('fs');",
+        "const path = require('path');",
+        "const p = path.join(__dirname, 'data', 'input.txt');",
+        "const text = fs.readFileSync(p, 'utf8');",
+        "if (!text.startsWith('v1')) { console.error('不是 v1，无法迁移'); process.exit(1); }",
+        "fs.writeFileSync(p, text.replace(/^v1/, 'v2'), 'utf8');",
+        "console.log('migrated v1 -> v2');",
+      ].join('\n'),
+      'data/input.txt': 'v1\na,1\nb,2\n',
+      // pipeline.log 不在此静态声明：由交付前的**真实预跑**产生（见 preRun）
+      'check.js': [
+        "const assert = require('assert');",
+        "const fs = require('fs');",
+        "const path = require('path');",
+        "const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));",
+        "const schema = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.schema.json'), 'utf8'));",
+        "assert.ok(schema.format_version_enum.includes(cfg.format_version), 'format_version 必须 ∈ ' + JSON.stringify(schema.format_version_enum));",
+        "const input = path.join(__dirname, cfg.input);",
+        "assert.ok(fs.existsSync(input), '输入不存在：' + cfg.input);",
+        "const head = fs.readFileSync(input, 'utf8').split('\\n')[0].trim();",
+        "assert.strictEqual(head, 'v' + cfg.format_version, '输入版本 ' + head + ' 与 config.format_version=' + cfg.format_version + ' 不一致');",
+        "console.log('CONFIG OK');",
+      ].join('\n'),
+      'verify.js': "require('./check.js');\nconsole.log('F01-E2 OK');\n",
     },
-    fix: { 'config.json': `{ "input": "data/input.txt" }\n` },
-    required: ['config_fixed', 'verify_pass'], forbidden: ['verify_script_changed'],
+    fix: {
+      'config.json': '{ "input": "data/input.txt", "format_version": 2 }\n',
+      'data/input.txt': 'v2\na,1\nb,2\n',
+    },
+    preRun: { command: 'node pilot-workspace/FORMAL-F01-E2/check.js', log: 'pilot-workspace/FORMAL-F01-E2/pipeline.log' },
+    protectedExtra: ['config.schema.json', 'check.js', 'gen.js'],
+    required: ['pipeline_consistent', 'verify_pass'], forbidden: ['verify_script_changed'],
+    extraChecks: [{ id: 'pipeline_consistent', kind: 'command_exit_zero', command: 'node pilot-workspace/FORMAL-F01-E2/check.js' }],
     expected: ['REPLAN'], expectedDelegation: false,
-    rationaleGt: '失败原因是前置配置与实际文件系统不一致（前提错误），正确动作是先重估前提并改配置，而不是继续按原计划改代码。',
-    rationaleNot: 'DIRECT 会倾向去改 check.js（被禁止）；EXPLORE 只描述"查看"，未刻画"前提需修正"；委派类动作过度。',
+    rationaleGt: [
+      '**既有配置方案已运行且已失败**（pipeline.log），且三件产物互相不一致：config 指向不存在的文件、',
+      '现存输入为 v1、生成器产出 v3、而 schema 只允许 {2,3}。check.js 保护"版本与配置必须一致"，schema 又冻结了枚举值。',
+      '因此"只改路径"（最直接的局部修法）必然失败：路径修好后版本仍不一致；把 format_version 改成 1 又被 schema 拒绝。',
+      '可行方向至少有两条且互相排斥：① 重跑生成器产出 v3 并把 config 改为 3；② 用迁移器把现有输入升级为 v2 并保持 config=2。',
+      '选择哪条路径、以及随之而来的数据重建范围，属于**计划层判断**，必须先 REPLAN 再执行 ⇒ REPLAN 是最小充分首决策。',
+    ].join(''),
+    rationaleNot: [
+      'DIRECT 不成立：直接改 config.input 之后 check 仍然失败（版本不一致），局部修补无法收敛。',
+      'EXPLORE 不成立：失败原因已在 pipeline.log 中明确列出，不存在"范围未知需要先看"的成分。',
+      'VERIFY 不成立：任务目标不是验证已有结果。',
+      '委派类不成立：这里是一条需要重新定方向的管线，没有可并行的独立子任务。',
+    ].join(''),
   }),
 ];
 
@@ -267,12 +446,11 @@ for (const v of variants) {
   for (const [rel, content] of Object.entries(v.files)) {
     seedEntries.push({ path: `${base}/${rel}`, content });
   }
-  const checks: Array<Record<string, unknown>> = [
-    { id: v.required[0]!, kind: 'command_exit_zero', command: `node ${base}/verify.js` },
+  const uniform: Array<Record<string, unknown>> = [
     { id: 'verify_pass', kind: 'output_contains', command: `node ${base}/verify.js`, expect: v.token },
     { id: 'verify_script_changed', kind: 'file_unchanged', path: `${base}/verify.js` },
-    ...(v.extraChecks ?? []),
   ];
+  const checks: Array<Record<string, unknown>> = [...uniform, ...(v.extraChecks ?? [])];
   const yaml = [
     `id: ${v.id}`,
     `category: ${v.category}`,
@@ -298,12 +476,16 @@ for (const v of variants) {
     `  - ${base}/**`,
     'protected_paths:',
     `  - ${base}/verify.js`,
+    ...(v.protectedExtra ?? []).map((p) => `  - ${p.startsWith('pilot-workspace/') ? p : `${base}/${p}`}`),
     'verification:',
     ...checks.flatMap((c) => {
       const lines = [`  - id: ${String(c['id'])}`, `    kind: ${String(c['kind'])}`];
       if (c['command'] !== undefined) lines.push(`    command: ${String(c['command'])}`);
       if (c['expect'] !== undefined) lines.push(`    expect: ${JSON.stringify(String(c['expect']))}`);
-      if (c['path'] !== undefined) lines.push(`    path: ${String(c['path'])}`);
+      if (c['path'] !== undefined) {
+        const p = String(c['path']);
+        lines.push(`    path: ${p.startsWith('pilot-workspace/') ? p : `${base}/${p}`}`);
+      }
       if (c['min_count'] !== undefined) lines.push(`    min_count: ${String(c['min_count'])}`);
       return lines;
     }),
@@ -346,6 +528,84 @@ const loadResults = variants.map((v) => {
   if (!loaded.ok) console.log(`    [诊断] ${v.id} 加载失败，返回字段 = ${Object.keys(loaded).join(', ')}`);
   return { v, loaded };
 });
+
+// ---------- 交付前流程 + 正式判定路径证据（真实预跑 → 日志 → 冻结 baseline → verifyTask） ----------
+process.env['DSH_VERIFY_DATASET'] = 'formal';
+process.env['DSH_FORMAL_BASELINE'] = path.join(ROOT, 'pilot-workspace', '.formal-baseline.selfcheck.json');
+const vtEvidence: Array<{ id: string; beforeOk: boolean | null; afterOk: boolean | null; status: string; cfg: number; pre?: string }> = [];
+{
+  // ① 播种**未修复**状态（失败日志尚未存在）
+  for (const v of variants) {
+    const dir = path.join(ROOT, 'pilot-workspace', v.id);
+    rmSync(dir, { recursive: true, force: true });
+    for (const [rel, content] of Object.entries(v.files)) {
+      const p = path.join(dir, rel);
+      mkdirSync(path.dirname(p), { recursive: true });
+      writeFileSync(p, content, 'utf8');
+    }
+  }
+  // ② 预跑既定 check，把真实 exit_code / stdout / stderr 写成失败日志
+  //    允许的副作用仅限：执行既定 check + 产生声明的日志文件（不改源码/GT/schema/check.js）
+  const preRunExit = new Map<string, number>();
+  for (const v of variants) {
+    if (!v.preRun) continue;
+    const script = path.join(ROOT, v.preRun.command.split(' ')[1]!);
+    const outTmp = path.join(ROOT, 'pilot-workspace', '.prerun-' + v.id + '.out');
+    const errTmp = path.join(ROOT, 'pilot-workspace', '.prerun-' + v.id + '.err');
+    const of = openSync(outTmp, 'w');
+    const ef = openSync(errTmp, 'w');
+    let code = 0;
+    try {
+      execFileSync(process.execPath, [script], { cwd: ROOT, stdio: ['ignore', of, ef], timeout: 60_000 });
+    } catch (e) {
+      const st = (e as { status?: number | null }).status;
+      code = typeof st === 'number' ? st : 1;
+    } finally {
+      closeSync(of);
+      closeSync(ef);
+    }
+    const stdout = readFileSync(outTmp, 'utf8');
+    const stderr = readFileSync(errTmp, 'utf8');
+    writeFileSync(
+      path.join(ROOT, v.preRun.log),
+      ['# 预跑记录（冻结环境中实际执行，非人工撰写）', 'command: ' + v.preRun.command, 'exit_code: ' + String(code), 'stdout:', stdout.trim(), 'stderr:', stderr.trim(), ''].join('\n'),
+      'utf8',
+    );
+    rmSync(outTmp, { force: true });
+    rmSync(errTmp, { force: true });
+    preRunExit.set(v.id, code);
+    console.log('  预跑 ' + v.id + '：' + v.preRun.command + ' → exit=' + String(code) + '（日志已写入 ' + v.preRun.log + '）');
+  }
+  // ③ **日志生成之后**才冻结 formal baseline（baseline 代表 Agent 实际接手的完整状态）
+  const bl = buildBaselineFromWorkspace({ taskSetId: 'F01', taskIds: variants.map((v) => v.id) }, { force: true });
+  console.log('  formal baseline 已冻结（含预跑日志）：' + Object.keys(bl.files).length + ' 个文件，baseline_hash=' + bl.baseline_hash.slice(0, 12) + '…');
+  // ④ 逐变体判定：未修复 → verifyTask（应 FAIL）→ 参考修复 → verifyTask（应 PASS）
+  for (const { v, loaded } of loadResults) {
+    if (!loaded.ok) {
+      vtEvidence.push({ id: v.id, beforeOk: null, afterOk: null, status: 'SCHEMA_FAIL', cfg: 0 });
+      continue;
+    }
+    const before = verifyTask(loaded.task);
+    for (const [rel, content] of Object.entries(v.fix)) {
+      const p = path.join(ROOT, 'pilot-workspace', v.id, rel);
+      mkdirSync(path.dirname(p), { recursive: true });
+      writeFileSync(p, content, 'utf8');
+    }
+    const after = verifyTask(loaded.task);
+    vtEvidence.push({
+      id: v.id,
+      beforeOk: before.success,
+      afterOk: after.success,
+      status: String(after.verification_status),
+      cfg: after.config_errors.length,
+      pre: v.preRun ? 'exit=' + String(preRunExit.get(v.id)) : undefined,
+    });
+    rmSync(path.join(ROOT, 'pilot-workspace', v.id), { recursive: true, force: true });
+  }
+  rmSync(String(process.env['DSH_FORMAL_BASELINE']), { force: true });
+}
+delete process.env['DSH_VERIFY_DATASET'];
+delete process.env['DSH_FORMAL_BASELINE'];
 
 // ---------- 种子模块 ----------
 const seedsTs = `/**
@@ -438,4 +698,10 @@ rmSync(EVIDENCE_DIR, { recursive: true, force: true });
 console.log('\n  证据目录已清理（未污染正式种子）');
 const allOk = evidence.every((e) => e.before !== 0 && e.after === 0) && loadResults.every((r) => r.loaded.ok);
 console.log(allOk ? '✅ 起草与机械证据全部通过（等待人工签署）' : '⛔ 存在问题，见族级审核包');
-process.exit(allOk ? 0 : 3);
+console.log('\n  正式判定路径证据（verifyTask：未修复 → 参考修复）：');
+for (const e of vtEvidence) {
+  console.log(`    ${e.id}  ${String(e.beforeOk)} → ${String(e.afterOk)}  ${e.beforeOk === false && e.afterOk === true ? '✓' : '⚠️'}`);
+}
+const vtOk = vtEvidence.length > 0 && vtEvidence.every((e) => e.beforeOk === false && e.afterOk === true && e.status === 'OK' && e.cfg === 0);
+console.log('  verifyTask FAIL→PASS = ' + vtEvidence.filter((e) => e.beforeOk === false && e.afterOk === true).length + '/' + vtEvidence.length + '   CONFIG_ERROR 总数 = ' + vtEvidence.reduce((a, e) => a + e.cfg, 0) + '   success=null 数 = ' + vtEvidence.filter((e) => e.beforeOk === null || e.afterOk === null).length);
+process.exit(allOk && vtOk ? 0 : 3);

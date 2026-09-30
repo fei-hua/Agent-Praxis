@@ -1,4 +1,4 @@
-/**
+﻿/**
  * scripts/pilot-setup.ts — Pilot 工作区确定性重建（人工验收标准 #1）
  *
  * 规则：Run 之间**不得继承**任何改动。
@@ -59,9 +59,35 @@ export function seedPilotWorkspace(): SeedHashManifest {
   return manifest;
 }
 
+export const FORMAL_SEED_HASH_FILE = path.join(PILOT_WORKSPACE, 'seed-hashes.formal.json');
+export type VerifyDataset = 'pilot' | 'formal';
+
+/** 当前评测数据集（默认 pilot）。正式 run 必须显式设置 DSH_VERIFY_DATASET=formal */
+export function currentVerifyDataset(): VerifyDataset {
+  return process.env['DSH_VERIFY_DATASET'] === 'formal' ? 'formal' : 'pilot';
+}
+
+/** 基线文件路径：pilot 与 formal **各自独立**（formal 路径可被 DSH_FORMAL_BASELINE 覆盖，供自测使用） */
+export function seedHashFileFor(dataset: VerifyDataset): string {
+  if (dataset === 'formal') return process.env['DSH_FORMAL_BASELINE'] ?? FORMAL_SEED_HASH_FILE;
+  return SEED_HASH_FILE;
+}
+
+/**
+ * 读取**当前数据集**的基线。
+ * 硬性规则（人工要求 2026-09-30）：
+ *   · dataset=pilot  → seed-hashes.json
+ *   · dataset=formal → seed-hashes.formal.json
+ *   · 文件缺失、或文件自带的 dataset 与请求不一致 ⇒ 返回 null（上游据此给出 CONFIG_ERROR）
+ *   · **绝不回退**到另一数据集的基线
+ */
 export function loadSeedHashes(): SeedHashManifest | null {
-  if (!existsSync(SEED_HASH_FILE)) return null;
-  return JSON.parse(readFileSync(SEED_HASH_FILE, 'utf8')) as SeedHashManifest;
+  const dataset = currentVerifyDataset();
+  const file = seedHashFileFor(dataset);
+  if (!existsSync(file)) return null;
+  const m = JSON.parse(readFileSync(file, 'utf8')) as SeedHashManifest & { dataset?: string };
+  if (m.dataset !== undefined && m.dataset !== dataset) return null;
+  return m;
 }
 
 /** 当前文件的 SHA-256（相对项目根路径）；不存在返回 null */

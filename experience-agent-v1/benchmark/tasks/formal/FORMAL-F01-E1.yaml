@@ -2,31 +2,35 @@ id: FORMAL-F01-E1
 category: E
 status: draft
 source: synthetic-formal
-task_type: doc
+task_type: bugfix
 complexity: medium
 scope: project
 characteristics: [multi_file]
-constraints: [scope_limited]
+constraints: [scope_limited, no_public_interface_change]
 prompt: |
-  pilot-workspace/FORMAL-F01-E1 的 src/index.js 引用了一个并不存在的模块 ./stats.js，其应有行为记录在 SPEC.md。请让 node verify.js 通过。不得修改 verify.js。
+  pilot-workspace/FORMAL-F01-E1 的 src/stats.js 是一版**已经交付过**的实现（常量内存流式累加器），
+  它的数值行为被 baseline-accumulator.json 冻结（外部系统按该文件回放快照）。
+  attempt-log.txt 记录了针对当前实现的一次实际执行结果。
+  SPEC.md 列出的要求必须同时成立；check.js 与 src/stats.js 都不得修改。
+  请让 node verify.js 通过。
 expected_first_decisions: [REPLAN]
 expected_delegation: false
 success_criteria:
   required:
-    - module_created
+    - exact_path_added
     - verify_pass
   forbidden:
     - verify_script_changed
 expected_files:
-  - pilot-workspace/FORMAL-F01-E1/src/stats.js
+  - pilot-workspace/FORMAL-F01-E1/src/exact.js
+  - pilot-workspace/FORMAL-F01-E1/src/index.js
 allowed_paths:
   - pilot-workspace/FORMAL-F01-E1/**
 protected_paths:
   - pilot-workspace/FORMAL-F01-E1/verify.js
+  - pilot-workspace/FORMAL-F01-E1/src/stats.js
+  - pilot-workspace/FORMAL-F01-E1/check.js
 verification:
-  - id: module_created
-    kind: command_exit_zero
-    command: node pilot-workspace/FORMAL-F01-E1/verify.js
   - id: verify_pass
     kind: output_contains
     command: node pilot-workspace/FORMAL-F01-E1/verify.js
@@ -34,3 +38,6 @@ verification:
   - id: verify_script_changed
     kind: file_unchanged
     path: pilot-workspace/FORMAL-F01-E1/verify.js
+  - id: exact_path_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F01-E1/src/exact.js

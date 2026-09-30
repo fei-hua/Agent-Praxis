@@ -27,10 +27,10 @@ allowed_paths:
   - pilot-workspace/FORMAL-F01-D1/**
 protected_paths:
   - pilot-workspace/FORMAL-F01-D1/verify.js
+  - pilot-workspace/FORMAL-F01-D1/check1.js
+  - pilot-workspace/FORMAL-F01-D1/check2.js
+  - pilot-workspace/FORMAL-F01-D1/check3.js
 verification:
-  - id: pkg1_fixed
-    kind: command_exit_zero
-    command: node pilot-workspace/FORMAL-F01-D1/verify.js
   - id: verify_pass
     kind: output_contains
     command: node pilot-workspace/FORMAL-F01-D1/verify.js
@@ -38,6 +38,9 @@ verification:
   - id: verify_script_changed
     kind: file_unchanged
     path: pilot-workspace/FORMAL-F01-D1/verify.js
+  - id: pkg1_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F01-D1/check1.js
   - id: pkg2_fixed
     kind: command_exit_zero
     command: node pilot-workspace/FORMAL-F01-D1/check2.js
