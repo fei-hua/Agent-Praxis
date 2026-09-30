@@ -1,6 +1,9 @@
 id: FORMAL-F02-E1
 category: E
-status: draft
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T12:52:58Z
+gt_signed_version_hash: a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a
 source: synthetic-formal
 task_type: refactor
 complexity: medium

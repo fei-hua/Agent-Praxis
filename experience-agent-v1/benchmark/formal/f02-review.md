@@ -271,3 +271,15 @@ config.schema.json 与 check.js 都不得修改（也不得削弱校验）；con
 **为什么其他候选不属于 GT**：DIRECT 会被版本一致性拒绝；EXPLORE 不成立（原因已记录）；VERIFY 与委派类不适用。
 
 **签署**：`gt_signed_by: ________`　`gt_signed_at: ________`
+
+## 签署落盘
+
+`
+status = frozen（10/10）
+gt_signed_by = fei-hua
+gt_signed_at = 2026-09-30T12:52:58Z
+signed_version_hash = a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a
+frozen_version_hash = ff689acca75c09c75eb779e89d04bdf1c9a5221ba3f3b81405bd18823fb39451
+frozen_projection_hash = a00870c8960bd04c340cf679661086041b8113e95fd82f49b6dbce6c21e6b06b
+GT 内容漂移 = 0
+`
