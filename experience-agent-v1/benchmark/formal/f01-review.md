@@ -282,3 +282,20 @@ based_on     = 91e0920（本提交即为远端同步版本）
 `
 
 签署时必须核对本 hash：10 个 YAML / 种子模块 / 槽位注册表 任一变更都会改变它。
+
+## 签署落盘
+
+`
+status                = frozen（10/10）
+gt_signed_by          = fei-hua
+gt_signed_at          = undefined
+signed_version_hash   = 1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212
+frozen_version_hash   = a634b40762cd52c119f2324e3b2f54561544620e275214b343c03fcfaeda14a9
+frozen_projection_hash= 893d5fbbea5fbd4d33cc94080aea277c326f114b5198c42e02ac2b898de41e31
+GT 内容漂移            = 0（与签署审查版本逐字段投影一致）
+`
+
+### 更正记录
+
+初版冻结把 gt_signed_at 误写成字面量 undefined；已修正为 2026-09-30T12:36:08Z。
+语义投影哈希未变（签名字段不参与投影），故 GT 内容仍与签署审查版本一致。

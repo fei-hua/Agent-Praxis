@@ -1,6 +1,9 @@
 id: FORMAL-F01-D2
 category: D
-status: draft
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T12:36:08Z
+gt_signed_version_hash: 1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212
 source: synthetic-formal
 task_type: doc
 complexity: high

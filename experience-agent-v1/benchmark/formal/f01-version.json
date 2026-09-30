@@ -1,22 +1,29 @@
 {
   "dataset": "formal",
   "family": "F01",
-  "version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+  "signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+  "signed_scope": "签署审查针对的版本（status=draft，commit 45453ff）",
+  "frozen_version_hash": "dd94f79d50a69729a022a4982a19ba6f9ffb9a03105036806b784f4427195cf6",
+  "frozen_content_projection_hash": "893d5fbbea5fbd4d33cc94080aea277c326f114b5198c42e02ac2b898de41e31",
+  "freeze_changed": "仅 status: draft→frozen 与新增 gt_signed_by / gt_signed_at / gt_signed_version_hash",
+  "gt_content_drift": "0（语义投影逐条一致）",
+  "gt_signed_by": "fei-hua",
   "file_count": 12,
   "files": {
     "benchmark/formal-seeds-f01.ts": "d52b2ceb1531f3467949bcdab4cd63b793a7505fab53dd8f2e04cf12aa194b05",
     "benchmark/formal/slots.json": "d8e832a04cdeb426ff1640c1b5c659ee00795c03434954e7ee6fa1301550d3e3",
-    "benchmark/tasks/formal/FORMAL-F01-A1.yaml": "7a23787bed8ad31259461cb4502765f70890ad721eff6c6eb6a94730556a2c2b",
-    "benchmark/tasks/formal/FORMAL-F01-A2.yaml": "8db2080c679b1c604837d33f1a52ca13d167ab1284597a17553e40f61e57d231",
-    "benchmark/tasks/formal/FORMAL-F01-B1.yaml": "7f3c20ebdaadb213bd9681215212e0826b4d22b89a56b624fee37caf45aaf762",
-    "benchmark/tasks/formal/FORMAL-F01-B2.yaml": "b9e1b94e04e9cd7f47e47dd2c89f2d30c1db594fbc0644156d405f8ee306f952",
-    "benchmark/tasks/formal/FORMAL-F01-C1.yaml": "2b6fb2c32be1e49b112b5f1e0c90fa36fcc770b48829693fdea64b77bd67e9e4",
-    "benchmark/tasks/formal/FORMAL-F01-C2.yaml": "3b0d395a868d407a6a85f50adb924d8442e3c48376b46f28757e3404caa1c44b",
-    "benchmark/tasks/formal/FORMAL-F01-D1.yaml": "5f9e8cdb59a5622833cb30497ad3455700e35226b5eb08a78ca69d6a52d077ca",
-    "benchmark/tasks/formal/FORMAL-F01-D2.yaml": "9feb99e65deffba0110b18821ab77ca5448ed3eecab46b4716fb743f29443e31",
-    "benchmark/tasks/formal/FORMAL-F01-E1.yaml": "fee0c20d7073ac7459b9f807b620385ebec70eb147512ddc0b424f409293f855",
-    "benchmark/tasks/formal/FORMAL-F01-E2.yaml": "b4e430c3ffb185d8eaa339cd803dd0ff1347a993468f0d536f6449757f030def"
+    "benchmark/tasks/formal/FORMAL-F01-A1.yaml": "45b3603743c469b7c3a3b63aa8a77f3b950657711f869b9bdbca545bbe0ecd96",
+    "benchmark/tasks/formal/FORMAL-F01-A2.yaml": "03f121390f92623272ce512ad11686182cfbd8bbfd7f3f2d2bd71ffe04ccf8d8",
+    "benchmark/tasks/formal/FORMAL-F01-B1.yaml": "406495cf8a409f5f89b4fd67f21d9ec4492cb72339061081b67f8fde1fccfd26",
+    "benchmark/tasks/formal/FORMAL-F01-B2.yaml": "42445356f08bb0035b64d44a72ea589a7ba1bfd29da0f8897de118c63a9a9dcc",
+    "benchmark/tasks/formal/FORMAL-F01-C1.yaml": "d0572741ab6a3e7b966fec795d87e0186400e28a98986acfe0d675f7325ee569",
+    "benchmark/tasks/formal/FORMAL-F01-C2.yaml": "631d41fa155f894524456c6e44dd1923146673f57884b7328b5f589fc57a5739",
+    "benchmark/tasks/formal/FORMAL-F01-D1.yaml": "b3ca7a545b1e7cba4517e4ff1918d06992bb7cf3547b516a5ceca273926b4a55",
+    "benchmark/tasks/formal/FORMAL-F01-D2.yaml": "54f10b2e2ce002ca13c5e3ef109b48d5ce48cb3898d4b76e9c621f233131cd5d",
+    "benchmark/tasks/formal/FORMAL-F01-E1.yaml": "260a90b010e81f638502c220cc4041474bbeaf418f031fee925cf6f7f21f1c0c",
+    "benchmark/tasks/formal/FORMAL-F01-E2.yaml": "a9c5356135c6e2920e7a3420d81b20d24bec51635f5e07928eff6eee2f599aa1"
   },
-  "based_on_commit": "91e0920",
-  "generated_at": "2026-09-30T12:34:03.232Z"
+  "generated_at": "2026-09-30T12:36:09.096Z",
+  "gt_signed_at": "2026-09-30T12:36:08Z",
+  "correction": "初版冻结时 gt_signed_at 误写为字面量 undefined，已修正为真实时间戳；GT 内容投影哈希未变（签名字段不参与投影）"
 }
