@@ -1,0 +1,15 @@
+{
+  "dataset": "formal",
+  "family": "F01",
+  "note": "交付给 Agent 之前必须真实预跑的既定 check（只允许产生声明的失败日志，不得修改源码/GT/schema/check.js）。本文件是 pre-run 的单一来源，供 formal-verify-all 与后续正式播种读取。",
+  "pre_runs": {
+    "FORMAL-F01-E1": {
+      "command": "node pilot-workspace/FORMAL-F01-E1/check.js",
+      "log": "pilot-workspace/FORMAL-F01-E1/attempt-log.txt"
+    },
+    "FORMAL-F01-E2": {
+      "command": "node pilot-workspace/FORMAL-F01-E2/check.js",
+      "log": "pilot-workspace/FORMAL-F01-E2/pipeline.log"
+    }
+  }
+}
