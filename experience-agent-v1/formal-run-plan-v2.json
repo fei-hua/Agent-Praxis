@@ -1,0 +1,6214 @@
+{
+  "dataset": "formal",
+  "plan_kind": "formal-run-plan",
+  "plan_version": "v2",
+  "created_at": "2026-10-04T09:01:54.322Z",
+  "protocol": "Protocol v2",
+  "note": "本文件是**实验计划**，不属于 benchmark identity；它引用 source_manifest_sha256 以固定所依据的 benchmark 版本。v2 依据 Protocol v2 §5 重生成：排序键为 sha256(frozen_seed|group_id|arm)，位次配额精确 40/40/40（由排列多重集构造保证）。",
+  "source_manifest": {
+    "file": "pilot-manifest-formal.json",
+    "sha256": "d255e4cd218f81f618d80fa827ffc8174f74c6649843d6821ebb3ccf1e7a875f",
+    "dataset": "formal",
+    "manifest_kind": "formal-benchmark-frozen-manifest",
+    "protocol": "Protocol v2",
+    "self_check_ok": true
+  },
+  "environment": {
+    "harness_version": "0.1.7-rc.2",
+    "tool_schema_version": "tschema-dcdb10f5d21c",
+    "framework_version": "1.0",
+    "declared_experiment_config_hash": "sha256:d06a7683d3ccc4242b005b00081d82a090c62272a79a61dbf39903ee9901252f",
+    "experience_snapshot_id": "SNAPSHOT_01",
+    "reflection": false,
+    "launcher_execution_context": "elevated / outside-sandbox",
+    "run_sandbox_mode": "workspace-write",
+    "run_depth": 0,
+    "maxDepth": 1,
+    "arms_experience": {
+      "A": "none",
+      "B": "none",
+      "C_frozen": "SNAPSHOT_01"
+    }
+  },
+  "design": {
+    "tasks": 120,
+    "families": 12,
+    "category_counts": {
+      "A": 24,
+      "B": 24,
+      "C": 24,
+      "D": 24,
+      "E": 24
+    },
+    "arms": [
+      "A",
+      "B",
+      "C_frozen"
+    ],
+    "replicates": 1,
+    "runs_total": 360
+  },
+  "randomization": {
+    "seed": "formal-arm-order-2026-10-04-v1",
+    "arm_key": "sha256(`${frozen_seed}|${group_id}|${arm}`)",
+    "group_order_key": "sha256(`${frozen_seed}|${group_id}|order`)",
+    "method": "① 每组按 arm_key 升序得 arm 偏好名次；② 排列多重集 = 6 个排列各 tasks/6 份（任一位次每臂恰好 40 次）；③ 组按 group_order_key 升序；④ 按组顺序在剩余排列中取 score=Σ_pos rank×10^(3-pos) 最小者（平局按 sha256(seed|group|perm) 升序，再按排列字典序）——配对为双射，故配额由构造保证。",
+    "permutation_multiset": {
+      "A>B>C_frozen": 20,
+      "A>C_frozen>B": 20,
+      "B>A>C_frozen": 20,
+      "B>C_frozen>A": 20,
+      "C_frozen>A>B": 20,
+      "C_frozen>B>A": 20
+    },
+    "distinct_from_pilot_seed": "pilot-arm-order-2026-09-27"
+  },
+  "self_check": {
+    "source_manifest_sha256_match": true,
+    "tasks_total": 120,
+    "runs_total_360": true,
+    "tasks_covered": true,
+    "no_duplicate_run_id": true,
+    "arms_complete_per_task": true,
+    "arm_counts": {
+      "A": 120,
+      "B": 120,
+      "C_frozen": 120
+    },
+    "positional_quota_target_per_arm_per_position": 40,
+    "positional_quota": {
+      "A": {
+        "i0": 40,
+        "i1": 40,
+        "i2": 40
+      },
+      "B": {
+        "i0": 40,
+        "i1": 40,
+        "i2": 40
+      },
+      "C_frozen": {
+        "i0": 40,
+        "i1": 40,
+        "i2": 40
+      }
+    },
+    "positional_quota_exact": true,
+    "first_position_distribution": {
+      "A": 40,
+      "B": 40,
+      "C_frozen": 40
+    },
+    "seed_fixed": true,
+    "randomization_effective": true,
+    "environment_frozen": true,
+    "problems": [],
+    "ok": true
+  },
+  "revision": {
+    "supersedes": {
+      "file": "benchmark/formal/archive/formal-run-plan-v1.json",
+      "sha256": "5301735c08be777105b3f0f7e3af0f8589059e289a9764fe6e695c008be81888",
+      "positional_distribution_v1": {
+        "i0": {
+          "A": 34,
+          "B": 51,
+          "C_frozen": 35
+        },
+        "i1": {
+          "A": 42,
+          "B": 39,
+          "C_frozen": 39
+        },
+        "i2": {
+          "A": 44,
+          "B": 30,
+          "C_frozen": 46
+        }
+      }
+    },
+    "reason": "v1 位次分布不满足 Protocol v2 §5 冻结配额（各 40/40/40），且排序键用 task_id 而非 §5 字面 group_id；v2 按 §5 重生成（键与配额均按协议），GT / 任务 YAML / benchmark manifest 一律未改。",
+    "decided_by": "fei-hua（2026-10-04，路线 A：按 §5 冻结配额重新生成计划）",
+    "protocol_clause": "spec/formal-experiment-protocol.md §5 / §11"
+  },
+  "task_index": [
+    {
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F01-A1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "d1423aa582d6a61069b1e73464a310c53f15cea97b4d19c69dcf2c4c6d9de0f6",
+        "B": "1125629830d6635dc5e35fc58139f69118d37c7b65b5b586851eb5259e03fe19",
+        "C_frozen": "4a5aa767332268a3656c5d148c445167cc4f8eda7e9f0d0aa7baaedf17cea51c"
+      },
+      "order_key": "d6350d2984d4b56e7a87c3c5eeb906c79031ad670baef4889183a969620556f5"
+    },
+    {
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F01-A2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "97b98fbcac3a83a2c11dd1aad0342948dc248e76b53fd474217632e62f95aed0",
+        "B": "5a93ecb65ad501046ab148a017ee3eb565900812a3c248562457896c04b99819",
+        "C_frozen": "d13b117f45cf60f2ad2b51af75cc40f50f7bff0d7d561504b0a88577508595a7"
+      },
+      "order_key": "93c630d61200470d0bfb162a2fecd176c326891340750ad45ab195c2786bf552"
+    },
+    {
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F01-B1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "3f941ca5065b96ac88d2f2b3bb6aa07e263ee92b29837e9fe3e47973f8904684",
+        "B": "8af67408cb38250d7dc6de7248de180bb76973c59de601fb5baf3e2f41fbc434",
+        "C_frozen": "fb4215ecf87c1b307ea34a007ea3925d5767bf7c2d35d04c56697d7945aa8b6c"
+      },
+      "order_key": "94cc34f0dd6214e82242ffbdfff394163d5e91581f1fd39cad664159b9b062b2"
+    },
+    {
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F01-B2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e31f98f7055becb8314c797f19fbea5c5ea5299cf4125c91a432499c4c8b2174",
+        "B": "bb7ea5eb2c63426b969a32cdde86d7ab84adfccdc427ccdc9fd1a6ceb22dc9d6",
+        "C_frozen": "c34d60eb727a7ccfbf3b4dbef291d36123eda514a20491b07c2eb335158d68bb"
+      },
+      "order_key": "cf64aa17dae1848fa997783819df0545a7f61471ce79efdccc346f15f98c979c"
+    },
+    {
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F01-C1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "13a4e33d85652f028fe64730cd8b2a2700af9188a0a1ec38c5e88551eec253ca",
+        "B": "429308627a3f0583b234ad91c810408967ddfb75d6c86951247a90929e236627",
+        "C_frozen": "05b4d5b67316b8504efa78fb4b886db2f6c55263ae3384ca217bba79fa9d9633"
+      },
+      "order_key": "d13712b244c7fbc53485ba362618791344fee8a846675f2c14b3c1156cb21ae7"
+    },
+    {
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F01-C2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "288906deb65249dbefb0a895089f1c65896e300a6f67ddcee6d33ec1e2707d66",
+        "B": "5a2795635be645257883cd64fbbbd213fedc22b2198916e77ed80aed9172ebe8",
+        "C_frozen": "923c4e591a2547818a2346015677c05d23d2873fa3aed6300b0f3aef819c1272"
+      },
+      "order_key": "990abe3167db5efc86cd6f95cd2990f557d2e39fb404f729ba048f83b57de8f6"
+    },
+    {
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F01-D1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "2b12f0aa5ab9457f7020058fd380292eb5f35d53ea28185916c06054c1092889",
+        "B": "63fd9997f505695705c7ee785822913f170a7bf2ef9d934d4d41356fd49d4033",
+        "C_frozen": "ce8f55446ce1619674bfdbf71c129ecd64384e637c026cb4d3e614ed225ae310"
+      },
+      "order_key": "4715e8bc24e1e7d9ce8017d2e253616643736b6ce7664d13879c6c48616aae58"
+    },
+    {
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F01-D2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "06e2d075babd74b413932fb73a54646ee6d02216b5cda874d8bff78baaff6e44",
+        "B": "7dd6a5b8aaca936411d0fd911306420bd8c9007b27a31cb1ad8a89178df77d9e",
+        "C_frozen": "9e48cb637236622c696baeff69c176b2c8e0e9106dbc6f03457c57139eec01a2"
+      },
+      "order_key": "075e31919f07efada4b937d2901c88e99b7156685659ccc831138f0e647b069f"
+    },
+    {
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F01-E1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "b22e24163c10f3a8fc1dad27286f8fd540b184cf21b616d7f8df98f9108ae084",
+        "B": "0cfda10385564bc45799dd7217ef87a7dbecb07bd89ca381ea50d84b1a4289ad",
+        "C_frozen": "6bd36873432315e7a580f9aa3e6f132f1a8a67e620eb2fdc6309b9709226800f"
+      },
+      "order_key": "a64dd47beae5884b42c095851c0e0461371ed552b2d1cdc26965491a095e950b"
+    },
+    {
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F01-E2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "499299e849010fe1e422f73548b85e9fe725a0f48293a3d5c14209deae1cc6f5",
+        "B": "af0f7cf0cfeb017a080417745edacd2e173260d02d1749d71e17bd0e39c12c3f",
+        "C_frozen": "f33e905431a514d18703e1ee9a7a61a387b9994e9eb83c97d27450f7fa304e52"
+      },
+      "order_key": "4385d320ec8959d0d50875f5568c7c940b1ebc0d90997ad21e80de059a0a5afb"
+    },
+    {
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F02-A1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "2eeaa2614d6a3c0d0896f2f2fb227712b5776dd15c2ac5bf0d538c0481ac2064",
+        "B": "765f556a41a86b08d9879245e63dfac79062a0be56979bb75ac9b8cb743940c5",
+        "C_frozen": "0361a0dc3109c68e52b6a69795f9accf1ef8a0af76aae50856f01041d5652065"
+      },
+      "order_key": "e456085049c2f2eb95a11ca7783b6410c20acdbc46774bb8a43889ead46bac4f"
+    },
+    {
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F02-A2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "6cf50cba8377e14e9e3724a93a1f2c62204bb363d1585050e0f7b9f4eab19f55",
+        "B": "c6aa3e430d0e65bd0f01d1078a1f4e41e70633180fae02076eadd916c64cda55",
+        "C_frozen": "234d511fccd41fcdc26e473912f7098e13a4286048173cdf26fd04161bf737f3"
+      },
+      "order_key": "dfa449ec07f90ed43a149c0e40136d0f833f23815ff7e0a2ee4a34562acdd288"
+    },
+    {
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F02-B1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "5078ccc85663fdea6ffdf2cd65a2a4b43e48c338fdb60a2a9a9e4add79ee1a50",
+        "B": "9fc39e14f28cfa79e09d846cb7ffcc1d00c07d1d984963f5897f59d78d9fac87",
+        "C_frozen": "6d158ae2f7baf4c4966a98d9a75ee301ce596856eba3e3cec8542e1a47d6a2d6"
+      },
+      "order_key": "fa95f0bd04f0910f5a5cf1f181bfc7e7d6784889308a7727fd8775903bf573ce"
+    },
+    {
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F02-B2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "28f9ebd77da60e2f1fc1c27a18aa0b25f2042854ab0b6efb06202742cdc0a5ed",
+        "B": "67eb54fe166b1844dc501310b723e0f03cb44b2d2207d3812baa9d11e5a802a3",
+        "C_frozen": "bd0789896e64429404b1fd3308e68bf419965c19951554ce378b5e607129af98"
+      },
+      "order_key": "932889396044c2f7b47cb558ca372b1287713252fc6b4a73f39e96acf7418341"
+    },
+    {
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F02-C1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "f1e890548d63bf3b2fb3a3f36faaf8f65ec982f639274e7d386cef9a56dc2833",
+        "B": "a10f91aca4383e247ea462a017b7f9b12e92fd4e240411fbcb2451cb957ec341",
+        "C_frozen": "0255a9add9c180a95d21b19650927c85f4f337dd433d89a88a293150198ae43f"
+      },
+      "order_key": "11026f7d19f7a548bdd7b7e651cd33e6f689186fd8f9576e18e3759a74106f70"
+    },
+    {
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F02-C2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e1170a46d2ca826ed522f83ee011a78e5358c8457a59d2406527b77d072a69de",
+        "B": "9af40de91e7adfbae0a9deaa2ad8204d8db712b4bc4200ee66ac46c35af40841",
+        "C_frozen": "849a866ecee85acb9a3acf9cce47caa1abb4e8916198dff46e1140f802735f95"
+      },
+      "order_key": "99cc2e72244b7631088f161c26a8c25ab01a254de287d76aca1a84a8925ee981"
+    },
+    {
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F02-D1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e8e11c2c3b08a57ded9f3abad8809a64dbdacea76ad18613b0f08b85599bed3e",
+        "B": "5442f74d4f8bb40dd6028dbf161ebbdf8d9d750befdc9acf09b8b09065452591",
+        "C_frozen": "ea57755aef076b89bc38dfc65b37be6b31f88a4495ec8383272bf4df8d71144a"
+      },
+      "order_key": "f1a034e8f710743c5cfc6a6d9e991950d443c52e75edf2c00634c59adefd1ed3"
+    },
+    {
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F02-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "f586399627fbe05804880f0cb0407310e19f83be3f160d67838c916e9f97356d",
+        "B": "f8555311a54fb897624daf8a5653c3f8ea0f1dc273b96bc4190b26d8f1dbea83",
+        "C_frozen": "3ed653d8613b6af9c0f3b56ee4bf40b4c04738bb93ee9c70ffa27144cdabd00c"
+      },
+      "order_key": "76b859df2af08143ff18f04ab1a6d40ca44688ecaf08bd3320444e373c26a901"
+    },
+    {
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F02-E1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "a543193d36dfd4256ce77c0c921a7b0a64d4a168d3507e3ffc0b62fffd013bee",
+        "B": "e671810bef298404aac14a6ac3d7449ce946e9d260230ad494a833230d4e1844",
+        "C_frozen": "38a91f7b0fce750dd0d8c88f70c4dadfde7f019f45663899ab8e4e452b22b4cd"
+      },
+      "order_key": "1dd3c39b774955d3fd3e9b129bfea0139d50a17152e37583f94d31e0da968666"
+    },
+    {
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F02-E2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "1eebc28cd9293df13e68a43e7229dd1e9a68562d8b9ad1b48c433db2a04e8126",
+        "B": "cbcc6e514b67a6bfbc0caef28ac18e4b9878a48a2028437b6c726ce462669268",
+        "C_frozen": "22b4af0c664fc7adee077e630bd98c31857904eda06d6d845a1dcef3862a43e3"
+      },
+      "order_key": "b4eddd521857757b8d025057be22783170bdeec6cbb2e3aac2ba8c6eab810738"
+    },
+    {
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F03-A1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "f51def07a5a7d34ce8f3d3061448ae96080820e2297cd60952d5783abec3bc0b",
+        "B": "5b9c1c66e804c6294fc22e9df449e55180587072a2fb28dd46b3ac50ab4c2849",
+        "C_frozen": "ab83e26196c8e4d3ba611cbc29eb726cc8d6896d0bd252e3e3deb9c993840b18"
+      },
+      "order_key": "bf914e4c3ef64a5a3fa24222b33391fecd9275773ac641a736ec610d2a6d600c"
+    },
+    {
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F03-A2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e77af0a248d03eb0dd2933d47d460f6316512eee8c44c399487dbbc78e3f0bc4",
+        "B": "48b871bfb7268cdabe9f68da69c874c8218b1a2bdb7191b47198082a72751519",
+        "C_frozen": "76edfa5a24bd0115d56df31e28c4120a64b34b1ddc3736ff033eeb96488d9c51"
+      },
+      "order_key": "9575d052db46d8c808c0f9d20c1aa76857891b85bea2c06b4cd7a88c65bb5f05"
+    },
+    {
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F03-B1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "939daef41dcd10c6e8ae27ea25921b1999ac9ddf6b37a865f6ad141d95364f26",
+        "B": "574237b272189b05e24f778d2c074096113a0d692824a5201727465c6b39e915",
+        "C_frozen": "6e83a4568d780703628039735c8f071bbe5a795f31e07e36b24b6288c94cd263"
+      },
+      "order_key": "320788ba835b97fee0f2aa597e308e1f44de3924566ab2b978d94b1af6a9d6fe"
+    },
+    {
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F03-B2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "52300f5dffe92ae5bdc8d3781dd983d92760bf8e9f0bc4eec9daf92261284a59",
+        "B": "c4052dc0d52b2b6423420554ac6439628ae945e3c2f957841ad076da7d3562d6",
+        "C_frozen": "d20cf3d343539c6f746b507df98a8403341fef0156e56d8cd11421a6b55e6d15"
+      },
+      "order_key": "2f286c5f313e2d3850543be27b2280aa411c75f7babefcdd20d044d667b15763"
+    },
+    {
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F03-C1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "74e89e32d6ca2a7bad87dca9820229144ed882e71f753eb500e74fab1b55774e",
+        "B": "616342676d879dc777b726ec6cd49186641aaa7bd55a33b0a9d19da3d9b79de1",
+        "C_frozen": "dc7a4458c59f70fb4a7bfd31704e220378ba5c7f7b6a07eff5c5f10bbaee5a0e"
+      },
+      "order_key": "8241d2fe2244b24cf80362007a4429582623282172da694463d8b3b68a512239"
+    },
+    {
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F03-C2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "101bddc51cb720db5e60f1ec6ad78ba86b604ec88379c9924606314453d4d40d",
+        "B": "9ec29a0ff6f32d89c2f8419c72d371b2d5ca28613c27836b6e16a5a7da78cf2f",
+        "C_frozen": "b7edadeaa50e44623fba737a0606f7aee3d4e933d5a0f937c10acfb37361b978"
+      },
+      "order_key": "ea0aec62563e42d2f00cd422c8952d34401c652c40917bbbf8ef6ecc12dd4ad7"
+    },
+    {
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F03-D1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "d2764ebf317f4ff5db71fab1def4cca5c116a958ca6d6b33946311b79a15e3f3",
+        "B": "786fde234083c117e46350cb5fe15ef63c2b906a11f8be0f8a6b6dfdfa359cee",
+        "C_frozen": "8c0592a50d0f0a15cc4492b820d054b063a848bbe9a2328c6875b9c749eb5c19"
+      },
+      "order_key": "b492f22db8b11c4296e8f6261bbb70a41ef9d4293f4696a2925124271de8eba5"
+    },
+    {
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F03-D2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "a9da20725807fb2b18485c907adb44c7123c667ca9d8e4cc9b63a42dc9a734a4",
+        "B": "7d02e3d532b0d7949165d8829db8e87d91ff66ec28bd8047a617fcd77c185519",
+        "C_frozen": "b796d954c2cc26eef9f568e1ddfd7054df90b7d031e105d11668b2d90a170c7c"
+      },
+      "order_key": "6525535c3236641560668620c3f33a8904160bddf2bc2439b65201b477eb4e1f"
+    },
+    {
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F03-E1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "231755610cda6670db1a2a5eda8e0bcc21ef56b9c9bdbadb0491be093293f6dd",
+        "B": "6d7cc6c194e4f174323a034b955b453806f46edf3ee163c3a6a0ab237e8973ac",
+        "C_frozen": "ca56cd8b238525d8f4cb1d6250f16f1aa8edc092aa3ea907405eef27c61a1d41"
+      },
+      "order_key": "ac0498c008c3c8f5201f61402a0be63e6577c3a0c17cda2e481a38ebce7bb33f"
+    },
+    {
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F03-E2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "f80058c94b99a814cc39c76437daee7f7e8962b5e8f47983abe66dc5e6b2d595",
+        "B": "9138865fbb049d141fd5e50bbcaaf3371f67293fb2f1c00dadfe3b1177cf73fe",
+        "C_frozen": "a8c40cfc5f115d5a98477ac8cd530dd8b3c736fcc1766e559adf96886b963ba3"
+      },
+      "order_key": "c270407f6513e6107361454343d319e5050dcaa66ca58db547ebc5a7d0a744c1"
+    },
+    {
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F04-A1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "0b6b95045ebdc2bec3a4c12cafed08de7f53455e845723eaf5cd25506c945d95",
+        "B": "815efdf5fc6141a9a0a0e176168cfe4dc1aae9b69f66b2b8895f3d8ac6b8d187",
+        "C_frozen": "8cd6706217f7c21acb2a6424f8d66428134ccc807e9b8cb6c9ccb002ddafab9f"
+      },
+      "order_key": "d7d4d7c9f7babca1fba5be3720fe368f3fd7b2ca77a9017d5f3b789fc9b8a2d1"
+    },
+    {
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F04-A2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "ca48598126d0407f893c49b8b764e51106eecc31e7704f847c827349c49401d0",
+        "B": "bf1571072eaf5a2567504db67b5973102b0b6b22683ad11e05ce4c78b289c710",
+        "C_frozen": "72ed738b93c6eb20c9bb7627e0366bc0bbf921af23f6d3affdec5e7ddf19fdac"
+      },
+      "order_key": "59e4e4cc8f19b8c0e2ec7f90d0b9b5ae4ea7539cecd5732d452532e8566467e6"
+    },
+    {
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F04-B1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "21989e2b8cc2fa9b5c1bf8fa614046fbd72b3ef0cffdda57f4f39910fece5b3d",
+        "B": "d1db783239c4b54c0f4fa60d3dea6d02e2d9bab5e9ac1bdf2be47006141985ba",
+        "C_frozen": "173b4102db6e98a43b7c1252c0994da323f8af6ed220ab78c200f32e1b14f4a0"
+      },
+      "order_key": "228df973b9eff5ef6dcb032db021b810be05c15bf4cb2ddaf6c22d357f0c727c"
+    },
+    {
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F04-B2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "031bbaff3028fc010e5b360feb5dddd58adc2bd5c1e50e185d86a0bbcd237a6a",
+        "B": "571567b4dc4e031041cae47b1126964bde707567af6a2e6dcbecda38f6439d1d",
+        "C_frozen": "75a6bdea6a61a749644110a12377c11c796b78ec3c45001bd7d9ab877701fa8f"
+      },
+      "order_key": "d53d0f0f3a68fd2f0c0042291fb4ed957e06ba47fe482e7a413faea1f49495f1"
+    },
+    {
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F04-C1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "14d6283d7708abffa79a9531851a63947d6589ed2ee3129c9687656fbb05f843",
+        "B": "22fd0b0d0d6ff658031f66567304573df8997c03c1ebefaabada95dbadf01181",
+        "C_frozen": "5bf746210072c9b175cf3f07336cbc86c553f7275f919f5a98003b2113b56fde"
+      },
+      "order_key": "cf7f71d28a2c59a496aa7453a7617f48dce0c4d020edd8cdbb90b1703fcf157a"
+    },
+    {
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F04-C2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "a20ad61dca4112491dec25e84d122b260b032002570fc8c07639e780421ef8c0",
+        "B": "ace8b23a1aa44ffc5ef87333d8c7ed0a7eb107d0df76a96b752e38af495f262c",
+        "C_frozen": "4deae6586d1c121139845b16ea4e483a16d82bf950691fdc1534ff6a1ebbbabe"
+      },
+      "order_key": "55b5f8587f83b4451abc132a3d2991746d7a636b02e4c000ab0fae211a3ad6e8"
+    },
+    {
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F04-D1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "e51b9a6e598d6182df92f21ac4b96cd821a1481e9bc594189c3b8df6bd745d48",
+        "B": "dc8342382a426f5cb79308782ebb54ca7976de068ca65b6f80e76582b1a4b08c",
+        "C_frozen": "ef79ac5d825a6b6de9995fbce8e97ac56864aa7c99ee708c13b81c9cc848c84a"
+      },
+      "order_key": "2901441302b86fcbd98b96bb27a1364c4ec6d0cbf661ef949a509ec87379778c"
+    },
+    {
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F04-D2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "18208f38fa7cfdf7e9055a0535c49297b35e3655ef82517cbf45165022fdd216",
+        "B": "90da24aaa4025d4636c0e4cf64eb8da3846c29a7202073926aafccb70fffbb01",
+        "C_frozen": "76485e7157e203a49abb99f9689509e67a7ca7bb8febad3bb0a4d0c248311f25"
+      },
+      "order_key": "bb5fb45fa3bc8e9470ccde406a77df163e346e963a23adf913b3b0c53efbfc29"
+    },
+    {
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F04-E1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "9504eb41f2e7a5565c51dd642e205a3116faf20d9a0d36c0cdf2abdddac00b02",
+        "B": "9b26e155b4b5c641a31837011a1f765a8019482c08304010864d73e35dd491e9",
+        "C_frozen": "4b6b117fda1af76c695c9f750091d389067b7a1e11619a9c6aa10d93936143bf"
+      },
+      "order_key": "707bbd397393fcb245ce5ff3e9024a46d2d846d1a8f5dcea7e69f7360b98fd64"
+    },
+    {
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F04-E2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "bc6461a6c369580446e4a311fc4e521e638a21fe5f682587fc2b3d8f29d08f99",
+        "B": "f2a872cbd3b47124d98adcfc8cf76d1f3f3da0639fab28730cee43fb199d9f2e",
+        "C_frozen": "f255971d36ed7d746fa102fc4e8eb80eacbe895451b4520c37508eb8cb908b6e"
+      },
+      "order_key": "af71b065c88c1deea5a7816307a7074eb140504a5d91f222b86b086f2e679004"
+    },
+    {
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F05-A1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "7b19c4ecf5dc620eda187fea521e575c1406f4b3d94b79500304c7de36b1df16",
+        "B": "59465caf6b4e177a6f7a2848aa9c36f6de1701c6edfde3fd93e8e90219a9e768",
+        "C_frozen": "370576c53eac32d58312ee35c5202e7c3dc2504487c01e3da1f7cb64757c84fc"
+      },
+      "order_key": "49e1d4873d3bc9bfc00ba1e32d2ac0a206b91d0b6cc0357cdcc7dd9f05ed902c"
+    },
+    {
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F05-A2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "7c8d3b4968ad98ad006e6676d19d494c23a6949450bd9b06b172589c117bb305",
+        "B": "5a75a95882dc3d8aed8f3f9850f3324e983be31eaea83b28d50506f851e6d1b6",
+        "C_frozen": "9c52b4c682c49c282e8e3a9394722664ca6f7f3b67a0d87a232ea30e13c24f88"
+      },
+      "order_key": "d3250a43168a477f8f57c91bf6d5ec5d2336bffe7f9f6fe0f1f059a2c9b8f38c"
+    },
+    {
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F05-B1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "df93d2b3ff5a2c65263eb00c197f9bd3c5a3d3d573bca7f091457df236a5a219",
+        "B": "e6180fb44f589ed2c99d57a7d92fe321bb896a271b480f5730ddf570a080c208",
+        "C_frozen": "ece50c7b6e410304f726cd7a11e7ead3cff9fe98b556ce962f51c6268a48067e"
+      },
+      "order_key": "46912b015712272a73a357bc262ff19569d5fd3c0aa389a7e23b9600c8fd4533"
+    },
+    {
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F05-B2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "b5cf83bc1711ebf9c329bdfc4347fa2cbd7037277dc6140d3f4edd462717177b",
+        "B": "f9bfa8e0be51dd5320434fdb9ac6dea4db7a70a62a422b1684774e20d9c5ad44",
+        "C_frozen": "72c3c1a788b1bdd2cf57b536a3b7d2304ae067af845c74befa3befd0a5331cdb"
+      },
+      "order_key": "953d56ed92601c69c415da5a2388ce1a1e8f030cc1fb0422d9a50211d71d7f2b"
+    },
+    {
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F05-C1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "fca632fd4c50a90d65f99232590c8961f00cf22ef97ec861251d5b9de89ec3eb",
+        "B": "358bdb93a44bb17292a5dff09bf427d6b2bee6324b55b5954cbbdcc358005a7d",
+        "C_frozen": "e968d13c4a9b45e0b59aaf972137ecf7c996e33d7bf7c9c73c69c75eb635ae40"
+      },
+      "order_key": "a503f6b8babb6e14a00d3e9384708d27ce6fb455b2a288a3cc924dd0a7cdb29d"
+    },
+    {
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F05-C2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "66749a076feaea01bbb0f9ad193e3a6487e489b0ea4ec525c7e8fe9f65a08ec8",
+        "B": "28195f0a49622541b30f689824dc3bb263fba1f97bb2ffd4f59978e2e55ec120",
+        "C_frozen": "ee617ee905c105cb093b173b854dd1264f8efde79716ad79e40c6802cbc0c6c7"
+      },
+      "order_key": "a9f45936892f055c8c005a3bd9797c90853ec6baedd49858cafbca09d7fe3972"
+    },
+    {
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F05-D1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "515451e087755f33a9e79fb3760f455c308ccdce8a12c197e3c4b09d1950d04e",
+        "B": "e3226583a9df015f7729611773bbf22af9d4f00405f2d557f1aa60ee85c3468b",
+        "C_frozen": "49bc2f472c7262ba3066a8b038c7f6e2a9ccec30feb6b8d7a91357cc0a78e526"
+      },
+      "order_key": "6feaf10beecabc921e442dcee8ab2bb23cfa07afb3ac3d258653154b807954d1"
+    },
+    {
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F05-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "6c9098e158769d3fc2970c0686b844ff4118bfb848c4e95287012f966aee638a",
+        "B": "c880d5aea8d3fd4f30ab554a294e498af02bd0db2320450d93e74d77b718261a",
+        "C_frozen": "436d900131752b3266b8f9a287cdadce755d9f04a5ab61d6be532428eef4cec6"
+      },
+      "order_key": "6e16629435c8f87fadec5567d856b29d98dd26c4d588bb179391c4de2c1a3df2"
+    },
+    {
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F05-E1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "95e9d7bcbe88f95c1562778cb13228e266905b1dbc9bdbf5db6db1e1800bfa4e",
+        "B": "e84a761f11d87652929d6f4b66310b8539e9dbb1519d1aec15a34cc2d39a150e",
+        "C_frozen": "6b86dc41e07278e8705b8b28a7e97a8deb1b5145809e5b9c1cf8f7fd53ddfcd8"
+      },
+      "order_key": "fc0904120d2404ad4b99cbdfdefb64126df8a7efc8cb87e70535d9d53fbb7326"
+    },
+    {
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F05-E2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "c1ab9fece2e81f7ca6648699dbe0f96dd26d0f153cf257b7ede7db01158fb311",
+        "B": "01497a2d78aa22db531eb1db8de4aeab1921ab2fc5c38cce53152740f7b12cb3",
+        "C_frozen": "affe8641bae0eed7497efe617d165a14c3c87c33aae44aad63f34ab9a9346b33"
+      },
+      "order_key": "f1ca42efe189673f82e056d3231692c1492875d77440b94d4b94d615dffc1ebb"
+    },
+    {
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F06-A1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "8690d73fb6328e1bdb23687ce21574b2aa77cab50b3153618439669a8b759f6b",
+        "B": "98e2177358c56c8a4e73c16ed441179675f63126d38d5701136bcb9f61debc83",
+        "C_frozen": "5e4e231f9fbdf93a97a825ca3c4de70d11fe79d9d54ad71f932caa06a4c89b01"
+      },
+      "order_key": "30c758a51d456f4234bdb29dedc71f2da60c8e9522182f192d66dbf940430a41"
+    },
+    {
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F06-A2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "43435b6144ff6b9c6143c53de29868c7aad110bcdfd2e33dd415b93615e9c505",
+        "B": "3793e83e28d2fc49bdce89e730d0ea8939756fba49eea8bbbdbd19699b292891",
+        "C_frozen": "1622043802476550890b3c75542eacfa55834ccf1ff62103cd907039f464ce89"
+      },
+      "order_key": "c1489196c7b0e701fd877b67c60eb6027f88dedd897fc081cf7847420da5e5e1"
+    },
+    {
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F06-B1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e3a56f23b43d20ae88ecb00929dcdd78ceda469416857c9211f7e527c0be714e",
+        "B": "d5f14867c7ad8a392a23b87f53b214fe2b8466bdf8918ed46f804002134dde43",
+        "C_frozen": "7f44e15133322c2dd17cdc2afdb5506060acd27776c8b67153c4501eb9ffe319"
+      },
+      "order_key": "35f42e8b2711d32350a6745d506fcdb26f504e10e82ac1c02a39f83523a982f5"
+    },
+    {
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F06-B2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "536581800910b2c36838784b4533a953898b55370126ef81c25882d6988156e4",
+        "B": "2753fb8df8843e0c61b633159ff01751dc8f02c258493f33bf19f0bd98ec26ea",
+        "C_frozen": "65036fa4072a61f4a3b50657814fc507c5d5b3441b9fd4a819f4c23ac869e911"
+      },
+      "order_key": "a17aeff10625178c22222c564a45b1f19b75945a71cac01abfea3657da46149f"
+    },
+    {
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F06-C1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "17518a41c42e5f91bff78bc35973ab76012cfa2bc1eb3ed63c5453476b1c5830",
+        "B": "3f6ead4d56a8f442100dd67edd86ed6646f667852caa2a6321871dd8511c581a",
+        "C_frozen": "48b490c3d422e70ac0452702596078d113122d053bc79677ec16a6f2cc8f643f"
+      },
+      "order_key": "3aa9061b8689952f6f36adb563cc32d3f8ca7cd2379556b2609613e80ac1f7f0"
+    },
+    {
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F06-C2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "0ab69b4fb3e99c350c92506566f06128e18f98eee9189615f2baf19839fca845",
+        "B": "596f8f3cd089463dcedac74846d04276120c7261273f36e569722af972291b95",
+        "C_frozen": "1554ceeeb70859b289aafd0e075e8ba8f462a5e2b3eb2b92be61d834af5e4cf6"
+      },
+      "order_key": "118ba85b1d6b9431ca9304237c581060114ec7ff9d19249de36b47dc64be5465"
+    },
+    {
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F06-D1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "ac9b12fe7dd2aa9ff76caca01c7573b35b1569f4f36bd529f59129e784e8d51a",
+        "B": "04e5def76ef12feb7e4e5420f592a5231bc9a9ac2f0eee864dc055d712a9aba0",
+        "C_frozen": "1d1700dc2e683343f0b52faa779491e2d436e62fed34b3d7faa790a1e6adaed2"
+      },
+      "order_key": "29ada18d26c58552cf179e5a0ce40102d576cd0a5d75f640e175af6bd22635ea"
+    },
+    {
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F06-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "fd80219717b88642863227f79bfa8e7d10b888137b44edb9039b57aec6c972fe",
+        "B": "f77ad7c6db85a099ed519daff9f1763db15124f2e2ec1ed9cc1324c1d7617c63",
+        "C_frozen": "394fc74026d5f365eb5e0e8e1923b7c5b8f1c8555ef999bc457512fb781af9b3"
+      },
+      "order_key": "40be5738793d0f319d92358e27090dbe7651468e4bcbcacf076fcf4908dcb779"
+    },
+    {
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F06-E1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "31bad068acc7e6bc1423c659b730929bd156b1648aee2113b6d140bbb1c9fd1d",
+        "B": "3abae34ccc812abfc3f800d77c2da0cc2e81469c1e9c14ca693342356a544c7c",
+        "C_frozen": "eeb0df9f4fc86159045ad15dd2b2159e78b011167be52ac720c54400303612a9"
+      },
+      "order_key": "31d5f1095e6f2b4d90d3561e667cb88d260c26277a7695a12bfd1df7d0b2edc0"
+    },
+    {
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F06-E2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "82d4fba5f0979cc3954784652d06f702c7ab0f6db54db8c75c2971faa9a30f6e",
+        "B": "0fe7293024c82b043a7b63391b6b68baeaa1c4f11905b65d1a80f2b40c05f423",
+        "C_frozen": "dc2259675f77242bd01ebe4d8d25d59b28110300d4fd800525d66d51f8b268b7"
+      },
+      "order_key": "8490eb38034b58ac4270178420df54f7c615f79db8b3a048c2198bb179d9b010"
+    },
+    {
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F07-A1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "df7336152cc30c7557bbbe4a1a62ed3f7958466f8cb495fef1a66349879a6a0e",
+        "B": "79c13c7c976e4d82277faec49c429c06441c7408f3d49c9aa719edb06edffa81",
+        "C_frozen": "a3b339759af6598f93ab1e4e63f5b5dc0ff28b186ad7e62bb1198f4bc90adc23"
+      },
+      "order_key": "22db9ef158aee376104132ec772dbff92fa754c4d502a31270b8f67a46623049"
+    },
+    {
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F07-A2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "60b99897f04e274f965378fc6d427c991309ba5d8bc500fd2bd49c5206661a9c",
+        "B": "067395e30fa2b8cceeaf6646417eeacb021a04f96a403cbc8d32f67d92bd0e57",
+        "C_frozen": "16109abb7ea2614309c04ddc767a25b4f65703f6645c09746ab10781c665e7c7"
+      },
+      "order_key": "c814771bcda938c4b2e1e51e797273a658e9696591d1cbde8314e8c75ea9c60d"
+    },
+    {
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F07-B1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "87b98ca839e3d0722be827a6a7239df102d535dfc514382a3b56607bfda526e1",
+        "B": "b7df50deb4570aae83e74a3051486295efb8f93412355227a271bee252de670d",
+        "C_frozen": "e89cd08a3b0b4f3042f44ab092a44907dadf6788b556f3967ff166194c7ce809"
+      },
+      "order_key": "1ca5c4575fe3a98835f36fbabacd671aa36cce1e922726c510bd4a55d0035624"
+    },
+    {
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F07-B2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "6ab106d9904ae9b15809e0fc165497eb7c0b37751b3f4974db0a1506124cf252",
+        "B": "4609ec2857c36ade8190bd5eb29dded068047ef74ad06fab70503429b1730ab6",
+        "C_frozen": "bf55dd912dc9c54bd60f29748222cb98d669da01a45e52324d65fe6eb48a2971"
+      },
+      "order_key": "7bee6ca00e5d653ce6cf7cb355a47ca65382dc339dcaa9c3b72fecaf73b3255c"
+    },
+    {
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F07-C1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "b8e70ddcd7abdb482cb77efd4e064c849ccfac0fcc38a87f6a09be8f47397a47",
+        "B": "13fb0e5088294991c984efd819bc5333b14208375a67ceb20bce71eab805ebf6",
+        "C_frozen": "8bc945114fca4a852ca19e840a78638d96ce40a54abbf035818a9a9279e90b24"
+      },
+      "order_key": "37d57d4bad04ec8a087c8a2fa9f5ed2f21ff6fa5b60c3a343edf20841697942d"
+    },
+    {
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F07-C2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "00bea6179a88b615870255570cd08243a7be8a127ebff6c6287b3173488b9f32",
+        "B": "a5d00b980b9499ef66617f8af13b268edcac30507a51a16eab486adef0dcd0c5",
+        "C_frozen": "32cef289f26c3422ac8f26818057ed01f95c289ddd6773045b79117728d4db49"
+      },
+      "order_key": "94dd42f76e419415f4870d27118d9f48680006878e04c453fb7dd711c94164b8"
+    },
+    {
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F07-D1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "84d0151a7e7a103dfbbe8b549514c8aefdd3de6e8b44db3ca49f2ccecb800f49",
+        "B": "fd7632ef3b416e442bdd5e6b2617e9264a79a358c21d10ca27c9c77739a0c599",
+        "C_frozen": "3951068628bace12bb8e57fdd1c5806cc2588e8726bcf815ca728f53c75fda3b"
+      },
+      "order_key": "047d5c2e905fb3faa86507cecd031516e967fc031274a2e2054f576411a4b996"
+    },
+    {
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F07-D2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "b8b179b348e83d7494eede03e7340cb762ff36f82fbbb3ad0b470db955e41bfa",
+        "B": "512dbde5759772469e4f7d3984fedd06c06bb765a0f3c2262c72653505b450d0",
+        "C_frozen": "e353264e1279fd67204c31a026411d790aeccd8508f0e73e15849983aa3ac386"
+      },
+      "order_key": "1ed9b9a72078a2edb684af02827a1224b03c0afbe9f49cace83cb85fe4fe3f39"
+    },
+    {
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F07-E1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "1fa14bfeed75c55440f1d71b62ae2eeee979ed4405dbb4692b6c23116bb99f72",
+        "B": "a01e1cb8c35aa51dea6a1ccc152a27cdd2ca4287bba559962e89f2a257b62e6c",
+        "C_frozen": "e3dab2dd78158f35bc6c6503e4ab86f7022339e9fdf05c20d4ba9b97ec7f59ce"
+      },
+      "order_key": "ff832720ceba2c6f4f8afd1a95da4f8c52973496c358b6671b222586ac7d3572"
+    },
+    {
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F07-E2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "669e460e5221e31db47ba0182b9992ac785b55acfb66cd96fb3fdb2453a66088",
+        "B": "ece98265481f6419405f87d7ed7b3a612834dcb7bdf4a5cadbf8ce4c95c0c1d2",
+        "C_frozen": "8470801c6a80ea34c4e2a744b1c96c137b0e2feca5292d6e9ba0d36f7efba089"
+      },
+      "order_key": "5c148416cec88903cdfb2ed07ff632461562e51814e89155475cf1f014462b79"
+    },
+    {
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F08-A1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "3ac101482911673563f3236ca0a55403bf8530c0833088ec2ec52fbdbba65704",
+        "B": "e275286282f177b4c2ad66b2ebabb0067b5c0ee4f079ceb19e9b60ac766a379d",
+        "C_frozen": "f312b60e02cbccb4df464f42bfe76d9dc269f6e30de36b8c74974ff874906d40"
+      },
+      "order_key": "f134c9ab9c9d1473387156d3f81dd9bc1fee40a3646ec8eb3648bb56828de451"
+    },
+    {
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F08-A2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "b298550c7a7ece91e9b17ae08393b8f496095612cae882d18febb05fcc5b90ff",
+        "B": "1477beb570495b691030e2e547d01aed4fdd0c3e2ff1f8c1eb5d049b348c969f",
+        "C_frozen": "c73f6350792b53146b3dfc7463056712fca6a81f5f5b045ba94b770fb8a8eb2d"
+      },
+      "order_key": "d9259d95b16991f0c43a75896254f2b29d1ae6cb0bde4308d4289c91b4543312"
+    },
+    {
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F08-B1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "7cf91ae39694e4f078431c96b544ae809fe2042b2e45cd9f3f56a06d77159008",
+        "B": "6e535704bd03b1e2f54c5f5f1d9592b0e775e73d57a5c992b71ffcde5edf928e",
+        "C_frozen": "ed97f1b69a550fb0623a2e273885d069439007b7fa841f377c1957bc6c832a16"
+      },
+      "order_key": "5623c9c0e81e66208b4332634b050f47b10d37c6597dceb3e383503815abb71c"
+    },
+    {
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F08-B2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "0c668edd3867d9273eea4e04731c6ced7404da28af18145f513686e680f092ff",
+        "B": "43dbef4cda6b34824bac997cf7505df600613c7d7214e74f2515f7610af42eda",
+        "C_frozen": "395459c745a0ef3c3cf67479acb39dfe15b355f2096c7677f075876c2322ca38"
+      },
+      "order_key": "c6e5ac12e8c3df0b3672421ed260965127daa726cace961ecd6d4455814456f2"
+    },
+    {
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F08-C1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "511cd509aee73b8f157bd22cdc68e9f0adacf50dcd24e315d81485df0ec66766",
+        "B": "a3b3322bfdca7c6b5773cbaa639a99c6fadd196926e82f0a26129d5cfa61e6fb",
+        "C_frozen": "d987dedde823ebca5bdfb296f3c2ab300a0db02a9745d354b7177d1c3bfaea90"
+      },
+      "order_key": "df111dd8e980d0f2a7c90321e3b2d00c3517a0a95e91bb024605828cedb475d1"
+    },
+    {
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F08-C2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "baf4b6532e2f72931737402aa0c74c5a6ef020aee447b4968956852186f26649",
+        "B": "dc65880a78d9ae45ed0ceac773b386bddbff278469b1dca1ec72dbf0a2ca808d",
+        "C_frozen": "fa170f92f8cdcdac376be9b27b758ff256f0c6a4b5e73e8a5513b96d9b48abea"
+      },
+      "order_key": "c2562c6bcf696d7e523aeacf54a862d12f367db1c5f292c74a20548f39e90399"
+    },
+    {
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F08-D1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "89948058ff8782b33b419f3a3bc95cde3ef52afd72cd727495a3e0290205f792",
+        "B": "5a9204eec8e99ecdfe9a80d99a21ef73c2b5e7a26b6e965a950524b69317fb3f",
+        "C_frozen": "041082fc885e52e81e6de5d2278181aab6c647db6013a6cc22a7fadb38c2efff"
+      },
+      "order_key": "a93a22b1e867b225b207a78dd80467396be760cd3550a3fb32a7662b4a7f4072"
+    },
+    {
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F08-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "c1f29213b394f5a3e1c3e34186e817dcea525ed7488cf92d243f2688407afdfc",
+        "B": "21e9ade51fffb6aa90e4fdd085672eccaea0e7ee9574683c84cc4a4e312d461d",
+        "C_frozen": "185b0647afc54024cf69810c930119d0ff54dd1eda37611cd1abadfeac86904c"
+      },
+      "order_key": "96f550329762399b6901ec9f060134d363c1e91bb008fb13316b6c87e4758cb1"
+    },
+    {
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F08-E1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "afc8e118cb2665128dd5bc448f96c6296fa1594abb4ccda489b2b97150cb0188",
+        "B": "27c5fcbd0947ad01ab926601bea82f736d4cadf0da7ca5104990842bba210bdc",
+        "C_frozen": "3307f7135748039b061ec3971734392353d344da0d0d66eb1bfd6040cf51dada"
+      },
+      "order_key": "aa7b8b8d3b6ff97036a5caf63d154def409f0a28bc340d52c4f565b424e9b478"
+    },
+    {
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F08-E2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "47b2eb298c88a34905cb91601d9ec45ce765d4c9d1afc3602a7e2c35bf68326f",
+        "B": "4b57920b18c69d43516dffdb2632cb7128b74646e8cf9eb9ed1a13bb0a8e838f",
+        "C_frozen": "b54fe5c9e7102b417fb2afa43f31563c15d5114dd563af9a764815fe28141b20"
+      },
+      "order_key": "fe3709a9785d15196c010af1e18309c61921ee93699a1f19a6e9b93a3bb337f1"
+    },
+    {
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F09-A1|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "2fed562f7b2246f4c99a39dfd8a6d17f727bf3998b638a289844f04465f1d092",
+        "B": "5fcb80b4a9424ad23013339e658e2c73ea33e815aec8004a9efc8bdca0b931b3",
+        "C_frozen": "79805706211683dd074ca2e779e333e97e41ca8a08bb7226450a7ab6e5e9dea0"
+      },
+      "order_key": "a0c17d397fa9e82deb308765847d2d1ec127378f6491aea4423cfe941cec4127"
+    },
+    {
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F09-A2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "fd459bfed5fa5d9e55b030e0602d32940f19dfb9128e9951c7305eeeffd2b381",
+        "B": "b5c5897799a354c298cd5648a2931996ce2bb058db4a31b7e980015f8a744a5b",
+        "C_frozen": "80c401654dfb64e7f5041e58a6893f2a5e79b7223fab33236edf0fbda470832e"
+      },
+      "order_key": "c8716ae05e9b89c6009ec62e231e0d0d5873a95d395f2dfc9435f8912a1e04e1"
+    },
+    {
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F09-B1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "74d61b0e2cd8c2e868a76e917918dfc3b05237302da31dd2ecc05624d8c38c59",
+        "B": "3e6565de7e7b95934adff58a6c025e19123f599ee14ce682150917b095c9dca3",
+        "C_frozen": "926ae582fabbc89436458be655a01b9c84c11f2b8b12fd4c223d2aad60983c45"
+      },
+      "order_key": "a639838a3c526ba52677876b00d9804ee6c606e861366a385e33a81702821880"
+    },
+    {
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F09-B2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "8356e05a34b80ab75882db54a1b91470d62c2c45157a3b39075a4005894c4001",
+        "B": "cdbee92573b5d623a7abf81903e3805b0fcf17e0ab8ecae5534607f9cd6bd0d1",
+        "C_frozen": "49e82ab45270d5dc1ce9e89cfd6bafa360aca6a51612ef4cb8bb581fc3f87d63"
+      },
+      "order_key": "81e9d3f57dfc0daed4a12d195120eaa4e8c9dee71d2cab495a7cf296d1d44c85"
+    },
+    {
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F09-C1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "a267f4a9dd3e0c29dbee271e8fa57aee77c5dcbcb600465ba004dec668ac7819",
+        "B": "86d6437220f28775a4ec5bc52a53293cb3ec376aead0695d39766294a7e1cae3",
+        "C_frozen": "e20fa7c93ff50378b2d7aa025080e1a7f55009d234f86ab548a4f78405bc9a7a"
+      },
+      "order_key": "24d23e0a9405c95246474849deef27d9a44709abf9754336d632e2ba422f1d0f"
+    },
+    {
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F09-C2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "36b059c0bb3c6717313319e38bb566eed881d0bd11835475a6edd02f74674d55",
+        "B": "c74a78d86ce4de07be72ab5e496ea7a7175165bd06c0f67417c1cc258ba6b3a8",
+        "C_frozen": "d84b5ec2c6c4f2bc4cd62d90746de36905e431f01b8de727e2ac9ae76243177c"
+      },
+      "order_key": "66e845574ed04f7739334d7410b846abf0fb06ac840078736dd901dfa32a758b"
+    },
+    {
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F09-D1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "f67f967752534c5feace18a9fc25951b6c6fa7ad77aaeefcffc72718d734a141",
+        "B": "db4083b76c15a92826c523be2d812c2ae6dec4134be7845e08dede5583374512",
+        "C_frozen": "7b045b4b338f118a428ab1a0a71dd4b7c75b1718fadf7589811e9c54515c93a9"
+      },
+      "order_key": "4d799f20ae18561cbb25f9f73b74b6eb3bb00f71ebf24431e3c6fe65e78bd8f6"
+    },
+    {
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F09-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "a5f30ddb597cf2b4d1e3cead9972d503ebe6b87fd6b661a81c1055dcd80e8c56",
+        "B": "f1315a347432ce6b494fd0766948706e2e4586d1142c5367acbbf579171ee093",
+        "C_frozen": "6b10a8648b7f41431d1a4150e848143b57410655ad06409106fcad368795a672"
+      },
+      "order_key": "451b611b978444746ca2c5a8b90dfdea4c72121dc3ff8cc7bca79f8bb9a6d9e4"
+    },
+    {
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F09-E1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "8861d6671356a25634321512dbf2637d6f267766c566678e40ae3d0cacec3ba4",
+        "B": "a5a1a74c85a3535a92c14c830f5325bb0035b36a6429d319ff064bc292803479",
+        "C_frozen": "1ab5dc1eb2cfa94382c589d78fb99d4554775aa487d7041f1608835c767852ab"
+      },
+      "order_key": "d937680a0724ca1ba1fffbb09388968c06252b6336de187d513aabfad7867c30"
+    },
+    {
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F09-E2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "ed80708893edf3ebf7f276e2ca929a58c3669663c779dfe95f1f42dbadcc67a8",
+        "B": "6c462622ebfba1a058b9c9d398b9d7532c0056155335f69ef9c25ec9d58ee1aa",
+        "C_frozen": "a1d1cd9bda30ef508afc84d0342bc035ff31a7edc5efcb3be94a10757caab190"
+      },
+      "order_key": "f9005035f7ba5f4f3a65d298b22557ecd80c18eb7c41812ee174a16c0f909daa"
+    },
+    {
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F10-A1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "68b1cbb79c06db1e8a15a280d29e1f4ff21a5add4385783cab1d77d5b23ea8cc",
+        "B": "49ac51ea29ec49dd2db0a6d9990c9c31cbfc940d8c6e8e533580261c9e9e2684",
+        "C_frozen": "85d5e8063c1b09ce411a1289e189cd5b3953c119e1ccca3937f551ba61aab4b9"
+      },
+      "order_key": "9e172bbfa7a728700bb66056baf50d927df93d5e6c47cf54c79719b991fc389f"
+    },
+    {
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F10-A2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "15b4a6c2e6e0f1095029c3a570865342d0adf36600e15bc2841ac118f4662f58",
+        "B": "ca47b5908ac05c6ae39ae5ddd2dc0243b67542df4799b4dbc571b38ce536edb1",
+        "C_frozen": "760bdba664f2a4a43ff19ee704494b5c8fa36d02449c82c4f7c3aa1774b000f5"
+      },
+      "order_key": "a5194dee3c8e03960ef4a26e69b5fcea901eccba066fb8167ccfe9cea8a87054"
+    },
+    {
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F10-B1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "753374d5218897480b02065844e568ce3a560e6b5d6fecc32557b04c4a6c370b",
+        "B": "6669342039220d79bf15c6470f0a4512b35102ecf5b7aac5eeaa257da62d6f9a",
+        "C_frozen": "06f5b3d17ec16a72db6527aba2471c5dd5068975dcbb58f96701a018e4e51e99"
+      },
+      "order_key": "57df601526fd66e24cfaa33aaf06c3f8251de0b987ffa2a04c8e4b69488cc303"
+    },
+    {
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F10-B2|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "8732da6fe11670cc3165a4c2d28f7b4505df1780bd2a680e499b2681d285ec55",
+        "B": "219df53f87516f409bdede820d1275f9ed1a4c568aa0d1bcb7c5aa84b1e739c6",
+        "C_frozen": "96afb1184105cd214b86dc21acc8ee02ebce9bc4807911a53bc682b7f7db0351"
+      },
+      "order_key": "baa420b5978f1e2f2ad9fa059f83f8b3d881091623654e610ea7f0446670e78a"
+    },
+    {
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F10-C1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "42a65708999f8f25dda1ca4a4ca2f857cd0c4725dee8135292a91ee609e964f1",
+        "B": "3627ce06df62cdd98e7e8c23f585a2bc1b6108cf9760dd5904bf80f2948887a0",
+        "C_frozen": "3cf2f373205f22992cd1b400d75ad4f496b6171d3801c489047778f957e28fb9"
+      },
+      "order_key": "6675b9402c86bba08d72f194d4aefe591f336e163f867e03162917d3c2215fcf"
+    },
+    {
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F10-C2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e16ff64b5cedfabd83b65d07d18480508bd2be2d0e2bd99f67770ea265ab99be",
+        "B": "569ea66db3acdcdd0778e2b4dbb150ca3e6ec436068c12219a320e0ea9435048",
+        "C_frozen": "0234946f2e10e0abd95ffa8bfde131396f7319d243572fdc553448afa50f9ea6"
+      },
+      "order_key": "8d937b59894bc0fb5af6b6f4b3ea5dcb4879ea352fa00c426500553017313c35"
+    },
+    {
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F10-D1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "49e9ac75b0134e523c4eae790383cfdafe21ccac5b70b30124a3dea795f79551",
+        "B": "2086f28cfdf601224ff3ddab481721a03daad0c20186f849617d405cc56c43cb",
+        "C_frozen": "68205ee4c1ae7aae6b7a7b52f4c591f25de5125a4b30c426e7b6df7319d92321"
+      },
+      "order_key": "4162340c602be58525ad685a03b3c42bdf5287ca1d9f57d434d8d1f102074efb"
+    },
+    {
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F10-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "2019b7d1cf6459a30cc3e53eab8ca8ab84b56708af0e601c4509a7ef851f4bd6",
+        "B": "cebbfb3cc0c7f2c9f2fab7d6eeb004fc5135144207b428a1bba670c051765a0a",
+        "C_frozen": "0d196c3da532d6e2755ef2640f0c56c7499ff412ad6006569cc8a1d9ce1bd786"
+      },
+      "order_key": "35c619d7db2fd8a906c7cff65c62327e59a7bf74a7a49dea3a552b9b5067aeaa"
+    },
+    {
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F10-E1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "8f923a7828182417ca43636ead21bac2675a82769f58f46f8fd1ed8076cab8f0",
+        "B": "3a60c9828bc00b79867ec88de6344450b01b547409153f6f4c5422de4e1bba4e",
+        "C_frozen": "c827a32590c5ca532f8e76b7b4969673af6feca4816f25b822468eac131655c3"
+      },
+      "order_key": "13c927aa86d9cfbb11ec7ff48d026cc19ef0e4a9ac74c323c0f91a050e329434"
+    },
+    {
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F10-E2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "7715ca41dabab381bbb7f6314185b3b9bafd34df6c2812301edade4750e8250c",
+        "B": "b8535999f024e39dbf10672ffd4cb9515f02525a60b83d1ea895766157fee037",
+        "C_frozen": "d94bed3ceddead82ec56e302986705e9cdc51429d2ce1392e578d179e97a1e11"
+      },
+      "order_key": "92a7912b9406fdc7e54cf57aa37e23fe24eb123bd03825153f39d7d6d35122fd"
+    },
+    {
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F11-A1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "3c13ad2198621357fa4f16e3c3e9b435a8a90ffa76257f12bae23188d2ffd38b",
+        "B": "70cab1481ea0e47b198e9d60372b45844b1147a09a14adcf7c8d1c0aba4d0503",
+        "C_frozen": "b8990e9255997b7b0b5eca7265e609b8a8661383e5f0b4d97852c9ce37eb6d21"
+      },
+      "order_key": "e5b2ecc17ac32d7e7a0ee08bb8964ae4f573d060f97404231a38e9c3f5db2c7a"
+    },
+    {
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F11-A2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "854003f4a91e5ce436348a057442b9fd52b1ef09b093791facf12d99062da795",
+        "B": "8a8f9860058c09af51493bc39d0b38652ceb68dd4540be29cb4edd9aacdce912",
+        "C_frozen": "ea909bcc2a7c7593070b1d4dc8b75668207886b9af978c6ae691056a32a378a8"
+      },
+      "order_key": "68d7e1ab9a56d425a7c0efade9c1786c4fbd8e09dffa3ff2cf56d9f832b949fe"
+    },
+    {
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F11-B1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "660a37f8d4ba4bed1857802df46df8077460a4ebdf371983eb0f9c341b42c587",
+        "B": "e2a431a9ade929a858363802902415b482039754c0f5ae5221a8828ebc8d89c4",
+        "C_frozen": "bf2859836d28c9755a9e5c0354fd38a2ca7f524932094912454b17dfcf29ab1f"
+      },
+      "order_key": "e638dcf1a918676f17d21fed7a192e36681d866e13e8a56322bab7bcd5dfa878"
+    },
+    {
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F11-B2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "49234955c8319be3c04b756dadf6ec8d6b9d882867203785364306fc24beca45",
+        "B": "ff6a725f36ee0aaa4c5804115a9ec05a8bf89d0abd9f6d58c76f21a232da6a34",
+        "C_frozen": "ba3d2517e8f9a0f66edf470c571800539b65d02607b0c2dac61d8de5653b62b3"
+      },
+      "order_key": "5e9e22ff479e891dbbc0ff4a8de6e5f0569603b439fd43b6e7caeff4719455b5"
+    },
+    {
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F11-C1|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "2b12f2621b7a0c9ba4e3dae014289e7bb0e373b939c912dbebfe2b0aeff201aa",
+        "B": "d964ad0ad3c3acf956372d05c7481e85c6edfda5abdf417bf95cfe8b88f3ee5a",
+        "C_frozen": "f8655187b14d4579ce892a2c84d8f6c9f69c8aea038573cd31598d78326b4bcc"
+      },
+      "order_key": "dec7240a48820eb0b91027894dfac8f74d22e7badf918e46354832b0d30c20c9"
+    },
+    {
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F11-C2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "aca6dafff6afc3c0ce26013317a33e6a94d27a30bbb2643447e778797e743a09",
+        "B": "24c2c4e842415f899646c6b259efdcfd3eeae437fb62c7dfbe4237c1f8cb26ff",
+        "C_frozen": "6fc433f67de3503bbfed1830aee1b8067e5a78b5076c45a6b0cb13c669282cbc"
+      },
+      "order_key": "d05ce3615e8cc59f75a9b148dbd271d18215fb38a100ae1071af331bf86d013d"
+    },
+    {
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F11-D1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "755ee5d63d32c4847236ea380a05861c17f0e495b11126275a9b5c6df082b4f2",
+        "B": "0d09248d8a4a6af64676debd228e6c504cee82034e391cc94ef452bd51fe5418",
+        "C_frozen": "8d8dce2ac2ac48f0c61f1ac55fcb8a44270a561781942d88f750baf0081d3214"
+      },
+      "order_key": "11535025e8c706bb5a70f1940ee7ef25a2b58d98c6495532aa421fa2b30bafd7"
+    },
+    {
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F11-D2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "87ac18b15d5f5606b6c71399fdabb9975ef5fa194f2492af53710ea2b889f1b0",
+        "B": "f4fca45b3669207d4e11663018e03f9624d591ba00b90b5015768651c0cb5b61",
+        "C_frozen": "4f9d07102c7400c28e949c870c196667bd2e73ce4c712f73214eae7f6d4325cb"
+      },
+      "order_key": "5fddcc60417628a5f66c959a74089234994430ef5e52662f4834cea2fca1a2bd"
+    },
+    {
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F11-E1|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "381d640aa9451ae76defb6413a75c7095d31126307008e40338a416e12d16362",
+        "B": "8cd288d2fd9108aeaa129e20ff4c17f533f21ce720f71df205fbaa3eca75bc39",
+        "C_frozen": "2157b2f9e9a433edb43ab240a524a5ec36aedbb25677fc619e643671999428da"
+      },
+      "order_key": "6c91e12e820f762ccf1066abccc06094da32ea608fa26243781c2e9f5c9725be"
+    },
+    {
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F11-E2|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "45c1ffbd7799625eb82ce13fb43d1598723be8ba5f9af8819adae0c0de1ea723",
+        "B": "28dd0be26f598d0c3a87c80b02e835eb9d6d1ed602d6d1d51881d5a0f2e76c13",
+        "C_frozen": "742bfbc93eacd6df36927515015010cf8b4217fff73c5ee3cacaa7da1e56058e"
+      },
+      "order_key": "da615b790c2c7238522c0a33e230d576edbc20cb5e9150ef38f03e312c6ed946"
+    },
+    {
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "group_id": "FORMAL-F12-A1|R1",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "cac5d587adf9a0df864445b76eb7a81c0f7af8b6db0c1530644dc7dd3414f5da",
+        "B": "40ff2433c7105ed34d5e29c7e5ebfcec239e1bff123143055f1443ef3a36aac8",
+        "C_frozen": "636fdb655edced1f164339f7668cd17811edc4c87d72de8941419d5f198390cc"
+      },
+      "order_key": "d4c9ca1e48ebf00ce3f72d127462258da52539038cb8d9bb79a939e722398d1f"
+    },
+    {
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F12-A2|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e11a3093c45a474479f483004df4f196cb4f136a349f01e8042ca9be96115dff",
+        "B": "69c3363cb05f4068d5c4c2f6ca6c416c156697e4126bacc5c6a7e98524a20dac",
+        "C_frozen": "68d99c893562b5b6d5760ce9b26c9bd64311668a43c41f4c12b86840b8fb2284"
+      },
+      "order_key": "cd64da9034bc09ada1c3b90c4063b11c383ef1fb93602c6ad06276b306736144"
+    },
+    {
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F12-B1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "ba1c8480c77d4d48cb3c9dcfd71f1d0e3e0f50cd7316bef18994685ac0f25e1d",
+        "B": "ad914f60371fc2187196e3f0f285a18d7001c7a72075b5c0e1f01c95082cd03f",
+        "C_frozen": "fddae911b35c342b58894df9f140e94de6facc5f342a0e750cfd6e92783a67e0"
+      },
+      "order_key": "a46f16b0778846cdbbeb7a66424060be897a930a035de8762bba24ec5c61909c"
+    },
+    {
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "group_id": "FORMAL-F12-B2|R1",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "066dc0c04b4ba2669341ee151447ecec126ba71b36783488643d727fad645411",
+        "B": "6435ba2ea9498852e592ad5ca1970af0facba0c233ac5b246175c91aa9d8e405",
+        "C_frozen": "764fa6aa81af7c187b30a0f85809720173e06848fe874e168df01e278f6fa5e5"
+      },
+      "order_key": "86d8e18718f4570eae8542546e11b6cdd8bb67247207044111abbe038eab27dc"
+    },
+    {
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F12-C1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "c29f0fc42b13db846f3754d7e7a777931691258483fcedc55ac44593a43a50e0",
+        "B": "7880fcba6c8d72bf462e4a8442ce1e1fb454b3783e914b7050c61febc90ba719",
+        "C_frozen": "75c5d6bc4d0b80a407f3de02438ad812c30fd27c253f04bc998a08b92b41aebf"
+      },
+      "order_key": "f450e5e3aac77a1db9dd5f58466f75e9e47b2fd7d0a8d534256807baa04b9603"
+    },
+    {
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F12-C2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "5a3397c750d282b3defb4677cd38ad7c2eae15a078c1502a3323749802cc334c",
+        "B": "7fc47721fa56a5a6e1ab6b795e0363ff80067ebefa26cca1187340ec55599869",
+        "C_frozen": "12f9b7a852dca709b73b3a434152b9165e923cc1c8764ab2919438475600dffb"
+      },
+      "order_key": "78250052cef00c1c87ea2f50ad88a75aaa1082de2f8f0391de6a7425f9b0b85d"
+    },
+    {
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "expected_first_decisions": [
+        "PARALLEL"
+      ],
+      "group_id": "FORMAL-F12-D1|R1",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "A": "e2b3c7fd86a270455093e011cc0645be234fbcaf8a1290d9b876a42d1c6853e2",
+        "B": "85ac90ca8a97adf1c6b4348492b7cff5843d89866769de4eb4bb3274e3fda049",
+        "C_frozen": "11ca20cdfea05147cbb2ec084020f606c1d98432725a5dc977ffb468bbd711db"
+      },
+      "order_key": "de5589e7bbfb28fbeababa68ba893f685b9137fc1d221066e37bf66ad0870d78"
+    },
+    {
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "group_id": "FORMAL-F12-D2|R1",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "1c2dace99a5a6de9a6972d5fe23ea68573043f053e073fa67af50272849efce0",
+        "B": "fb40e2e877f026c03b11380be67d316a33e6a17242735af2e9213b2389332911",
+        "C_frozen": "75173b967e3aef5ec5fceea7ec4c36f1d4832611b3a66a957eb377e67594bba3"
+      },
+      "order_key": "9c61c384ffa734eb78d834d98cb460b470f9dfd189c4af37949fee281eec9aa3"
+    },
+    {
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F12-E1|R1",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "8be5d7439d0b219aab0eb7d47135ca865b094fe61fd1f63281efc3a34c509e4c",
+        "B": "598b1488d99a1a5013406a3f9525b2331551a67824f13fe6b651feb7a8b4236b",
+        "C_frozen": "dd288b8a76cfabb2b6d975134acb9b5b48e1edcc2437130706459bbc75a30dce"
+      },
+      "order_key": "4985cce86698a38ab48b697475b4f277816ec94aec884ad6180a7468c03afe10"
+    },
+    {
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "group_id": "FORMAL-F12-E2|R1",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "a3ea5a475c0fa2dd9c721d3fec1901499b9250b9332eda9e719f886b5cb12b23",
+        "B": "e73ab73efd79dac14124721e16395ada336dd577789b381e450833297e15372b",
+        "C_frozen": "5c6dadab03a9cfb4f86656713f4994e0b85f2d9ce733afb1b18cd5c38572678f"
+      },
+      "order_key": "6bb863844f77598e7a663e75164003e330d640c33ff392aa7317c764ed296b91"
+    }
+  ],
+  "planned_runs": [
+    {
+      "run_id": "formal-FORMAL-F01-A1-R1-B",
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A1-R1-C_frozen",
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A1-R1-A",
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A2-R1-B",
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A2-R1-A",
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A2-R1-C_frozen",
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B1-R1-A",
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B1-R1-B",
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B1-R1-C_frozen",
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B2-R1-B",
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B2-R1-C_frozen",
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B2-R1-A",
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C1-R1-C_frozen",
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C1-R1-A",
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C1-R1-B",
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C2-R1-A",
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C2-R1-B",
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C2-R1-C_frozen",
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D1-R1-A",
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D1-R1-B",
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D1-R1-C_frozen",
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D2-R1-A",
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D2-R1-B",
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D2-R1-C_frozen",
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E1-R1-B",
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E1-R1-C_frozen",
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E1-R1-A",
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E2-R1-A",
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F01-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E2-R1-B",
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F01-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E2-R1-C_frozen",
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F01-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A1-R1-C_frozen",
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A1-R1-B",
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A1-R1-A",
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A2-R1-C_frozen",
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A2-R1-A",
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A2-R1-B",
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B1-R1-A",
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B1-R1-C_frozen",
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B1-R1-B",
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B2-R1-A",
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B2-R1-B",
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B2-R1-C_frozen",
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C1-R1-C_frozen",
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C1-R1-B",
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C1-R1-A",
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C2-R1-C_frozen",
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C2-R1-B",
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C2-R1-A",
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D1-R1-B",
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D1-R1-C_frozen",
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D1-R1-A",
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D2-R1-C_frozen",
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D2-R1-A",
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D2-R1-B",
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E1-R1-C_frozen",
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E1-R1-A",
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E1-R1-B",
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E2-R1-A",
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F02-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E2-R1-C_frozen",
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F02-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E2-R1-B",
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F02-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A1-R1-B",
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A1-R1-C_frozen",
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A1-R1-A",
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A2-R1-B",
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A2-R1-C_frozen",
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A2-R1-A",
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B1-R1-B",
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B1-R1-C_frozen",
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B1-R1-A",
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B2-R1-A",
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B2-R1-B",
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B2-R1-C_frozen",
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C1-R1-B",
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C1-R1-A",
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C1-R1-C_frozen",
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C2-R1-A",
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C2-R1-C_frozen",
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C2-R1-B",
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D1-R1-B",
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D1-R1-C_frozen",
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D1-R1-A",
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D2-R1-B",
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D2-R1-A",
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D2-R1-C_frozen",
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E1-R1-A",
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E1-R1-B",
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E1-R1-C_frozen",
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E2-R1-B",
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F03-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E2-R1-C_frozen",
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F03-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E2-R1-A",
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F03-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A1-R1-A",
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A1-R1-C_frozen",
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A1-R1-B",
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A2-R1-C_frozen",
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A2-R1-B",
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A2-R1-A",
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B1-R1-C_frozen",
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B1-R1-A",
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B1-R1-B",
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B2-R1-A",
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B2-R1-B",
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B2-R1-C_frozen",
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C1-R1-A",
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C1-R1-B",
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C1-R1-C_frozen",
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C2-R1-C_frozen",
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C2-R1-A",
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C2-R1-B",
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D1-R1-B",
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D1-R1-A",
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D1-R1-C_frozen",
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D2-R1-A",
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D2-R1-C_frozen",
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D2-R1-B",
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E1-R1-C_frozen",
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E1-R1-A",
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E1-R1-B",
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E2-R1-A",
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F04-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E2-R1-C_frozen",
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F04-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E2-R1-B",
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F04-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A1-R1-C_frozen",
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A1-R1-B",
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A1-R1-A",
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A2-R1-B",
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A2-R1-A",
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A2-R1-C_frozen",
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B1-R1-A",
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B1-R1-B",
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B1-R1-C_frozen",
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B2-R1-C_frozen",
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B2-R1-A",
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B2-R1-B",
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C1-R1-B",
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C1-R1-C_frozen",
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C1-R1-A",
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C2-R1-B",
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C2-R1-A",
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C2-R1-C_frozen",
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D1-R1-C_frozen",
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D1-R1-A",
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D1-R1-B",
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D2-R1-C_frozen",
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D2-R1-A",
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D2-R1-B",
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E1-R1-C_frozen",
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E1-R1-B",
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E1-R1-A",
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E2-R1-C_frozen",
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F05-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E2-R1-B",
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F05-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E2-R1-A",
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F05-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A1-R1-C_frozen",
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A1-R1-A",
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A1-R1-B",
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A2-R1-C_frozen",
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A2-R1-B",
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A2-R1-A",
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B1-R1-C_frozen",
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B1-R1-B",
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B1-R1-A",
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B2-R1-B",
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B2-R1-A",
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B2-R1-C_frozen",
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C1-R1-A",
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C1-R1-B",
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C1-R1-C_frozen",
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C2-R1-A",
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C2-R1-C_frozen",
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C2-R1-B",
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D1-R1-B",
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D1-R1-C_frozen",
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D1-R1-A",
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D2-R1-C_frozen",
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D2-R1-B",
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D2-R1-A",
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E1-R1-A",
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E1-R1-B",
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E1-R1-C_frozen",
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E2-R1-B",
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F06-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E2-R1-A",
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F06-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E2-R1-C_frozen",
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F06-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A1-R1-B",
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A1-R1-C_frozen",
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A1-R1-A",
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A2-R1-B",
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A2-R1-C_frozen",
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A2-R1-A",
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B1-R1-A",
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B1-R1-B",
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B1-R1-C_frozen",
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B2-R1-B",
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B2-R1-A",
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B2-R1-C_frozen",
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C1-R1-B",
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C1-R1-C_frozen",
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C1-R1-A",
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C2-R1-A",
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C2-R1-C_frozen",
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C2-R1-B",
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D1-R1-C_frozen",
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D1-R1-A",
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D1-R1-B",
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D2-R1-B",
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D2-R1-A",
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D2-R1-C_frozen",
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E1-R1-A",
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E1-R1-C_frozen",
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E1-R1-B",
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E2-R1-A",
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F07-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E2-R1-C_frozen",
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F07-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E2-R1-B",
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F07-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A1-R1-A",
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A1-R1-C_frozen",
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A1-R1-B",
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A2-R1-B",
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A2-R1-C_frozen",
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A2-R1-A",
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B1-R1-B",
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B1-R1-A",
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B1-R1-C_frozen",
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B2-R1-A",
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B2-R1-C_frozen",
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B2-R1-B",
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C1-R1-A",
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C1-R1-C_frozen",
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C1-R1-B",
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C2-R1-A",
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C2-R1-B",
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C2-R1-C_frozen",
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D1-R1-C_frozen",
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D1-R1-B",
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D1-R1-A",
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D2-R1-C_frozen",
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D2-R1-B",
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D2-R1-A",
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E1-R1-B",
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E1-R1-C_frozen",
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E1-R1-A",
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E2-R1-A",
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F08-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E2-R1-C_frozen",
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F08-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E2-R1-B",
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F08-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A1-R1-A",
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A1-R1-B",
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A1-R1-C_frozen",
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A2-R1-C_frozen",
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A2-R1-B",
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A2-R1-A",
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B1-R1-B",
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B1-R1-A",
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B1-R1-C_frozen",
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B2-R1-C_frozen",
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B2-R1-A",
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B2-R1-B",
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C1-R1-B",
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C1-R1-A",
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C1-R1-C_frozen",
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C2-R1-A",
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C2-R1-B",
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C2-R1-C_frozen",
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D1-R1-C_frozen",
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D1-R1-B",
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D1-R1-A",
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D2-R1-C_frozen",
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D2-R1-A",
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D2-R1-B",
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E1-R1-C_frozen",
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E1-R1-A",
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E1-R1-B",
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E2-R1-C_frozen",
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F09-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E2-R1-B",
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F09-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E2-R1-A",
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F09-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A1-R1-B",
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A1-R1-A",
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A1-R1-C_frozen",
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A2-R1-A",
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A2-R1-C_frozen",
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A2-R1-B",
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B1-R1-C_frozen",
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B1-R1-B",
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B1-R1-A",
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B2-R1-B",
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B2-R1-A",
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B2-R1-C_frozen",
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C1-R1-B",
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C1-R1-C_frozen",
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C1-R1-A",
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C2-R1-C_frozen",
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C2-R1-B",
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C2-R1-A",
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D1-R1-B",
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D1-R1-A",
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D1-R1-C_frozen",
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D2-R1-C_frozen",
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D2-R1-A",
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D2-R1-B",
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E1-R1-B",
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E1-R1-A",
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E1-R1-C_frozen",
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E2-R1-A",
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F10-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E2-R1-B",
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F10-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E2-R1-C_frozen",
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F10-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A1-R1-A",
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A1-R1-C_frozen",
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A1-R1-B",
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A2-R1-A",
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A2-R1-B",
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A2-R1-C_frozen",
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B1-R1-A",
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B1-R1-C_frozen",
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B1-R1-B",
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B2-R1-A",
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B2-R1-C_frozen",
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B2-R1-B",
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C1-R1-A",
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C1-R1-C_frozen",
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C1-R1-B",
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C2-R1-B",
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C2-R1-C_frozen",
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C2-R1-A",
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D1-R1-B",
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D1-R1-A",
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D1-R1-C_frozen",
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D2-R1-C_frozen",
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D2-R1-A",
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D2-R1-B",
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E1-R1-C_frozen",
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E1-R1-A",
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E1-R1-B",
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E2-R1-B",
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F11-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E2-R1-C_frozen",
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F11-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E2-R1-A",
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F11-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A1-R1-B",
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A1-R1-C_frozen",
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A1-R1-A",
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-A1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A2-R1-C_frozen",
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A2-R1-B",
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A2-R1-A",
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-A2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B1-R1-B",
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B1-R1-A",
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B1-R1-C_frozen",
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-B1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B2-R1-A",
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B2-R1-B",
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B2-R1-C_frozen",
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-B2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C1-R1-C_frozen",
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C1-R1-B",
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C1-R1-A",
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-C1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C2-R1-C_frozen",
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C2-R1-A",
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C2-R1-B",
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-C2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D1-R1-C_frozen",
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D1-R1-B",
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D1-R1-A",
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-D1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D2-R1-A",
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D2-R1-C_frozen",
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D2-R1-B",
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-D2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E1-R1-B",
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E1-R1-A",
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E1-R1-C_frozen",
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-E1|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E2-R1-C_frozen",
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0,
+      "group_id": "FORMAL-F12-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E2-R1-A",
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1,
+      "group_id": "FORMAL-F12-E2|R1"
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E2-R1-B",
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2,
+      "group_id": "FORMAL-F12-E2|R1"
+    }
+  ]
+}
