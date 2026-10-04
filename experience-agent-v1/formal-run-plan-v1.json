@@ -1,0 +1,5095 @@
+{
+  "dataset": "formal",
+  "plan_kind": "formal-run-plan",
+  "plan_version": "v1",
+  "created_at": "2026-10-04T08:49:06.455Z",
+  "note": "本文件是**实验计划**，不属于 benchmark identity；它引用 source_manifest_sha256 以固定所依据的 benchmark 版本。",
+  "source_manifest": {
+    "file": "pilot-manifest-formal.json",
+    "sha256": "D255E4CD218F81F618D80FA827FFC8174F74C6649843D6821EBB3CCF1E7A875F",
+    "dataset": "formal",
+    "manifest_kind": "formal-benchmark-frozen-manifest",
+    "self_check_ok": true
+  },
+  "design": {
+    "tasks": 120,
+    "arms": [
+      "A",
+      "B",
+      "C_frozen"
+    ],
+    "replicates": 1,
+    "runs_total": 360
+  },
+  "randomization": {
+    "seed": "formal-arm-order-2026-10-04-v1",
+    "method": "sort key = sha256(\"seed|task_id|arm\")，确定性且与遍历顺序无关（同 pilot 机制，独立 seed）",
+    "distinct_from_pilot_seed": "pilot-arm-order-2026-09-27"
+  },
+  "self_check": {
+    "source_manifest_sha256_match": true,
+    "tasks_covered": true,
+    "runs_total_360": true,
+    "no_duplicate_run_id": true,
+    "arms_complete_per_task": true,
+    "arm_order_permutation": true,
+    "arm_counts": {
+      "B": 120,
+      "C_frozen": 120,
+      "A": 120
+    },
+    "seed_fixed": true,
+    "randomization_effective": true,
+    "first_position_distribution": {
+      "B": 51,
+      "A": 34,
+      "C_frozen": 35
+    },
+    "problems": [],
+    "ok": true
+  },
+  "task_index": [
+    {
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "1fd00c38661f0e6a",
+        "C_frozen": "6e5d401fff786aba",
+        "A": "dbf69256657e803a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "ca8ebc1227b1774c",
+        "B": "cf388fb09c123f43",
+        "C_frozen": "d36ff81561731f63"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "1d2e4c12849380c4",
+        "C_frozen": "2b968b3eb78b9591",
+        "B": "ec0dfd7065db942a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "47c88c03da162294",
+        "A": "d08c4557f7becb90",
+        "C_frozen": "fe31c6a47ddb5112"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "99e0ab01180e8e1c",
+        "C_frozen": "a8adf0e4c3980d11",
+        "B": "f0b59d40f464800e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "4ae2fb6d0071dddf",
+        "B": "71040e4fcc0f8420",
+        "C_frozen": "9402157e4c9f59ea"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "395b2d55965716e4",
+        "B": "64b3dd8118afb78a",
+        "A": "6d4eb96c915c2baf"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "47def1c6c62605f6",
+        "A": "4d507ab05e582845",
+        "B": "f856662b98c20279"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "1c9d5d69baf6e86c",
+        "C_frozen": "24eaaeab808fb02d",
+        "A": "c6dce1fa9a3df300"
+      }
+    },
+    {
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "247fbbeb75d36ea0",
+        "C_frozen": "bb847d9e098a58e6",
+        "B": "d72b33e6cc3cc5ea"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "143c0fcb0d201116",
+        "C_frozen": "76ba8bfb1cb3208f",
+        "A": "cfcc0f8b6d689669"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "18dc1a6bb68620e2",
+        "A": "af32c025765a2456",
+        "C_frozen": "ca66bcd455799028"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "2713a58b95c2086e",
+        "C_frozen": "b9ea59c72eb117c3",
+        "A": "f8d3187279bb5365"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "33ef7e355a4538a3",
+        "C_frozen": "8ff151013ae16c97",
+        "B": "d6ea8ae34d02abd1"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "3d7480739ec7d057",
+        "A": "5eb2f4bbf9af3f77",
+        "C_frozen": "abc5b23fe4c4669b"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "44a6b9f5076fe1f3",
+        "A": "a02036677aa220eb",
+        "B": "a4faacb3c544f290"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "73995a8b5d071585",
+        "B": "967480cf12b9db78",
+        "C_frozen": "b51457ba8c73de9a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "29097181395564f4",
+        "A": "33b10b27acd6e283",
+        "B": "5efcfddc381d7d0f"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "357366ba07e5d5c4",
+        "A": "44a5026e1f784ec1",
+        "C_frozen": "8b82fd1c8ecbf372"
+      }
+    },
+    {
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "3c5ab3523b316147",
+        "A": "3f7e9f1b701fe5d4",
+        "C_frozen": "602e7e0bbc981d7b"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "333b415ac2dd0c31",
+        "B": "aaf786b67fead91a",
+        "A": "c5de846105432390"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "1f280ebab195ee75",
+        "A": "f874ce5bca43c1c9",
+        "C_frozen": "f88b852f84789c5a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "57ff264a41b94ba3",
+        "A": "a80784c1668667b8",
+        "C_frozen": "cd8476f808396846"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "2076b88bf24af2f6",
+        "B": "a32368cbc89bcf0d",
+        "A": "c41eacde5d1fcce1"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "1ff4bbbad0384e08",
+        "B": "8b7601d861fc3685",
+        "C_frozen": "f441a08a184fb95c"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "45330c3a90c57bf6",
+        "B": "cc4800b41a2ed190",
+        "A": "eff5bc534972c04d"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "472b6a11a9eb469c",
+        "B": "69789b909d525296",
+        "C_frozen": "cc50982564887d47"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "69c7b5196c739e6b",
+        "A": "a1aebe436222ba8e",
+        "C_frozen": "b1a9e5d3e3ea8d7a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "b3f7bac7ebdd25f9",
+        "B": "b96a264fe1ce75b7",
+        "C_frozen": "e357ba6baae9057b"
+      }
+    },
+    {
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "125ff3aa46328757",
+        "B": "5457306afb8ffac7",
+        "C_frozen": "799aa11c86279969"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "79ecc81771aeae96",
+        "B": "ad3559ae39be5d72",
+        "A": "b8bbf130fea0df43"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "5be3f43beec8263b",
+        "C_frozen": "66aeef418348cfa0",
+        "B": "f4551e0cf9e3080c"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "291d1d993630932a",
+        "A": "96c7977838f74ba9",
+        "C_frozen": "c98b75f02b3d4a52"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "1aca76a89a3b92fb",
+        "C_frozen": "4135fe0b69bf2f20",
+        "A": "7b48e57a38d55b5a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "5aed27b0bb64f3e4",
+        "A": "b21d0a21c86f7e31",
+        "C_frozen": "bb79347f60b910d4"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "73b38c645b6afec4",
+        "A": "7434117a054f6109",
+        "C_frozen": "91ebe2e75a626c99"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "1a098e8dcca2d952",
+        "A": "bfe41d2eeede08ac",
+        "B": "ce6e41ffcc6cfdb7"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "409deeb87e529516",
+        "C_frozen": "5151859469aa7ae2",
+        "B": "f2f1ec6da4463341"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "8a4e10dfc6eb13e2",
+        "C_frozen": "d31f226f2b6fd67e",
+        "A": "f3b2c35a126bf718"
+      }
+    },
+    {
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "492d1fb0d247f10b",
+        "C_frozen": "59fd0964d8acd5bb",
+        "A": "6764127a25f1654f"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "8e5aef40675a4610",
+        "B": "b333482854c07f52",
+        "C_frozen": "c97372089cd0d39f"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "1222859c4a8b33ec",
+        "B": "3977de4d35e62ab7",
+        "A": "3ef43e1b6a9e8bce"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "6347d9838d8b9241",
+        "A": "d23a8fa4a7f0cc73",
+        "B": "db466f7435b72e9a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "9a25965f2f2ca59a",
+        "A": "c4030d1484069ee7",
+        "C_frozen": "f0c27aaf1ede135a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "002ed630c838067e",
+        "B": "a7fda565c491698f",
+        "A": "cfd79490e0a7c715"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "55555e3fe88c92e1",
+        "A": "85e89438dbc32436",
+        "C_frozen": "f8db5d592c6b22eb"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "1f2c64a38b5ac71a",
+        "B": "4f909b0540d58857",
+        "A": "bc53c40c3377362d"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "1096c122e14dbc8b",
+        "C_frozen": "3adacadfd20ba389",
+        "B": "d23ea3df77960046"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "0b43d8be8a28732e",
+        "A": "fdfc6d35cc4e519d",
+        "C_frozen": "feb36455ec28dbfc"
+      }
+    },
+    {
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "a7025d389c03fe94",
+        "C_frozen": "dff2cbe3bf9345da",
+        "A": "ef7b014de055aaae"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "15c39015fcebe1ed",
+        "C_frozen": "2f4f07cdf0a5f0c7",
+        "B": "69abad69000c9c28"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "0a3dd64ee2ce75cf",
+        "A": "4e561b4d39711d61",
+        "C_frozen": "eb2d76fb45eff59d"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "407f5a03c93fcc25",
+        "A": "46ffecb90bbecf23",
+        "C_frozen": "8a952e70505e357b"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "7484c8ba8cc27bfe",
+        "C_frozen": "eaadef7774a523c2",
+        "A": "fc54a3fed2c691fc"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "99c42d4a7a49b379",
+        "C_frozen": "ae07d3ad16252842",
+        "B": "b9a97691593f9bda"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "1aa2b8654578bbd5",
+        "B": "1fca5ef831091614",
+        "A": "7c58c1ecc42b65fa"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "78b473ddd419d1c5",
+        "A": "85ba148c748c2751",
+        "C_frozen": "89d72cf270636e88"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "40422e7ef800822b",
+        "A": "4901951db56d07ac",
+        "C_frozen": "e1fb5a669684311c"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "6f16c8cb7dd258e0",
+        "B": "ae28a48cdef70c64",
+        "A": "ea250a57a34fdb56"
+      }
+    },
+    {
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "31d6962dfa00dd55",
+        "C_frozen": "95765812129d59e4",
+        "A": "b372e3e7b905d8fd"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "1d2fef35d4b0d7b5",
+        "C_frozen": "414775c916c436ee",
+        "B": "42620c27f0334a29"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "954a141a18c1fa4a",
+        "A": "97b9c77c8b0ff212",
+        "C_frozen": "bfcca52e18bb3003"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "0d1f2a8362703be8",
+        "B": "2afa6e5347a7cd5d",
+        "A": "c4c697e48100f1cc"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "a90f0d22533a34cc",
+        "A": "e19ecf592cfe7769",
+        "C_frozen": "e3f7a49869037ed9"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "0754fabe8eb2db20",
+        "C_frozen": "586b462b2a52115b",
+        "A": "782cd23ee13a7278"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "08f95c24f5bced3d",
+        "B": "389f3255d3a381ab",
+        "A": "d44071716ccecf9e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "4e500da0ddded43b",
+        "C_frozen": "6b8d55989f844115",
+        "A": "6bc214638a565a8f"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "14447368d32fcd5e",
+        "B": "2c892f831b6ebaca",
+        "A": "ac048ac31aa10353"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "38a83d94ecf49326",
+        "A": "f4fb295ac928696b",
+        "B": "f84f453446b23df7"
+      }
+    },
+    {
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "01f266c7bf1dad18",
+        "C_frozen": "99ac035fe51f6649",
+        "A": "f859e3d75574c240"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "45b93162e5463278",
+        "B": "cf55a5d0239f3b7e",
+        "C_frozen": "fb109b71202bf4b7"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "4ca16e2590789368",
+        "B": "eb2f0cb6a41f2797",
+        "C_frozen": "fb70b1dda66f6292"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "0d682814ffb75030",
+        "C_frozen": "291f04d98125018c",
+        "B": "70445dc198095d31"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "055207e44f0b0f28",
+        "A": "dd632bde58218819",
+        "C_frozen": "ec0f2bab77563ce2"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "2e1074ed3765b80a",
+        "B": "37f76fa74132fac7",
+        "C_frozen": "4f2382365cef8f90"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "96577be4702a2ebb",
+        "A": "a52d674c96b06894",
+        "B": "a69a20c89dc02039"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "4e78b4c4bd0aca39",
+        "B": "e4e9ff40fce45e3a",
+        "C_frozen": "f6324d60483a41e8"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "2f832d4ac1e1f19e",
+        "C_frozen": "80a0f4b2ef3fb54c",
+        "B": "c941dd127e487dc8"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "7ee1e6013fd108e6",
+        "A": "870e0216a29e8410",
+        "B": "fe9175eef87ec815"
+      }
+    },
+    {
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "5107a872a7f1f9f8",
+        "C_frozen": "c082ae967f9ff16c",
+        "B": "fb8d5107cc931605"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "32814781d024cb8f",
+        "A": "8507ff5174760203",
+        "B": "d0acfb66b7f55323"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "24727b70203e9b13",
+        "A": "c01405c43733ceaf",
+        "C_frozen": "eb57af0aa2755969"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "87db03535bb44aac",
+        "C_frozen": "99a105ba6424773e",
+        "A": "deb3953bcba96de3"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "4d56a2640e7373f0",
+        "C_frozen": "5e82918ed1c2718c",
+        "A": "f96589c92b698a8f"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "1b743eb16e00fd38",
+        "A": "307ee8031278a6b3",
+        "C_frozen": "40e98eb9220d2ecf"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "51b8949ac2d96299",
+        "B": "97daa535548856c3",
+        "A": "bc753a41c9756d8e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "2e8bab94f99f8a5a",
+        "A": "5dd3649cf76cab59",
+        "C_frozen": "942b11fa3a83bb0d"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "0761b4fd1995156a",
+        "B": "539da37bc2c12d3b",
+        "C_frozen": "a1848745558d376f"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "3736649c89135fc0",
+        "C_frozen": "428b569c52f03e3c",
+        "B": "e95fe76f6ff12762"
+      }
+    },
+    {
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "1f139a3f3cc0b1ca",
+        "A": "4b8b9db159d38e80",
+        "C_frozen": "bb41c20e4bc28f5e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "2d87c7b1748961c6",
+        "B": "59aaeed4dbd4fa82",
+        "A": "f807063efa21296e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "3e73a47d96f76421",
+        "B": "f827031e03ea15ca",
+        "A": "faa720501aa38584"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "1a62f3aa0f0aa907",
+        "C_frozen": "1d0c1dc55e5c9fd7",
+        "A": "5188d61bd1840cfd"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "4f7b7a576b2da2b0",
+        "B": "7f8bab6f9d7cd6f2",
+        "A": "88d3db28b8e2026e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "125e94819f391b8c",
+        "C_frozen": "91c2ef0d363298c0",
+        "B": "eedb17f141ac9687"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "41361151275bc592",
+        "A": "957ee63341fae632",
+        "B": "9ed3ff89c0b8abfc"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "0620c9fbc90244bc",
+        "A": "594c96d34aea0ebc",
+        "C_frozen": "bc5189c97e8ca369"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "5adeec5d0d791477",
+        "C_frozen": "7c299e543a64c997",
+        "B": "c932acc8a9992f66"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "1ce7d948fe2c7af5",
+        "B": "307e2a8735d27673",
+        "A": "d032ebe939c9f83d"
+      }
+    },
+    {
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "1bbcc65e1f47a850",
+        "C_frozen": "bafe8c67eab113e8",
+        "A": "c4c563cfc9ad568c"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "b47b6f70f93f23a6",
+        "B": "f725e1027ff2f746",
+        "A": "f85e8cb20c26c02a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "83699a1b5b4a75df",
+        "C_frozen": "bbf414883c0fb7ae",
+        "A": "eb420634e4d3622a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "0f38dc66231ac569",
+        "B": "1f83af12e3df62df",
+        "A": "b3435d6aaff01a3e"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "956203fc5021e1b1",
+        "B": "cc75752a68dc76e5",
+        "C_frozen": "f6a1d3d4799e217b"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "6e281323350c4142",
+        "C_frozen": "b958c1f56af26d2c",
+        "A": "fe88c4f2f5be8e95"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "3fb2495159b9d64f",
+        "C_frozen": "b1469f34b0353477",
+        "A": "d3345efa9ca62977"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "016e946043e12777",
+        "A": "58859c57d83e9e37",
+        "C_frozen": "70d53e232f9e1772"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "268a1439743ddd12",
+        "B": "57914d7df265a77d",
+        "C_frozen": "fd9ab70800b1efda"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "7679a8084acab8ca",
+        "B": "9b42dea0b20a3eec",
+        "C_frozen": "b2e4b4bc06b4ebac"
+      }
+    },
+    {
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "3ec3c7356b5ee809",
+        "A": "7af345a63c57d4ae",
+        "C_frozen": "db433f53beedcaf4"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "571831075a4c335f",
+        "A": "b973c49b0126ade9",
+        "B": "dcf0a057a20d34ca"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "342f4264cf017884",
+        "A": "832fa3ae85318337",
+        "B": "9e60743a564fe5f6"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "209124bd73585840",
+        "C_frozen": "2c333d7a797c4fea",
+        "A": "3d5ca42f09a1175d"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "430e937515448edc",
+        "B": "5737a5e0d872e36d",
+        "A": "90279f9204386a1a"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "B",
+        "A"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "1391daef9a64225d",
+        "B": "5468a5d9330bc603",
+        "A": "d707d896c8a47ff2"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "arm_order": [
+        "C_frozen",
+        "A",
+        "B"
+      ],
+      "arm_order_keys": {
+        "C_frozen": "64bdd2f32a0f2190",
+        "A": "83f5d67dbb35446a",
+        "B": "8e82524cd07d9090"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "arm_order": [
+        "A",
+        "B",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "A": "0f19ce6afd91a9e7",
+        "B": "614b2517f99b46d1",
+        "C_frozen": "bfafd0bb81ea6cd4"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "arm_order": [
+        "B",
+        "A",
+        "C_frozen"
+      ],
+      "arm_order_keys": {
+        "B": "010ce117d22a4b77",
+        "A": "87f87611f6f2ea19",
+        "C_frozen": "c865ebccabdb7ec1"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "arm_order": [
+        "A",
+        "C_frozen",
+        "B"
+      ],
+      "arm_order_keys": {
+        "A": "bb89d6ae9e6ddafa",
+        "C_frozen": "c0574f5b88d252ef",
+        "B": "df0fe5c75cb41938"
+      }
+    },
+    {
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "arm_order": [
+        "B",
+        "C_frozen",
+        "A"
+      ],
+      "arm_order_keys": {
+        "B": "2da5bae4ba520573",
+        "C_frozen": "3e29700ec5afcbfd",
+        "A": "47b4c138bff67d03"
+      }
+    }
+  ],
+  "planned_runs": [
+    {
+      "run_id": "formal-FORMAL-F01-A1-R1-B",
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A1-R1-C_frozen",
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A1-R1-A",
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A2-R1-A",
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A2-R1-B",
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-A2-R1-C_frozen",
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B1-R1-A",
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B1-R1-C_frozen",
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B1-R1-B",
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B2-R1-B",
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B2-R1-A",
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-B2-R1-C_frozen",
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C1-R1-A",
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C1-R1-C_frozen",
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C1-R1-B",
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C2-R1-A",
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C2-R1-B",
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-C2-R1-C_frozen",
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D1-R1-C_frozen",
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D1-R1-B",
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D1-R1-A",
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D2-R1-C_frozen",
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D2-R1-A",
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-D2-R1-B",
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E1-R1-B",
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E1-R1-C_frozen",
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E1-R1-A",
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E2-R1-A",
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E2-R1-C_frozen",
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F01-E2-R1-B",
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A1-R1-B",
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A1-R1-C_frozen",
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A1-R1-A",
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A2-R1-B",
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A2-R1-A",
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-A2-R1-C_frozen",
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B1-R1-B",
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B1-R1-C_frozen",
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B1-R1-A",
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B2-R1-A",
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B2-R1-C_frozen",
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-B2-R1-B",
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C1-R1-B",
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C1-R1-A",
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C1-R1-C_frozen",
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C2-R1-C_frozen",
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C2-R1-A",
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-C2-R1-B",
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D1-R1-A",
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D1-R1-B",
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D1-R1-C_frozen",
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D2-R1-C_frozen",
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D2-R1-A",
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-D2-R1-B",
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E1-R1-B",
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E1-R1-A",
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E1-R1-C_frozen",
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E2-R1-B",
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E2-R1-A",
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F02-E2-R1-C_frozen",
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A1-R1-C_frozen",
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A1-R1-B",
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A1-R1-A",
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A2-R1-B",
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A2-R1-A",
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-A2-R1-C_frozen",
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B1-R1-B",
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B1-R1-A",
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B1-R1-C_frozen",
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B2-R1-C_frozen",
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B2-R1-B",
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-B2-R1-A",
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C1-R1-A",
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C1-R1-B",
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C1-R1-C_frozen",
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C2-R1-C_frozen",
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C2-R1-B",
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-C2-R1-A",
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D1-R1-A",
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D1-R1-B",
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D1-R1-C_frozen",
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D2-R1-B",
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D2-R1-A",
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-D2-R1-C_frozen",
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E1-R1-A",
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E1-R1-B",
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E1-R1-C_frozen",
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E2-R1-A",
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E2-R1-B",
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F03-E2-R1-C_frozen",
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A1-R1-C_frozen",
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A1-R1-B",
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A1-R1-A",
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A2-R1-A",
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A2-R1-C_frozen",
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-A2-R1-B",
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B1-R1-B",
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B1-R1-A",
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B1-R1-C_frozen",
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B2-R1-B",
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B2-R1-C_frozen",
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-B2-R1-A",
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C1-R1-B",
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C1-R1-A",
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C1-R1-C_frozen",
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C2-R1-B",
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C2-R1-A",
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-C2-R1-C_frozen",
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D1-R1-C_frozen",
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D1-R1-A",
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D1-R1-B",
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D2-R1-A",
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D2-R1-C_frozen",
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-D2-R1-B",
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E1-R1-B",
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E1-R1-C_frozen",
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E1-R1-A",
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E2-R1-B",
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E2-R1-C_frozen",
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F04-E2-R1-A",
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A1-R1-A",
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A1-R1-B",
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A1-R1-C_frozen",
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A2-R1-C_frozen",
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A2-R1-B",
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-A2-R1-A",
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B1-R1-C_frozen",
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B1-R1-A",
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B1-R1-B",
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B2-R1-B",
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B2-R1-A",
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-B2-R1-C_frozen",
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C1-R1-C_frozen",
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C1-R1-B",
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C1-R1-A",
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C2-R1-B",
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C2-R1-A",
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-C2-R1-C_frozen",
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D1-R1-C_frozen",
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D1-R1-B",
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D1-R1-A",
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D2-R1-A",
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D2-R1-C_frozen",
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-D2-R1-B",
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E1-R1-B",
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E1-R1-A",
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E1-R1-C_frozen",
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E2-R1-B",
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E2-R1-C_frozen",
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F05-E2-R1-A",
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A1-R1-A",
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A1-R1-C_frozen",
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A1-R1-B",
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A2-R1-B",
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A2-R1-A",
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-A2-R1-C_frozen",
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B1-R1-B",
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B1-R1-A",
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B1-R1-C_frozen",
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B2-R1-B",
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B2-R1-C_frozen",
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-B2-R1-A",
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C1-R1-A",
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C1-R1-C_frozen",
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C1-R1-B",
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C2-R1-C_frozen",
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C2-R1-B",
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-C2-R1-A",
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D1-R1-B",
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D1-R1-A",
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D1-R1-C_frozen",
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D2-R1-B",
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D2-R1-A",
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-D2-R1-C_frozen",
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E1-R1-C_frozen",
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E1-R1-B",
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E1-R1-A",
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E2-R1-B",
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E2-R1-C_frozen",
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F06-E2-R1-A",
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A1-R1-A",
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A1-R1-C_frozen",
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A1-R1-B",
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A2-R1-B",
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A2-R1-A",
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-A2-R1-C_frozen",
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B1-R1-C_frozen",
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B1-R1-B",
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B1-R1-A",
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B2-R1-B",
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B2-R1-A",
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-B2-R1-C_frozen",
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C1-R1-B",
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C1-R1-C_frozen",
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C1-R1-A",
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C2-R1-C_frozen",
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C2-R1-B",
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-C2-R1-A",
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D1-R1-B",
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D1-R1-C_frozen",
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D1-R1-A",
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D2-R1-C_frozen",
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D2-R1-B",
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-D2-R1-A",
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E1-R1-C_frozen",
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E1-R1-A",
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E1-R1-B",
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E2-R1-B",
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E2-R1-C_frozen",
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F07-E2-R1-A",
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A1-R1-A",
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A1-R1-B",
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A1-R1-C_frozen",
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A2-R1-A",
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A2-R1-B",
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-A2-R1-C_frozen",
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B1-R1-A",
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B1-R1-C_frozen",
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B1-R1-B",
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B2-R1-B",
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B2-R1-A",
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-B2-R1-C_frozen",
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C1-R1-A",
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C1-R1-B",
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C1-R1-C_frozen",
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C2-R1-C_frozen",
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C2-R1-A",
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-C2-R1-B",
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D1-R1-A",
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D1-R1-B",
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D1-R1-C_frozen",
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D2-R1-A",
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D2-R1-C_frozen",
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-D2-R1-B",
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E1-R1-C_frozen",
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E1-R1-A",
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E1-R1-B",
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E2-R1-A",
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E2-R1-C_frozen",
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F08-E2-R1-B",
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A1-R1-C_frozen",
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A1-R1-A",
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A1-R1-B",
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A2-R1-B",
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A2-R1-A",
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-A2-R1-C_frozen",
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B1-R1-B",
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B1-R1-C_frozen",
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B1-R1-A",
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B2-R1-B",
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B2-R1-C_frozen",
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-B2-R1-A",
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C1-R1-B",
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C1-R1-A",
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C1-R1-C_frozen",
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C2-R1-C_frozen",
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C2-R1-B",
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-C2-R1-A",
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D1-R1-B",
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D1-R1-A",
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D1-R1-C_frozen",
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D2-R1-A",
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D2-R1-B",
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-D2-R1-C_frozen",
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E1-R1-A",
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E1-R1-C_frozen",
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E1-R1-B",
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E2-R1-B",
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E2-R1-A",
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F09-E2-R1-C_frozen",
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A1-R1-C_frozen",
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A1-R1-B",
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A1-R1-A",
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A2-R1-C_frozen",
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A2-R1-B",
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-A2-R1-A",
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B1-R1-B",
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B1-R1-C_frozen",
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B1-R1-A",
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B2-R1-C_frozen",
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B2-R1-B",
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-B2-R1-A",
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C1-R1-A",
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C1-R1-C_frozen",
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C1-R1-B",
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C2-R1-C_frozen",
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C2-R1-A",
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-C2-R1-B",
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D1-R1-B",
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D1-R1-A",
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D1-R1-C_frozen",
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D2-R1-A",
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D2-R1-C_frozen",
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-D2-R1-B",
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E1-R1-C_frozen",
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E1-R1-B",
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E1-R1-A",
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E2-R1-B",
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E2-R1-C_frozen",
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F10-E2-R1-A",
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A1-R1-C_frozen",
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A1-R1-B",
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A1-R1-A",
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A2-R1-B",
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A2-R1-C_frozen",
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-A2-R1-A",
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B1-R1-C_frozen",
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B1-R1-B",
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B1-R1-A",
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B2-R1-A",
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B2-R1-B",
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-B2-R1-C_frozen",
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C1-R1-B",
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C1-R1-C_frozen",
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C1-R1-A",
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C2-R1-B",
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C2-R1-C_frozen",
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-C2-R1-A",
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D1-R1-B",
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D1-R1-A",
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D1-R1-C_frozen",
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D2-R1-A",
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D2-R1-B",
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-D2-R1-C_frozen",
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E1-R1-A",
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E1-R1-B",
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E1-R1-C_frozen",
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E2-R1-B",
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E2-R1-A",
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F11-E2-R1-C_frozen",
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A1-R1-C_frozen",
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A1-R1-A",
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A1-R1-B",
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A2-R1-C_frozen",
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A2-R1-A",
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-A2-R1-B",
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B1-R1-B",
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B1-R1-C_frozen",
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B1-R1-A",
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B2-R1-C_frozen",
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B2-R1-B",
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-B2-R1-A",
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C1-R1-C_frozen",
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C1-R1-B",
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C1-R1-A",
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C2-R1-C_frozen",
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C2-R1-A",
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-C2-R1-B",
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D1-R1-A",
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D1-R1-B",
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D1-R1-C_frozen",
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D2-R1-B",
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D2-R1-A",
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-D2-R1-C_frozen",
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E1-R1-A",
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E1-R1-C_frozen",
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E1-R1-B",
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 2
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E2-R1-B",
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "B",
+      "arm_order_index": 0
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E2-R1-C_frozen",
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "C_frozen",
+      "arm_order_index": 1
+    },
+    {
+      "run_id": "formal-FORMAL-F12-E2-R1-A",
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "replicate": 1,
+      "arm": "A",
+      "arm_order_index": 2
+    }
+  ]
+}
