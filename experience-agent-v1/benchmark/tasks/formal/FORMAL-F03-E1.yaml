@@ -1,0 +1,46 @@
+id: FORMAL-F03-E1
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:02:49Z
+gt_signed_version_hash: e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited, no_public_interface_change]
+prompt: |
+  pilot-workspace/FORMAL-F03-E1 的 serialize.js 是一版**已上线**的响应序列化实现，
+  其字节级输出被 golden-snapshots.json 冻结（外部调用方按该文件回放）。
+  attempt-log.txt 记录了针对当前实现的一次实际执行结果。
+  SPEC.md 的新要求必须成立；check.js 与 serialize.js 都不得修改。
+  请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - v2_path_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F03-E1/serialize-v2.js
+  - pilot-workspace/FORMAL-F03-E1/index.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F03-E1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F03-E1/verify.js
+  - pilot-workspace/FORMAL-F03-E1/serialize.js
+  - pilot-workspace/FORMAL-F03-E1/check.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F03-E1/verify.js
+    expect: "F03-E1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F03-E1/verify.js
+  - id: v2_path_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F03-E1/serialize-v2.js

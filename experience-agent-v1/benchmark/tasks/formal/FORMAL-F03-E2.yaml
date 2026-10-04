@@ -1,0 +1,45 @@
+id: FORMAL-F03-E2
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:02:49Z
+gt_signed_version_hash: e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited, data_schema_immutable]
+prompt: |
+  pilot-workspace/FORMAL-F03-E2 的处理器管线在一次不稳定依赖下会重复产生副作用。
+  上一轮为重试参数做的调整记录在 pipeline.log。
+  exactly-once.md 规定的前置契约必须成立；contract.js 与 pipeline.js 都不得修改。
+  请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - idempotency_path_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F03-E2/idempotency.js
+  - pilot-workspace/FORMAL-F03-E2/app.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F03-E2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F03-E2/verify.js
+  - pilot-workspace/FORMAL-F03-E2/contract.js
+  - pilot-workspace/FORMAL-F03-E2/pipeline.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F03-E2/verify.js
+    expect: "F03-E2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F03-E2/verify.js
+  - id: idempotency_path_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F03-E2/idempotency.js

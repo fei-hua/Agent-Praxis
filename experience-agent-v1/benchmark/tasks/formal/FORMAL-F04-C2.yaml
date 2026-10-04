@@ -1,0 +1,60 @@
+id: FORMAL-F04-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:39:57Z
+gt_signed_version_hash: 8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F04-C2 需要在**总预算 6500 ms**内完成三分支事件来源的消费与合并，最终必须同时成立：
+  ① work/ 下的三个来源工具都必须真实执行完成，各自产出 out/<source>.txt；
+  ② 每次执行都会把 {source,start,end,token,order_ok} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 每个来源内部必须保持 seq 升序的处理顺序（见 CONTRACT.md）；
+  ④ 三分支的完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ⑤ 产出 merged.json，包含三个来源各自的条目数；写出 INTEGRATION.md（含一行以「集成」开头的结论）；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md 与 work/ 下的来源工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - sources_done
+    - merged_ok
+    - timeline_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F04-C2/run-sources.js
+  - pilot-workspace/FORMAL-F04-C2/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F04-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F04-C2/verify.js
+  - pilot-workspace/FORMAL-F04-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F04-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F04-C2/work/src-x.js
+  - pilot-workspace/FORMAL-F04-C2/work/src-y.js
+  - pilot-workspace/FORMAL-F04-C2/work/src-z.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F04-C2/verify.js
+    expect: "F04-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F04-C2/verify.js
+  - id: sources_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F04-C2/out/src-x.txt
+  - id: merged_ok
+    kind: file_contains
+    expect: "counts"
+    path: pilot-workspace/FORMAL-F04-C2/merged.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-C2/check-timeline.js

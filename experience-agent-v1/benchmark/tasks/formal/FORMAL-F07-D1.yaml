@@ -1,0 +1,64 @@
+id: FORMAL-F07-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:15:03Z
+gt_signed_version_hash: 883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F07-D1 下的三套配置模块 mod-a / mod-b / mod-c 都需要修好，
+  并交付统一产物 effective-config.json（含 effective 字段）与 config-report.md（配置层叠报告），
+  两者必须与修好后的模块一致（见 check-report.js）；node verify.js 必须通过。
+  不得修改 check-a.js、check-b.js、check-c.js、check-report.js、build.js、verify.js 与 CONTRACT.md。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - a_fixed
+    - b_fixed
+    - c_fixed
+    - report_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F07-D1/mod-a/deep-merge.js
+  - pilot-workspace/FORMAL-F07-D1/mod-b/array-merge.js
+  - pilot-workspace/FORMAL-F07-D1/mod-c/precedence.js
+  - pilot-workspace/FORMAL-F07-D1/effective-config.json
+  - pilot-workspace/FORMAL-F07-D1/config-report.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F07-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F07-D1/verify.js
+  - pilot-workspace/FORMAL-F07-D1/check-a.js
+  - pilot-workspace/FORMAL-F07-D1/check-b.js
+  - pilot-workspace/FORMAL-F07-D1/check-c.js
+  - pilot-workspace/FORMAL-F07-D1/check-report.js
+  - pilot-workspace/FORMAL-F07-D1/build.js
+  - pilot-workspace/FORMAL-F07-D1/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F07-D1/verify.js
+    expect: "F07-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F07-D1/verify.js
+  - id: a_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-D1/check-a.js
+  - id: b_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-D1/check-b.js
+  - id: c_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-D1/check-c.js
+  - id: report_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-D1/check-report.js

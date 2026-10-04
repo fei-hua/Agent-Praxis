@@ -1,0 +1,59 @@
+id: FORMAL-F04-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:39:57Z
+gt_signed_version_hash: 8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F04-D1 下的三个来源包 svc-a / svc-b / svc-c 都需要修好，
+  并且合并校验（merge 相关检查）与该目录下的 node verify.js 也必须全部通过。
+  不得修改 check-a.js、check-b.js、check-c.js、check-merge.js 与 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - a_fixed
+    - b_fixed
+    - c_fixed
+    - merge_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F04-D1/svc-a/state.js
+  - pilot-workspace/FORMAL-F04-D1/svc-b/state.js
+  - pilot-workspace/FORMAL-F04-D1/svc-c/state.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F04-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F04-D1/verify.js
+  - pilot-workspace/FORMAL-F04-D1/check-a.js
+  - pilot-workspace/FORMAL-F04-D1/check-b.js
+  - pilot-workspace/FORMAL-F04-D1/check-c.js
+  - pilot-workspace/FORMAL-F04-D1/check-merge.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F04-D1/verify.js
+    expect: "F04-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F04-D1/verify.js
+  - id: a_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-D1/check-a.js
+  - id: b_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-D1/check-b.js
+  - id: c_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-D1/check-c.js
+  - id: merge_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-D1/check-merge.js

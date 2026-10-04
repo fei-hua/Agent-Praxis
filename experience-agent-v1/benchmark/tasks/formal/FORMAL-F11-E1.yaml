@@ -1,0 +1,53 @@
+id: FORMAL-F11-E1
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T07:21:14Z
+gt_signed_version_hash: 5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [api_immutable, no_public_interface_change]
+prompt: |
+  pilot-workspace/FORMAL-F11-E1 的 result.json 仍按**插入序**返回记录，而新契约（CONTRACT.md 的 Q3）要求真全序 `(ts asc, record_id 序数升序, canonical_record_bytes 升序)`。
+  query.js 已上线且与 legacy 导出链、冻结快照绑定，均不得修改；请新增排序层 order.js 并由非保护入口 index.js 装配，运行 node run-query.js 重新生成 result.json，使 node verify.js 通过。
+  不得修改 verify.js、check.js、check-legacy.js、CONTRACT.md、canonical.js、query.js、run-query.js、legacy/、snapshots/、query.json 与 logs/。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - order_path_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F11-E1/order.js
+  - pilot-workspace/FORMAL-F11-E1/index.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F11-E1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F11-E1/verify.js
+  - pilot-workspace/FORMAL-F11-E1/check.js
+  - pilot-workspace/FORMAL-F11-E1/check-legacy.js
+  - pilot-workspace/FORMAL-F11-E1/CONTRACT.md
+  - pilot-workspace/FORMAL-F11-E1/canonical.js
+  - pilot-workspace/FORMAL-F11-E1/query.js
+  - pilot-workspace/FORMAL-F11-E1/run-query.js
+  - pilot-workspace/FORMAL-F11-E1/legacy/export.js
+  - pilot-workspace/FORMAL-F11-E1/legacy/consumer.js
+  - pilot-workspace/FORMAL-F11-E1/snapshots/legacy-view.snap
+  - pilot-workspace/FORMAL-F11-E1/query.json
+  - pilot-workspace/FORMAL-F11-E1/logs/logs.jsonl
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F11-E1/verify.js
+    expect: "F11-E1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F11-E1/verify.js
+  - id: order_path_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F11-E1/order.js

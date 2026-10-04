@@ -1,4 +1,4 @@
-/**
+﻿/**
  * scripts/formal-verify-all.ts — 只读的「冻结版独立验真」（参数化：按族）
  *
  * 用法：node scripts/formal-verify-all.ts [--family F01] [--family F02]（缺省 = 全部已声明族）
@@ -23,6 +23,16 @@ import { verifyTask } from './pilot-verify.ts';
 import { buildBaselineFromWorkspace } from './formal-setup.ts';
 import { FORMAL_F01_SEEDS } from '../benchmark/formal-seeds-f01.ts';
 import { FORMAL_F02_SEEDS } from '../benchmark/formal-seeds-f02.ts';
+import { FORMAL_F12_SEEDS } from '../benchmark/formal-seeds-f12.ts';
+import { FORMAL_F11_SEEDS } from '../benchmark/formal-seeds-f11.ts';
+import { FORMAL_F10_SEEDS } from '../benchmark/formal-seeds-f10.ts';
+import { FORMAL_F09_SEEDS } from '../benchmark/formal-seeds-f09.ts';
+import { FORMAL_F08_SEEDS } from '../benchmark/formal-seeds-f08.ts';
+import { FORMAL_F07_SEEDS } from '../benchmark/formal-seeds-f07.ts';
+import { FORMAL_F06_SEEDS } from '../benchmark/formal-seeds-f06.ts';
+import { FORMAL_F05_SEEDS } from '../benchmark/formal-seeds-f05.ts';
+import { FORMAL_F04_SEEDS } from '../benchmark/formal-seeds-f04.ts';
+import { FORMAL_F03_SEEDS } from '../benchmark/formal-seeds-f03.ts';
 import { readJsonUtf8 } from './lib/json-io.ts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -38,6 +48,16 @@ interface FamilySpec {
 const FAMILIES: Record<string, FamilySpec> = {
   F01: { family: 'F01', versionFile: 'benchmark/formal/f01-version.json', preRunFile: 'benchmark/formal/f01-pre-run.json', seeds: FORMAL_F01_SEEDS },
   F02: { family: 'F02', versionFile: 'benchmark/formal/f02-version.json', preRunFile: 'benchmark/formal/f02-pre-run.json', seeds: FORMAL_F02_SEEDS },
+  F03: { family: 'F03', versionFile: 'benchmark/formal/f03-version.json', preRunFile: 'benchmark/formal/f03-pre-run.json', seeds: FORMAL_F03_SEEDS },
+  F04: { family: 'F04', versionFile: 'benchmark/formal/f04-version.json', preRunFile: 'benchmark/formal/f04-pre-run.json', seeds: FORMAL_F04_SEEDS },
+  F05: { family: 'F05', versionFile: 'benchmark/formal/f05-version.json', preRunFile: 'benchmark/formal/f05-pre-run.json', seeds: FORMAL_F05_SEEDS },
+  F06: { family: 'F06', versionFile: 'benchmark/formal/f06-version.json', preRunFile: 'benchmark/formal/f06-pre-run.json', seeds: FORMAL_F06_SEEDS },
+  F07: { family: 'F07', versionFile: 'benchmark/formal/f07-version.json', preRunFile: 'benchmark/formal/f07-pre-run.json', seeds: FORMAL_F07_SEEDS },
+  F08: { family: 'F08', versionFile: 'benchmark/formal/f08-version.json', preRunFile: 'benchmark/formal/f08-pre-run.json', seeds: FORMAL_F08_SEEDS },
+  F09: { family: 'F09', versionFile: 'benchmark/formal/f09-version.json', preRunFile: 'benchmark/formal/f09-pre-run.json', seeds: FORMAL_F09_SEEDS },
+  F10: { family: 'F10', versionFile: 'benchmark/formal/f10-version.json', preRunFile: 'benchmark/formal/f10-pre-run.json', seeds: FORMAL_F10_SEEDS },
+  F11: { family: 'F11', versionFile: 'benchmark/formal/f11-version.json', preRunFile: 'benchmark/formal/f11-pre-run.json', seeds: FORMAL_F11_SEEDS },
+  F12: { family: 'F12', versionFile: 'benchmark/formal/f12-version.json', preRunFile: 'benchmark/formal/f12-pre-run.json', seeds: FORMAL_F12_SEEDS },
 };
 
 const argv = process.argv.slice(2);

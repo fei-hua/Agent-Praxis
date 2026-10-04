@@ -1,0 +1,43 @@
+id: FORMAL-F08-A2
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T05:04:23Z
+gt_signed_version_hash: 024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F08-A2 的窗口过滤把边界记录计入了错误的窗口，导致额度判定与 CONTRACT.md 不一致。
+  修正后使 node verify.js 通过。不得修改 verify.js、check-window.js 与 CONTRACT.md。
+expected_first_decisions: [DIRECT, EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - window_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F08-A2/account.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F08-A2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F08-A2/verify.js
+  - pilot-workspace/FORMAL-F08-A2/check-window.js
+  - pilot-workspace/FORMAL-F08-A2/CONTRACT.md
+  - pilot-workspace/FORMAL-F08-A2/window.json
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F08-A2/verify.js
+    expect: "F08-A2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F08-A2/verify.js
+  - id: window_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-A2/check-window.js

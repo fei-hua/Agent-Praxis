@@ -1,0 +1,59 @@
+id: FORMAL-F08-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T05:04:23Z
+gt_signed_version_hash: 024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F08-D1 下的三个限流模块 mod-a / mod-b / mod-c 都需要修好，
+  并且统一额度报告校验（check-report.js）与该目录下的 node verify.js 也必须全部通过。
+  不得修改 check-a.js、check-b.js、check-c.js、check-report.js 与 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - a_fixed
+    - b_fixed
+    - c_fixed
+    - report_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F08-D1/mod-a/remaining.js
+  - pilot-workspace/FORMAL-F08-D1/mod-b/effective.js
+  - pilot-workspace/FORMAL-F08-D1/mod-c/window.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F08-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F08-D1/verify.js
+  - pilot-workspace/FORMAL-F08-D1/check-a.js
+  - pilot-workspace/FORMAL-F08-D1/check-b.js
+  - pilot-workspace/FORMAL-F08-D1/check-c.js
+  - pilot-workspace/FORMAL-F08-D1/check-report.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F08-D1/verify.js
+    expect: "F08-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F08-D1/verify.js
+  - id: a_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-D1/check-a.js
+  - id: b_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-D1/check-b.js
+  - id: c_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-D1/check-c.js
+  - id: report_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-D1/check-report.js

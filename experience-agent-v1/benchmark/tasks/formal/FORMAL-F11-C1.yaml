@@ -1,0 +1,66 @@
+id: FORMAL-F11-C1
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T07:21:14Z
+gt_signed_version_hash: 5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F11-C1 需要在**总预算 6500 ms**内完成三个日志分片的查询聚合，最终必须同时成立：
+  ① work/ 下的三个分片工具都必须真实执行完成，各自产出 out/<shard>.json 与 timeline.jsonl 记录；
+  ② 每次执行都会把 {shard,start,end,token,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 各分片完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ④ 合并后的 result.json 必须与按 CONTRACT.md 冻结语义（Q1–Q8）独立计算的结果**逐字节一致**；
+  ⑤ 写出 REPORT.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、canonical.js、shard-lib.js、query.json、logs/ 与 work/ 下的分片工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - shards_done
+    - timeline_ok
+    - result_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F11-C1/run-shards.js
+  - pilot-workspace/FORMAL-F11-C1/REPORT.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F11-C1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F11-C1/verify.js
+  - pilot-workspace/FORMAL-F11-C1/check-timeline.js
+  - pilot-workspace/FORMAL-F11-C1/CONTRACT.md
+  - pilot-workspace/FORMAL-F11-C1/canonical.js
+  - pilot-workspace/FORMAL-F11-C1/shard-lib.js
+  - pilot-workspace/FORMAL-F11-C1/query.json
+  - pilot-workspace/FORMAL-F11-C1/logs/shard-a.jsonl
+  - pilot-workspace/FORMAL-F11-C1/logs/shard-b.jsonl
+  - pilot-workspace/FORMAL-F11-C1/logs/shard-c.jsonl
+  - pilot-workspace/FORMAL-F11-C1/work/shard-a.js
+  - pilot-workspace/FORMAL-F11-C1/work/shard-b.js
+  - pilot-workspace/FORMAL-F11-C1/work/shard-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F11-C1/verify.js
+    expect: "F11-C1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F11-C1/verify.js
+  - id: shards_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F11-C1/out/shard-a.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-C1/check-timeline.js
+  - id: result_written
+    kind: file_contains
+    expect: "\"aggregation\""
+    path: pilot-workspace/FORMAL-F11-C1/result.json

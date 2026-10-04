@@ -1,0 +1,61 @@
+id: FORMAL-F09-C1
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:18:32Z
+gt_signed_version_hash: 6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F09-C1 需要在**总预算 6500 ms**内完成三个模板的渲染，最终必须同时成立：
+  ① work/ 下的三个渲染工具都必须真实执行完成，各自产出 snapshots/<name>.snap；
+  ② 每次执行都会把 {tpl,start,end,token,bytes} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 三模板完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ④ 每份快照必须与**独立参考渲染器**逐字节一致（UTF-8 → CRLF→LF → 逐字节比较）；
+  ⑤ 写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、renderer.js 与 work/ 下的渲染工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - templates_done
+    - timeline_ok
+    - snapshots_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F09-C1/run-templates.js
+  - pilot-workspace/FORMAL-F09-C1/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F09-C1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F09-C1/verify.js
+  - pilot-workspace/FORMAL-F09-C1/check-timeline.js
+  - pilot-workspace/FORMAL-F09-C1/CONTRACT.md
+  - pilot-workspace/FORMAL-F09-C1/renderer.js
+  - pilot-workspace/FORMAL-F09-C1/work/tpl-a.js
+  - pilot-workspace/FORMAL-F09-C1/work/tpl-b.js
+  - pilot-workspace/FORMAL-F09-C1/work/tpl-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F09-C1/verify.js
+    expect: "F09-C1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F09-C1/verify.js
+  - id: templates_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F09-C1/snapshots/tpl-a.snap
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-C1/check-timeline.js
+  - id: snapshots_ok
+    kind: file_contains
+    expect: "A: Alice"
+    path: pilot-workspace/FORMAL-F09-C1/snapshots/tpl-a.snap

@@ -1,0 +1,61 @@
+id: FORMAL-F06-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:00:27Z
+gt_signed_version_hash: 13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F06-C2 需要在**总预算 6500 ms**内完成三个租户策略集的批量评估与决策矩阵合并：
+  ① work/ 下的三个评估工具都必须真实执行完成，各自产出 out/<src>.json 与 timeline.jsonl 记录；
+  ② 每次执行都会把 {src,start,end,token,order_ok,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 每个租户内部必须保持 priority 降序；
+  ④ 三来源完成时间跨度不得超过总预算；
+  ⑤ 合并后的决策矩阵 matrix.json 必须与按 priority 规则归并的结果**语义等价**，且覆盖全部请求；写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、evaluator.js 与 work/ 下的评估工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - sources_done
+    - timeline_ok
+    - matrix_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F06-C2/run-sources.js
+  - pilot-workspace/FORMAL-F06-C2/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F06-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F06-C2/verify.js
+  - pilot-workspace/FORMAL-F06-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F06-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F06-C2/evaluator.js
+  - pilot-workspace/FORMAL-F06-C2/work/pol-tenant-x.js
+  - pilot-workspace/FORMAL-F06-C2/work/pol-tenant-y.js
+  - pilot-workspace/FORMAL-F06-C2/work/pol-tenant-z.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F06-C2/verify.js
+    expect: "F06-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F06-C2/verify.js
+  - id: sources_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F06-C2/out/pol-tenant-x.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F06-C2/check-timeline.js
+  - id: matrix_ok
+    kind: file_contains
+    expect: "matrix"
+    path: pilot-workspace/FORMAL-F06-C2/matrix.json

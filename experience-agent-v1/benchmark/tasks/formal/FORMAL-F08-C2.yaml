@@ -1,0 +1,62 @@
+id: FORMAL-F08-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T05:04:23Z
+gt_signed_version_hash: 024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F08-C2 需要在**总预算 6500 ms**内完成三个用量分片的汇总，最终必须同时成立：
+  ① work/ 下的三个分片工具都必须真实执行完成，各自产出 out/<src>.json（含该分片的原始记录）与 timeline.jsonl 记录；
+  ② 每次执行都会把 {src,start,end,token,naiveAccepted,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 分片之间可能包含**相同的 request_id**（见 CONTRACT.md 的全局幂等规则）；
+  ④ 三来源完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ⑤ 生成 ledger.json，其 used 与 tenant/endpoint 分组必须与**全局幂等参考实现**一致；写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、window.json、account.js 与 work/ 下的分片工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - sources_done
+    - timeline_ok
+    - ledger_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F08-C2/run-sources.js
+  - pilot-workspace/FORMAL-F08-C2/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F08-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F08-C2/verify.js
+  - pilot-workspace/FORMAL-F08-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F08-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F08-C2/window.json
+  - pilot-workspace/FORMAL-F08-C2/account.js
+  - pilot-workspace/FORMAL-F08-C2/work/src-x.js
+  - pilot-workspace/FORMAL-F08-C2/work/src-y.js
+  - pilot-workspace/FORMAL-F08-C2/work/src-z.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F08-C2/verify.js
+    expect: "F08-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F08-C2/verify.js
+  - id: sources_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F08-C2/out/src-x.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-C2/check-timeline.js
+  - id: ledger_ok
+    kind: file_contains
+    expect: "groups"
+    path: pilot-workspace/FORMAL-F08-C2/ledger.json

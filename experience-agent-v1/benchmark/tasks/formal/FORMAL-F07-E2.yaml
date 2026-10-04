@@ -1,0 +1,48 @@
+id: FORMAL-F07-E2
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:15:03Z
+gt_signed_version_hash: 883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [api_immutable]
+prompt: |
+  pilot-workspace/FORMAL-F07-E2 的 effective config 在层输入被修改后仍然返回旧结果。
+  CONTRACT.md 的「重算条款」必须成立；propagate.js、layer-store.js、merge.js 与 layers/ 下的层文件都不得修改。
+  请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - propagation_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F07-E2/resolve.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F07-E2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F07-E2/verify.js
+  - pilot-workspace/FORMAL-F07-E2/propagate.js
+  - pilot-workspace/FORMAL-F07-E2/layer-store.js
+  - pilot-workspace/FORMAL-F07-E2/merge.js
+  - pilot-workspace/FORMAL-F07-E2/layers/defaults.json
+  - pilot-workspace/FORMAL-F07-E2/layers/environment.json
+  - pilot-workspace/FORMAL-F07-E2/layers/profile.json
+  - pilot-workspace/FORMAL-F07-E2/layers/local.json
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F07-E2/verify.js
+    expect: "F07-E2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F07-E2/verify.js
+  - id: propagation_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-E2/propagate.js

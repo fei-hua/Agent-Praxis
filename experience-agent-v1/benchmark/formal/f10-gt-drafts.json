@@ -1,0 +1,246 @@
+{
+  "family": "F10",
+  "generated_at": "2026-10-04T06:37:52.041Z",
+  "signature": {
+    "gt_signed_by": "",
+    "gt_signed_at": "",
+    "status": "DRAFT — 待人工签署"
+  },
+  "variants": [
+    {
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "variant": 1,
+      "title": "Required 字段校验缺失（缺失必填字段仍判为通过）",
+      "task_description": "pilot-workspace/FORMAL-F10-A1 的 Schema 校验对「必填字段缺失」的数据仍判定为通过（期望失败）。\n修正后使 node verify.js 通过。不得修改 verify.js、check-required.js、CONTRACT.md 与 schemas/v1.json。",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "required_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "单文件、单症状（validate.js 未执行 required 检查），目标文件与错误码由 CONTRACT 唯一确定 ⇒ 直接修改是最小充分的首决策。",
+      "rationale_not_in_gt": "EXPLORE 无依据（失败原因由输出直接定位）；委派类与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "variant": 2,
+      "title": "类型与可空性判定错误（隐式转换 + null 放过）",
+      "task_description": "pilot-workspace/FORMAL-F10-A2 的 Schema 校验结果与 CONTRACT.md 规定的 V2 语义不一致。\n修正后使 node verify.js 通过。不得修改 verify.js、check-type-null.js、CONTRACT.md 与 schemas/v1.json。",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "type_null_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "目标文件已知（validate.js），但「不得隐式转换」「nullable:false 时 null 非法」的判定依据写在 CONTRACT.md（V2）⇒ 先查契约再改与直接修改并列成立。",
+      "rationale_not_in_gt": "委派类超出必要；REPLAN 不适用（状态自洽，仅实现与契约不符）。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "variant": 1,
+      "title": "Backward 兼容失败：旧读取器对新增字段报错",
+      "task_description": "pilot-workspace/FORMAL-F10-B1 的旧读取器无法读取新写入方产出的数据（期望按 V4 忽略未知字段）。\n请修复该问题，使 node verify.js 通过。不得修改 verify.js、check-backward.js、CONTRACT.md 与 schemas/ 下的 schema。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "backward_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "症状是\"旧读取器读不了新数据\"，成因可能在 writer 的字段装配或 reader 的未知字段处理；需沿 writer 输出 → reader 校验链定位（checker 另有断言保证 writer 真写出新字段）⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 容易只改一侧而留下另一处不一致；委派与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "variant": 2,
+      "title": "Forward 兼容失败：新读取器要求可选字段必须存在",
+      "task_description": "pilot-workspace/FORMAL-F10-B2 的新读取器无法读取旧写入方产出的数据（期望按 V4 容忍缺失的可选字段）。\n请修复该问题，使 node verify.js 通过。不得修改 verify.js、check-forward.js、CONTRACT.md 与 schemas/ 下的 schema。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "forward_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "方向与 B1 相反且 failure mode 不同（缺失可选字段 vs 未知字段）：成因可能在 reader 的字段存在性判定或 schema 的可选性声明；需沿 schema → reader 判定链定位 ⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 容易把可选字段硬性要求或伪造默认值；委派与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "variant": 1,
+      "title": "硬预算下的多分片并行迁移（additive + backfill，产物逐字节一致）",
+      "task_description": "pilot-workspace/FORMAL-F10-C1 需要在**总预算 6500 ms**内完成三个数据分片的 V1→V2 迁移，最终必须同时成立：\n① work/ 下的三个分片迁移工具都必须真实执行完成，各自产出 out/<shard>.jsonl 与 timeline.jsonl 记录；\n② 每次执行都会把 {shard,start,end,token,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 各分片完成时间跨度（max(end) - min(start)）不得超过总预算；\n④ 合并后的 migrated.jsonl 必须与按 CONTRACT.md 冻结规则（V5 backfill、V8 canonical）独立生成的参考迁移结果**逐字节一致**；\n⑤ 写出 MIGRATION.md；node verify.js 必须通过。\n不得修改 verify.js、check-timeline.js、CONTRACT.md、canonical.js、migrate.js、schemas/ 与 work/ 下的迁移工具。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "shards_done",
+        "timeline_ok",
+        "migrated_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "同时给出两条可机械验证的约束：三分片各自固定迁移耗时（3.5s/3.5s/3.0s，串行约 10s）与 6500ms 总预算，且**并行迁移不得改变结果**（migrated.jsonl 必须与 checker 内嵌独立参考迁移逐字节一致）。串行调度必然超预算（verify 直接拒绝），分片级并行 + canonical 合并可同时满足 ⇒ 拆解/并行/编排具有结构依据。",
+      "rationale_not_in_gt": "串行调度无法满足硬预算约束（顺序 span≈10s > 6500ms）；EXPLORE 未刻画「预算-分片-逐字节等价」结构；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "variant": 2,
+      "title": "硬预算下的并行 rename/transform 迁移（identity 保持，无双重记录）",
+      "task_description": "pilot-workspace/FORMAL-F10-C2 需要在**总预算 6500 ms**内完成三个数据分片的 V1→V2 rename/transform 迁移，最终必须同时成立：\n① work/ 下的三个分片迁移工具都必须真实执行完成，各自产出 out/<shard>.jsonl 与 timeline.jsonl 记录；\n② 每次执行都会把 {shard,start,end,token,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 各分片完成时间跨度不得超过总预算；\n④ 合并后的 migrated.jsonl 必须与按 CONTRACT.md 冻结规则（V6 显式转换、V8 canonical）独立生成的参考迁移结果**逐字节一致**；\n⑤ record_count 不得变化（禁止双重记录），旧字段不得保留；写出 MIGRATION.md；node verify.js 必须通过。\n不得修改 verify.js、check-timeline.js、CONTRACT.md、canonical.js、migrate.js、schemas/ 与 work/ 下的迁移工具。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "shards_done",
+        "timeline_ok",
+        "migrated_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "与 C1 同构但承担**不同 failure mode**：C1 是 additive/backfill 正确性，C2 是**变换正确性 + identity 保持**（record_count 不变、无双重记录、旧字段不残留），且多一条旧字段不得保留的机械断言。同样存在「硬预算 + 并行结果必须与独立参考逐字节一致」的可机械验证约束，串行超预算而分片级并行可行 ⇒ 委派类成立。",
+      "rationale_not_in_gt": "串行调度无法满足硬预算约束；EXPLORE 未刻画「预算-分片-identity 保持」结构；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "variant": 1,
+      "title": "三张表各自的迁移缺陷 + 统一迁移报告校验",
+      "task_description": "pilot-workspace/FORMAL-F10-D1 下的三套迁移模块 mig-customers.js / mig-orders.js / mig-logs.js 都需要修好，\n交付三张表的迁移产物 migrated/customers.jsonl、migrated/orders.jsonl、migrated/logs.jsonl，\n以及统一迁移报告 migration-report.json（含 tables 与 total_records）；node verify.js 必须通过。\n不得修改 check-customers.js、check-orders.js、check-logs.js、check-report.js、verify.js、CONTRACT.md、canonical.js 与 schemas/。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "customers_fixed",
+        "orders_fixed",
+        "logs_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "三张表各自有真实缺陷（边界回填 / 丢失记录 / 类型错误）与独立验收脚本，且存在必须三套模块都修好才能通过的统一报告校验（产物必须与模块输出逐字节一致）⇒ 并行/编排有实际收益。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未利用三张表互不共享的结构；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "variant": 2,
+      "title": "有依赖关系的迁移链：新增列 → 回填 → 约束校验（真实 artifact 传递）",
+      "task_description": "pilot-workspace/FORMAL-F10-D2 需要按 CONTRACT.md 的阶段依赖完成 V1→V2 迁移，并交付：\n① 各阶段产物 stages/step1.jsonl、stages/step2.jsonl、stages/step3.jsonl；\n② 阶段溯源 provenance.json（每阶段记录 {step, input, input_sha256, output, output_sha256}）；\n③ 最终迁移产物 migrated.jsonl 与阶段说明 CHAIN.md；node verify.js 必须通过。\n不得修改 verify.js、check-chain.js、CONTRACT.md、canonical.js、lib/ops.js、schemas/ 与 data/。",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "chain_provenance",
+        "chain_ok",
+        "migrated_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "三个阶段存在真实依赖（新增列会把 region 重置为 null，回填必须发生在约束校验之前），且 checker 断言 step 之间**真实 artifact 传递**（输入路径连续 + sha256 与真实文件一致）⇒ 阶段化编排由任务结构本身给出（prompt 只陈述交付物）。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未刻画阶段依赖与产物传递结构；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "variant": 1,
+      "title": "破坏性 Schema 变更：新迁移路径违反 legacy 兼容契约",
+      "task_description": "pilot-workspace/FORMAL-F10-E1 的 migrate.js 是一版**已上线**的 V1→V2 迁移，其产物被 legacy/consumer.js 按字段逐项回放（legacy/consumer.js 与 schemas/ 均不得修改）。\nCONTRACT.md 的兼容条款必须成立；migrate.js 与 check.js 都不得修改。请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "现状把已上线迁移当作新接口：migrate.js 按新 schema 把 email 变成对象，而兼容条款要求 email 保持字符串并同时提供 email_detail；migrate.js 与 legacy 消费方冻结、check.js 不得修改 ⇒ 局部改参无法满足，必须新增兼容迁移路径并调整非保护入口装配（计划层重规划）⇒ REPLAN 最小充分。",
+      "rationale_not_in_gt": "DIRECT 指向受保护文件；EXPLORE 不成立（成因与位置已由真实预跑记录明确）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "variant": 2,
+      "title": "migration 幂等性失败：已是 v2 的数据被二次转换",
+      "task_description": "pilot-workspace/FORMAL-F10-E2 的同一 migration 对**已是 v2** 的数据再次执行时产生了二次副作用。\nCONTRACT.md 的 V7 幂等条款必须成立；idempotent.js、canonical.js、schemas/ 与 data/ 都不得修改。请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "idempotency_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "未修复态对已是 v2 的数据二次执行迁移（真实预跑：display_name \"AliceAlice\" 而期望 \"Alice\"，属业务结果差异，不是结构断言）；idempotent.js / canonical.js / schemas / data 冻结 ⇒ 必须改变\"迁移何时生效、如何识别已是目标版本\"的方案（计划层重规划）⇒ REPLAN 有构念依据且可满足。",
+      "rationale_not_in_gt": "DIRECT 指向受保护文件；EXPLORE 不成立（成因已由真实预跑记录明确）；本变体不是 F08-C2 的跨分片账务去重（对象是 migration 的二次副作用）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    }
+  ]
+}

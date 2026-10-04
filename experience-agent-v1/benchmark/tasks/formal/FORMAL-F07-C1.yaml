@@ -1,0 +1,61 @@
+id: FORMAL-F07-C1
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:15:03Z
+gt_signed_version_hash: 883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F07-C1 需要在**总预算 6500 ms**内完成三个配置来源的加载，最终必须同时成立：
+  ① work/ 下的三个来源加载工具都必须真实执行完成，各自产出 out/<src>.json 与 timeline.jsonl 记录；
+  ② 每次执行都会把 {src,start,end,token,layers} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 各来源完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ④ 合并后的 effective.json 必须与按 CONTRACT.md 固定层叠规则（defaults<environment<profile<local + S1..S5）独立生成的参考结果**语义等价**；
+  ⑤ 写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、merge.js 与 work/ 下的来源工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - sources_done
+    - timeline_ok
+    - effective_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F07-C1/run-sources.js
+  - pilot-workspace/FORMAL-F07-C1/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F07-C1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F07-C1/verify.js
+  - pilot-workspace/FORMAL-F07-C1/check-timeline.js
+  - pilot-workspace/FORMAL-F07-C1/CONTRACT.md
+  - pilot-workspace/FORMAL-F07-C1/merge.js
+  - pilot-workspace/FORMAL-F07-C1/work/cfg-a.js
+  - pilot-workspace/FORMAL-F07-C1/work/cfg-b.js
+  - pilot-workspace/FORMAL-F07-C1/work/cfg-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F07-C1/verify.js
+    expect: "F07-C1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F07-C1/verify.js
+  - id: sources_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F07-C1/out/cfg-a.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-C1/check-timeline.js
+  - id: effective_written
+    kind: file_contains
+    expect: "effective"
+    path: pilot-workspace/FORMAL-F07-C1/effective.json

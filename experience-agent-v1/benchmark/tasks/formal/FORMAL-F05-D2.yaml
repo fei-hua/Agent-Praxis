@@ -1,0 +1,56 @@
+id: FORMAL-F05-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:54:00Z
+gt_signed_version_hash: 1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F05-D2 需要交付三份产物：
+  ① 修复后的依赖图 graph-fixed.json（含一行字段 "repaired": true）；
+  ② 版本归一结果 versions-normalized.json（含字段 "normalized": true）；
+  ③ 重新生成的 lockfile lockfile.final.json（含字段 "integrity"）；node verify.js 必须通过。
+  不得修改 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - graph_repaired
+    - versions_normalized
+    - lockfile_regenerated
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F05-D2/graph-fixed.json
+  - pilot-workspace/FORMAL-F05-D2/versions-normalized.json
+  - pilot-workspace/FORMAL-F05-D2/lockfile.final.json
+allowed_paths:
+  - pilot-workspace/FORMAL-F05-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F05-D2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F05-D2/verify.js
+    expect: "F05-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F05-D2/verify.js
+  - id: graph_repaired
+    kind: file_contains
+    expect: "repaired"
+    path: pilot-workspace/FORMAL-F05-D2/graph-fixed.json
+  - id: versions_normalized
+    kind: file_contains
+    expect: "normalized"
+    path: pilot-workspace/FORMAL-F05-D2/versions-normalized.json
+  - id: lockfile_regenerated
+    kind: file_contains
+    expect: "integrity"
+    path: pilot-workspace/FORMAL-F05-D2/lockfile.final.json

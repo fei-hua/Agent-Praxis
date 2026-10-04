@@ -1,0 +1,47 @@
+id: FORMAL-F11-A1
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T07:21:14Z
+gt_signed_version_hash: 5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F11-A1 的日志查询把 `level == "error"` 的判定做反了：error 记录被排除、非 error 记录被返回。
+  修正后运行 node run.js 重算 result.json，使 node verify.js 通过。
+  不得修改 verify.js、check-filter.js、CONTRACT.md、canonical.js、run.js、query.json 与 logs/。
+expected_first_decisions: [DIRECT]
+expected_delegation: false
+success_criteria:
+  required:
+    - filter_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F11-A1/query.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F11-A1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F11-A1/verify.js
+  - pilot-workspace/FORMAL-F11-A1/check-filter.js
+  - pilot-workspace/FORMAL-F11-A1/CONTRACT.md
+  - pilot-workspace/FORMAL-F11-A1/canonical.js
+  - pilot-workspace/FORMAL-F11-A1/run.js
+  - pilot-workspace/FORMAL-F11-A1/query.json
+  - pilot-workspace/FORMAL-F11-A1/logs/logs.jsonl
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F11-A1/verify.js
+    expect: "F11-A1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F11-A1/verify.js
+  - id: filter_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-A1/check-filter.js

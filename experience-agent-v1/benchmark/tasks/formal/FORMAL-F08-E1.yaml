@@ -1,0 +1,46 @@
+id: FORMAL-F08-E1
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T05:04:23Z
+gt_signed_version_hash: 024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [api_immutable, no_public_interface_change]
+prompt: |
+  pilot-workspace/FORMAL-F08-E1 的 billing.js 是一版**已上线**的计费实现，其输出被 legacy/consumer.js 按字段逐项回放（legacy/billing.json 与 consumer 均不得修改）。
+  CONTRACT-quota.md 的新要求必须成立；check.js 与 billing.js 都不得修改。请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - compat_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F08-E1/billing-quota.js
+  - pilot-workspace/FORMAL-F08-E1/index.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F08-E1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F08-E1/verify.js
+  - pilot-workspace/FORMAL-F08-E1/billing.js
+  - pilot-workspace/FORMAL-F08-E1/legacy/consumer.js
+  - pilot-workspace/FORMAL-F08-E1/legacy/billing.json
+  - pilot-workspace/FORMAL-F08-E1/check.js
+  - pilot-workspace/FORMAL-F08-E1/CONTRACT-quota.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F08-E1/verify.js
+    expect: "F08-E1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F08-E1/verify.js
+  - id: compat_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F08-E1/billing-quota.js

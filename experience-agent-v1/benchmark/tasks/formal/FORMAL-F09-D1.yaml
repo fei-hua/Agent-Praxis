@@ -1,0 +1,59 @@
+id: FORMAL-F09-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:18:32Z
+gt_signed_version_hash: 6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F09-D1 下的三个模板包 pkg-a / pkg-b / pkg-c 都需要修好，
+  并且统一快照校验（check-unified.js）与该目录下的 node verify.js 也必须全部通过。
+  不得修改 check-a.js、check-b.js、check-c.js、check-unified.js 与 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - a_fixed
+    - b_fixed
+    - c_fixed
+    - unified_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F09-D1/pkg-a/render.js
+  - pilot-workspace/FORMAL-F09-D1/pkg-b/render.js
+  - pilot-workspace/FORMAL-F09-D1/pkg-c/render.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F09-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F09-D1/verify.js
+  - pilot-workspace/FORMAL-F09-D1/check-a.js
+  - pilot-workspace/FORMAL-F09-D1/check-b.js
+  - pilot-workspace/FORMAL-F09-D1/check-c.js
+  - pilot-workspace/FORMAL-F09-D1/check-unified.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F09-D1/verify.js
+    expect: "F09-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F09-D1/verify.js
+  - id: a_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-D1/check-a.js
+  - id: b_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-D1/check-b.js
+  - id: c_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-D1/check-c.js
+  - id: unified_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-D1/check-unified.js

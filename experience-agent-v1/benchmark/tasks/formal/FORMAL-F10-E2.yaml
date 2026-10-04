@@ -1,0 +1,47 @@
+id: FORMAL-F10-E2
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:40:41Z
+gt_signed_version_hash: 715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [api_immutable]
+prompt: |
+  pilot-workspace/FORMAL-F10-E2 的同一 migration 对**已是 v2** 的数据再次执行时产生了二次副作用。
+  CONTRACT.md 的 V7 幂等条款必须成立；idempotent.js、canonical.js、schemas/ 与 data/ 都不得修改。请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - idempotency_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F10-E2/migrate.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F10-E2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F10-E2/verify.js
+  - pilot-workspace/FORMAL-F10-E2/idempotent.js
+  - pilot-workspace/FORMAL-F10-E2/canonical.js
+  - pilot-workspace/FORMAL-F10-E2/schemas/v1.json
+  - pilot-workspace/FORMAL-F10-E2/schemas/v2.json
+  - pilot-workspace/FORMAL-F10-E2/data/v1.jsonl
+  - pilot-workspace/FORMAL-F10-E2/data/v2.jsonl
+  - pilot-workspace/FORMAL-F10-E2/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F10-E2/verify.js
+    expect: "F10-E2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F10-E2/verify.js
+  - id: idempotency_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-E2/idempotent.js

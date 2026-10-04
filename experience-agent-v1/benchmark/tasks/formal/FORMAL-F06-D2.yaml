@@ -1,0 +1,56 @@
+id: FORMAL-F06-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:00:27Z
+gt_signed_version_hash: 13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F06-D2 需要交付三份产物：
+  ① 修复后的策略集 policies-fixed.json（含字段 "repaired": true）；
+  ② 优先级归一结果 precedence-normalized.json（含字段 "normalized": true）；
+  ③ 重新生成的审计报告 audit-report.json（含字段 "decisions" 数组）；node verify.js 必须通过。
+  不得修改 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - policy_repaired
+    - precedence_normalized
+    - audit_regenerated
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F06-D2/policies-fixed.json
+  - pilot-workspace/FORMAL-F06-D2/precedence-normalized.json
+  - pilot-workspace/FORMAL-F06-D2/audit-report.json
+allowed_paths:
+  - pilot-workspace/FORMAL-F06-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F06-D2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F06-D2/verify.js
+    expect: "F06-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F06-D2/verify.js
+  - id: policy_repaired
+    kind: file_contains
+    expect: "repaired"
+    path: pilot-workspace/FORMAL-F06-D2/policies-fixed.json
+  - id: precedence_normalized
+    kind: file_contains
+    expect: "normalized"
+    path: pilot-workspace/FORMAL-F06-D2/precedence-normalized.json
+  - id: audit_regenerated
+    kind: file_contains
+    expect: "decisions"
+    path: pilot-workspace/FORMAL-F06-D2/audit-report.json

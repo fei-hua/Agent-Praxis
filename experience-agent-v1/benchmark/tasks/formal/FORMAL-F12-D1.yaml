@@ -1,0 +1,63 @@
+id: FORMAL-F12-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T08:10:23Z
+gt_signed_version_hash: bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F12-D1 需要在**总预算 6500 ms**内完成三个互不依赖组件（api / web / worker）的 rollout，最终必须同时成立：
+  ① work/ 下的三个组件工具都必须真实执行完成，各自产出 out/<c>.json 与 timeline.jsonl 记录；
+  ② 各组件完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ③ 最终 state.json / history.jsonl / artifacts/ / report.json 必须与按 CONTRACT.md（S1–S10）独立计算的参考结果**逐字节一致**，
+     且完成顺序不得泄漏进 history（history 必须按 canonical 顺序、seq 从 1 递增）；
+  ④ 写出 ROLLOUT.md；node verify.js 必须通过。
+  不得修改 verify.js、check-rollout.js、CONTRACT.md、canonical.js、lib/、plan.json、state.json、history.jsonl、artifacts/、blobs/、snapshots/ 与 work/ 下的组件工具。
+expected_first_decisions: [PARALLEL]
+expected_delegation: true
+success_criteria:
+  required:
+    - rollout_done
+    - timeline_ok
+    - report_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F12-D1/run-rollout.js
+  - pilot-workspace/FORMAL-F12-D1/ROLLOUT.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F12-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F12-D1/verify.js
+  - pilot-workspace/FORMAL-F12-D1/check-rollout.js
+  - pilot-workspace/FORMAL-F12-D1/CONTRACT.md
+  - pilot-workspace/FORMAL-F12-D1/canonical.js
+  - pilot-workspace/FORMAL-F12-D1/lib/deploy-lib.js
+  - pilot-workspace/FORMAL-F12-D1/lib/runtime.js
+  - pilot-workspace/FORMAL-F12-D1/plan.json
+  - pilot-workspace/FORMAL-F12-D1/work/api.js
+  - pilot-workspace/FORMAL-F12-D1/work/web.js
+  - pilot-workspace/FORMAL-F12-D1/work/worker.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F12-D1/verify.js
+    expect: "F12-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F12-D1/verify.js
+  - id: rollout_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F12-D1/out/api.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F12-D1/check-rollout.js
+  - id: report_written
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F12-D1/report.json

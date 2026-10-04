@@ -1,0 +1,61 @@
+id: FORMAL-F07-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:15:03Z
+gt_signed_version_hash: 883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F07-C2 需要在**总预算 6500 ms**内完成三个 profile 的 effective config 批量生成与矩阵汇总：
+  ① work/ 下的三个 profile 生成工具都必须真实执行完成，各自产出 out/<profile>.json 与 timeline.jsonl 记录；
+  ② 每次执行都会把 {src,start,end,token,profile} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 每个 profile 内部必须保持固定层顺序（defaults<environment<profile<local，见 CONTRACT.md）；
+  ④ 三个 profile 的完成时间跨度不得超过总预算；
+  ⑤ 汇总矩阵 matrix.json 必须与按固定层叠规则独立生成的参考矩阵**语义等价**，且按 profile × key 完整覆盖；写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、merge.js 与 work/ 下的生成工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - profiles_done
+    - timeline_ok
+    - matrix_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F07-C2/run-profiles.js
+  - pilot-workspace/FORMAL-F07-C2/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F07-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F07-C2/verify.js
+  - pilot-workspace/FORMAL-F07-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F07-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F07-C2/merge.js
+  - pilot-workspace/FORMAL-F07-C2/work/prof-p1.js
+  - pilot-workspace/FORMAL-F07-C2/work/prof-p2.js
+  - pilot-workspace/FORMAL-F07-C2/work/prof-p3.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F07-C2/verify.js
+    expect: "F07-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F07-C2/verify.js
+  - id: profiles_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F07-C2/out/p1.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-C2/check-timeline.js
+  - id: matrix_written
+    kind: file_contains
+    expect: "matrix"
+    path: pilot-workspace/FORMAL-F07-C2/matrix.json

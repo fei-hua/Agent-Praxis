@@ -1,0 +1,39 @@
+id: FORMAL-F03-A1
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:02:49Z
+gt_signed_version_hash: e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: generic
+characteristics: []
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F03-A1/handlers/status.js 对未知路由返回了成功码。修正它，使 verify.js 通过。不得修改 verify.js。
+expected_first_decisions: [DIRECT]
+expected_delegation: false
+success_criteria:
+  required:
+    - status_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F03-A1/handlers/status.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F03-A1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F03-A1/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F03-A1/verify.js
+    expect: "F03-A1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F03-A1/verify.js
+  - id: status_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F03-A1/verify.js

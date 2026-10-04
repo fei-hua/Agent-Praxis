@@ -1,0 +1,42 @@
+id: FORMAL-F04-B2
+category: B
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:39:57Z
+gt_signed_version_hash: 8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F04-B2 在同一事件被重复投递时产生了重复计数（期望最终计数见 check-dedupe.js）。
+  请修复该问题，使 node verify.js 通过。不得修改 verify.js、check-dedupe.js 与 dedupe.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - dedupe_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F04-B2/apply.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F04-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F04-B2/verify.js
+  - pilot-workspace/FORMAL-F04-B2/check-dedupe.js
+  - pilot-workspace/FORMAL-F04-B2/dedupe.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F04-B2/verify.js
+    expect: "F04-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F04-B2/verify.js
+  - id: dedupe_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-B2/check-dedupe.js

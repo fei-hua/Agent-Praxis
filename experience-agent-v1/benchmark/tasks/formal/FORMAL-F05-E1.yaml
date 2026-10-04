@@ -1,0 +1,46 @@
+id: FORMAL-F05-E1
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:54:00Z
+gt_signed_version_hash: 1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [api_immutable, no_public_interface_change]
+prompt: |
+  pilot-workspace/FORMAL-F05-E1 的 lockfile.js 是一版**已上线**的实现，其输出被 legacy/consumer.js 按字段逐项回放（legacy/lockfile.json 与 consumer 均不得修改）。
+  CONTRACT-v2.md 的新要求必须成立；check.js 与 lockfile.js 都不得修改。请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - compat_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F05-E1/lockfile-v2.js
+  - pilot-workspace/FORMAL-F05-E1/index.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F05-E1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F05-E1/verify.js
+  - pilot-workspace/FORMAL-F05-E1/lockfile.js
+  - pilot-workspace/FORMAL-F05-E1/legacy/consumer.js
+  - pilot-workspace/FORMAL-F05-E1/legacy/lockfile.json
+  - pilot-workspace/FORMAL-F05-E1/check.js
+  - pilot-workspace/FORMAL-F05-E1/CONTRACT-v2.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F05-E1/verify.js
+    expect: "F05-E1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F05-E1/verify.js
+  - id: compat_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F05-E1/lockfile-v2.js

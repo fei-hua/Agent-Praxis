@@ -1,0 +1,61 @@
+id: FORMAL-F10-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:40:41Z
+gt_signed_version_hash: 715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F10-D2 需要按 CONTRACT.md 的阶段依赖完成 V1→V2 迁移，并交付：
+  ① 各阶段产物 stages/step1.jsonl、stages/step2.jsonl、stages/step3.jsonl；
+  ② 阶段溯源 provenance.json（每阶段记录 {step, input, input_sha256, output, output_sha256}）；
+  ③ 最终迁移产物 migrated.jsonl 与阶段说明 CHAIN.md；node verify.js 必须通过。
+  不得修改 verify.js、check-chain.js、CONTRACT.md、canonical.js、lib/ops.js、schemas/ 与 data/。
+expected_first_decisions: [WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - chain_provenance
+    - chain_ok
+    - migrated_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F10-D2/run-chain.js
+  - pilot-workspace/FORMAL-F10-D2/CHAIN.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F10-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F10-D2/verify.js
+  - pilot-workspace/FORMAL-F10-D2/check-chain.js
+  - pilot-workspace/FORMAL-F10-D2/CONTRACT.md
+  - pilot-workspace/FORMAL-F10-D2/canonical.js
+  - pilot-workspace/FORMAL-F10-D2/lib/ops.js
+  - pilot-workspace/FORMAL-F10-D2/schemas/v1.json
+  - pilot-workspace/FORMAL-F10-D2/schemas/v2.json
+  - pilot-workspace/FORMAL-F10-D2/data/records.jsonl
+  - pilot-workspace/FORMAL-F10-D2/data/region-map.json
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F10-D2/verify.js
+    expect: "F10-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F10-D2/verify.js
+  - id: chain_provenance
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F10-D2/provenance.json
+  - id: chain_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-D2/check-chain.js
+  - id: migrated_written
+    kind: file_contains
+    expect: "region"
+    path: pilot-workspace/FORMAL-F10-D2/migrated.jsonl

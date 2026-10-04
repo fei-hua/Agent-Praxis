@@ -1,0 +1,52 @@
+id: FORMAL-F03-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:02:49Z
+gt_signed_version_hash: e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F03-C2 需要在**总预算 6500 ms**内完成，最终必须同时成立：\n① work/ 下的三个分支工具都必须真实执行完成，各自产出 out/<branch>.txt；\n② 每次执行都会把 {branch,start,end,token} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 三分支的完成时间跨度（max(end) - min(start)）不得超过总预算；\n④ 写出 INTEGRATION.md，含一行以「集成」开头的结论；\n⑤ node verify.js 必须通过。不得修改 verify.js 与 work/ 下的分支工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - timeline_ok
+    - artifacts_ok
+    - integration_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F03-C2/run-parallel.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F03-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F03-C2/verify.js
+  - pilot-workspace/FORMAL-F03-C2/work/branch-x.js
+  - pilot-workspace/FORMAL-F03-C2/work/branch-y.js
+  - pilot-workspace/FORMAL-F03-C2/work/branch-z.js
+  - pilot-workspace/FORMAL-F03-C2/check-timeline.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F03-C2/verify.js
+    expect: "F03-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F03-C2/verify.js
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F03-C2/check-timeline.js
+  - id: artifacts_ok
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F03-C2/out/branch-y.txt
+  - id: integration_ok
+    kind: file_contains
+    expect: "集成"
+    path: pilot-workspace/FORMAL-F03-C2/INTEGRATION.md

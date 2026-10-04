@@ -1,0 +1,64 @@
+id: FORMAL-F10-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:40:41Z
+gt_signed_version_hash: 715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F10-C2 需要在**总预算 6500 ms**内完成三个数据分片的 V1→V2 rename/transform 迁移，最终必须同时成立：
+  ① work/ 下的三个分片迁移工具都必须真实执行完成，各自产出 out/<shard>.jsonl 与 timeline.jsonl 记录；
+  ② 每次执行都会把 {shard,start,end,token,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 各分片完成时间跨度不得超过总预算；
+  ④ 合并后的 migrated.jsonl 必须与按 CONTRACT.md 冻结规则（V6 显式转换、V8 canonical）独立生成的参考迁移结果**逐字节一致**；
+  ⑤ record_count 不得变化（禁止双重记录），旧字段不得保留；写出 MIGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、canonical.js、migrate.js、schemas/ 与 work/ 下的迁移工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - shards_done
+    - timeline_ok
+    - migrated_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F10-C2/run-shards.js
+  - pilot-workspace/FORMAL-F10-C2/MIGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F10-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F10-C2/verify.js
+  - pilot-workspace/FORMAL-F10-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F10-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F10-C2/canonical.js
+  - pilot-workspace/FORMAL-F10-C2/migrate.js
+  - pilot-workspace/FORMAL-F10-C2/schemas/v1.json
+  - pilot-workspace/FORMAL-F10-C2/schemas/v2.json
+  - pilot-workspace/FORMAL-F10-C2/work/shard-a.js
+  - pilot-workspace/FORMAL-F10-C2/work/shard-b.js
+  - pilot-workspace/FORMAL-F10-C2/work/shard-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F10-C2/verify.js
+    expect: "F10-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F10-C2/verify.js
+  - id: shards_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F10-C2/out/shard-a.jsonl
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-C2/check-timeline.js
+  - id: migrated_written
+    kind: file_contains
+    expect: "display_name"
+    path: pilot-workspace/FORMAL-F10-C2/migrated.jsonl

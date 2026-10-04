@@ -1,0 +1,42 @@
+id: FORMAL-F09-B2
+category: B
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:18:32Z
+gt_signed_version_hash: 6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F09-B2 的子模板 block 没有覆盖父模板内容（见 check-inherit.js）。
+  请修复该问题，使 node verify.js 通过。不得修改 verify.js 与 check-inherit.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - inherit_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F09-B2/renderer.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F09-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F09-B2/verify.js
+  - pilot-workspace/FORMAL-F09-B2/check-inherit.js
+  - pilot-workspace/FORMAL-F09-B2/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F09-B2/verify.js
+    expect: "F09-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F09-B2/verify.js
+  - id: inherit_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-B2/check-inherit.js

@@ -1,0 +1,60 @@
+id: FORMAL-F05-C1
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:54:00Z
+gt_signed_version_hash: 1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F05-C1 需要在**总预算 6500 ms**内完成三个 package 的依赖解析，最终必须同时成立：
+  ① work/ 下的三个包解析工具都必须真实执行完成，各自产出 out/<pkg>.txt 与 out/<pkg>.lock.json；
+  ② 每次执行都会把 {pkg,start,end,token,order_ok} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 每个包内部必须保持 package.json 中依赖的**声明顺序**（见 CONTRACT.md）；
+  ④ 三个包的完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ⑤ 各包 lockfile 必须完整覆盖其全部声明依赖；写出 INTEGRATION.md（含一行以「集成」开头的结论）；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md 与 work/ 下的包工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - packages_done
+    - timeline_ok
+    - integration_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F05-C1/run-packages.js
+  - pilot-workspace/FORMAL-F05-C1/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F05-C1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F05-C1/verify.js
+  - pilot-workspace/FORMAL-F05-C1/check-timeline.js
+  - pilot-workspace/FORMAL-F05-C1/CONTRACT.md
+  - pilot-workspace/FORMAL-F05-C1/work/pkg-a.js
+  - pilot-workspace/FORMAL-F05-C1/work/pkg-b.js
+  - pilot-workspace/FORMAL-F05-C1/work/pkg-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F05-C1/verify.js
+    expect: "F05-C1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F05-C1/verify.js
+  - id: packages_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F05-C1/out/pkg-a.lock.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F05-C1/check-timeline.js
+  - id: integration_ok
+    kind: file_contains
+    expect: "集成"
+    path: pilot-workspace/FORMAL-F05-C1/INTEGRATION.md

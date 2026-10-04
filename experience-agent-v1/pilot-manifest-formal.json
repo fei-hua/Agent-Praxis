@@ -1,0 +1,3687 @@
+{
+  "dataset": "formal",
+  "manifest_kind": "formal-benchmark-frozen-manifest",
+  "generated_at": "2026-10-04T08:44:31.573Z",
+  "protocol": "Protocol v2",
+  "design": {
+    "families": 12,
+    "variants_per_family": 10,
+    "tasks_total": 120,
+    "categories": {
+      "A": 24,
+      "B": 24,
+      "C": 24,
+      "D": 24,
+      "E": 24
+    },
+    "arms": [
+      "A",
+      "B",
+      "C_frozen"
+    ],
+    "runs_total": 360
+  },
+  "self_check": {
+    "tasks_all_covered": true,
+    "family_hashes_match": true,
+    "task_identity_matches_frozen_yaml": true,
+    "no_draft_task": true,
+    "no_missing_signature_binding": true,
+    "no_voided_identity": true,
+    "category_quota": {
+      "A": 24,
+      "B": 24,
+      "C": 24,
+      "D": 24,
+      "E": 24
+    },
+    "problems": [],
+    "ok": true
+  },
+  "families": [
+    {
+      "family": "F01",
+      "task_count": 10,
+      "signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "frozen_version_hash": "dd94f79d50a69729a022a4982a19ba6f9ffb9a03105036806b784f4427195cf6",
+      "frozen_content_projection_hash": "893d5fbbea5fbd4d33cc94080aea277c326f114b5198c42e02ac2b898de41e31",
+      "version_file_frozen_at": null,
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "version_file": "benchmark/formal/f01-version.json",
+      "version_file_sha256": "c8c09adeb0b9510df9f0f5400c2d4b404f7cccec9cb2bff259013ac22486ea80",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "dd94f79d50a69729a022a4982a19ba6f9ffb9a03105036806b784f4427195cf6",
+        "frozen_content_projection_hash": "893d5fbbea5fbd4d33cc94080aea277c326f114b5198c42e02ac2b898de41e31",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F01-A1",
+        "FORMAL-F01-A2",
+        "FORMAL-F01-B1",
+        "FORMAL-F01-B2",
+        "FORMAL-F01-C1",
+        "FORMAL-F01-C2",
+        "FORMAL-F01-D1",
+        "FORMAL-F01-D2",
+        "FORMAL-F01-E1",
+        "FORMAL-F01-E2"
+      ]
+    },
+    {
+      "family": "F02",
+      "task_count": 10,
+      "signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "frozen_version_hash": "ff689acca75c09c75eb779e89d04bdf1c9a5221ba3f3b81405bd18823fb39451",
+      "frozen_content_projection_hash": "a00870c8960bd04c340cf679661086041b8113e95fd82f49b6dbce6c21e6b06b",
+      "version_file_frozen_at": null,
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "version_file": "benchmark/formal/f02-version.json",
+      "version_file_sha256": "67eb06666469c63accfe63370f846cda716f1a5dc1dd6fcb7c38232d1ee50dcd",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "ff689acca75c09c75eb779e89d04bdf1c9a5221ba3f3b81405bd18823fb39451",
+        "frozen_content_projection_hash": "a00870c8960bd04c340cf679661086041b8113e95fd82f49b6dbce6c21e6b06b",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F02-A1",
+        "FORMAL-F02-A2",
+        "FORMAL-F02-B1",
+        "FORMAL-F02-B2",
+        "FORMAL-F02-C1",
+        "FORMAL-F02-C2",
+        "FORMAL-F02-D1",
+        "FORMAL-F02-D2",
+        "FORMAL-F02-E1",
+        "FORMAL-F02-E2"
+      ]
+    },
+    {
+      "family": "F03",
+      "status": "DRAFT（未签署）",
+      "task_count": 10,
+      "signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "frozen_version_hash": "d3a34ef4fcb7b34328704f2bbd45ed0801fd7784b4a45a9fba3acb35d5b655bf",
+      "frozen_content_projection_hash": "d32e5343df9338890c9b645841b3660433e60c22e9fd9e07bdd92b5c0249935f",
+      "version_file_frozen_at": null,
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "version_file": "benchmark/formal/f03-version.json",
+      "version_file_sha256": "263eb75428d1985e083af4c4292c5b96f5451e233a4e86546f9bfceb4d392a05",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "d3a34ef4fcb7b34328704f2bbd45ed0801fd7784b4a45a9fba3acb35d5b655bf",
+        "frozen_content_projection_hash": "d32e5343df9338890c9b645841b3660433e60c22e9fd9e07bdd92b5c0249935f",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F03-A1",
+        "FORMAL-F03-A2",
+        "FORMAL-F03-B1",
+        "FORMAL-F03-B2",
+        "FORMAL-F03-C1",
+        "FORMAL-F03-C2",
+        "FORMAL-F03-D1",
+        "FORMAL-F03-D2",
+        "FORMAL-F03-E1",
+        "FORMAL-F03-E2"
+      ]
+    },
+    {
+      "family": "F04",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "frozen_version_hash": "630abbf31bffcd1b59087e0a15a3ccb21a51434d86b010d35a6e239a9df45d86",
+      "frozen_content_projection_hash": "ca8af00072b5eed5cfcbe7b2540bad41a48f9b4ae0774c1f6cdc011abd84fc55",
+      "version_file_frozen_at": "2026-09-30T17:39:57Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "version_file": "benchmark/formal/f04-version.json",
+      "version_file_sha256": "495b4de80a3b8fab0505090900f03621b1ce2c11e542dce042ee182872b56ef1",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "630abbf31bffcd1b59087e0a15a3ccb21a51434d86b010d35a6e239a9df45d86",
+        "frozen_content_projection_hash": "ca8af00072b5eed5cfcbe7b2540bad41a48f9b4ae0774c1f6cdc011abd84fc55",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F04-A1",
+        "FORMAL-F04-A2",
+        "FORMAL-F04-B1",
+        "FORMAL-F04-B2",
+        "FORMAL-F04-C1",
+        "FORMAL-F04-C2",
+        "FORMAL-F04-D1",
+        "FORMAL-F04-D2",
+        "FORMAL-F04-E1",
+        "FORMAL-F04-E2"
+      ]
+    },
+    {
+      "family": "F05",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "frozen_version_hash": "82a8f3b7aaec92a689242b751367a5f32f830f1137780a7bf76c0c502fb3f01b",
+      "frozen_content_projection_hash": "02ca8c01a3dfe7c1d6490a1356da26a66155a3b0ffad65871972adcf37af0f04",
+      "version_file_frozen_at": "2026-09-30T17:54:00Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "version_file": "benchmark/formal/f05-version.json",
+      "version_file_sha256": "9822131a1f6e362e1e600bb9d75ce2906f0dfe9442d55b9dd920798b2c941f69",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "82a8f3b7aaec92a689242b751367a5f32f830f1137780a7bf76c0c502fb3f01b",
+        "frozen_content_projection_hash": "02ca8c01a3dfe7c1d6490a1356da26a66155a3b0ffad65871972adcf37af0f04",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F05-A1",
+        "FORMAL-F05-A2",
+        "FORMAL-F05-B1",
+        "FORMAL-F05-B2",
+        "FORMAL-F05-C1",
+        "FORMAL-F05-C2",
+        "FORMAL-F05-D1",
+        "FORMAL-F05-D2",
+        "FORMAL-F05-E1",
+        "FORMAL-F05-E2"
+      ]
+    },
+    {
+      "family": "F06",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "frozen_version_hash": "a6465c465cb8e0094833aebb9035415a4f8c50debc1d1224469ab8f37746604d",
+      "frozen_content_projection_hash": "e814fa7ec4c916050230df9fd9cfe050c7e4b069a9f412395552e6e05eb755d3",
+      "version_file_frozen_at": "2026-09-30T18:00:27Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "version_file": "benchmark/formal/f06-version.json",
+      "version_file_sha256": "c75a41ade6d1e5fb332a55a0f0760c31c0c0762c6c96e49cdd21d7dd08041f7d",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "a6465c465cb8e0094833aebb9035415a4f8c50debc1d1224469ab8f37746604d",
+        "frozen_content_projection_hash": "e814fa7ec4c916050230df9fd9cfe050c7e4b069a9f412395552e6e05eb755d3",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F06-A1",
+        "FORMAL-F06-A2",
+        "FORMAL-F06-B1",
+        "FORMAL-F06-B2",
+        "FORMAL-F06-C1",
+        "FORMAL-F06-C2",
+        "FORMAL-F06-D1",
+        "FORMAL-F06-D2",
+        "FORMAL-F06-E1",
+        "FORMAL-F06-E2"
+      ]
+    },
+    {
+      "family": "F07",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "frozen_version_hash": "63ccfe74803a890c1d9ecba509742db13ba18de69dfe75754ea3a7e86f1e94be",
+      "frozen_content_projection_hash": "29a7942c25fc1b62994c2ffdc9fe0eec9703b2afe5635c8825b8db0a4bf4c395",
+      "version_file_frozen_at": "2026-09-30T18:15:03Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "version_file": "benchmark/formal/f07-version.json",
+      "version_file_sha256": "d6e6138f267853f2107d9078de8959bcf2e57e43a3292fbd655f7acd70025927",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "63ccfe74803a890c1d9ecba509742db13ba18de69dfe75754ea3a7e86f1e94be",
+        "frozen_content_projection_hash": "29a7942c25fc1b62994c2ffdc9fe0eec9703b2afe5635c8825b8db0a4bf4c395",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F07-A1",
+        "FORMAL-F07-A2",
+        "FORMAL-F07-B1",
+        "FORMAL-F07-B2",
+        "FORMAL-F07-C1",
+        "FORMAL-F07-C2",
+        "FORMAL-F07-D1",
+        "FORMAL-F07-D2",
+        "FORMAL-F07-E1",
+        "FORMAL-F07-E2"
+      ]
+    },
+    {
+      "family": "F08",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "frozen_version_hash": "2b6e531363c6f82bdebb050926f255af87265ae2dd311e7efa4a46a7055c8e72",
+      "frozen_content_projection_hash": "65399a2bd9a87b8f19f6c3fb71474a20254e59344cfad61f342c91e9eb4826c7",
+      "version_file_frozen_at": "2026-10-04T05:04:23Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "version_file": "benchmark/formal/f08-version.json",
+      "version_file_sha256": "107d8fc99838d4085e32c7197cd20f3eb3eb9cd11287e3b29055da70aa3d8294",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "2b6e531363c6f82bdebb050926f255af87265ae2dd311e7efa4a46a7055c8e72",
+        "frozen_content_projection_hash": "65399a2bd9a87b8f19f6c3fb71474a20254e59344cfad61f342c91e9eb4826c7",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F08-A1",
+        "FORMAL-F08-A2",
+        "FORMAL-F08-B1",
+        "FORMAL-F08-B2",
+        "FORMAL-F08-C1",
+        "FORMAL-F08-C2",
+        "FORMAL-F08-D1",
+        "FORMAL-F08-D2",
+        "FORMAL-F08-E1",
+        "FORMAL-F08-E2"
+      ]
+    },
+    {
+      "family": "F09",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "frozen_version_hash": "2876127978756246f592304d8e7a4ce6b22075c8f0851c65af20657a742625e1",
+      "frozen_content_projection_hash": "a14936b2483e816f72ff72df080623e8988c6b4b0ade410d508375a67112a845",
+      "version_file_frozen_at": "2026-10-04T06:18:32Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "version_file": "benchmark/formal/f09-version.json",
+      "version_file_sha256": "4b21c07e267b2667a7434bb0a797617edfa2c66b847adaf3453769a6455854cc",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "2876127978756246f592304d8e7a4ce6b22075c8f0851c65af20657a742625e1",
+        "frozen_content_projection_hash": "a14936b2483e816f72ff72df080623e8988c6b4b0ade410d508375a67112a845",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F09-A1",
+        "FORMAL-F09-A2",
+        "FORMAL-F09-B1",
+        "FORMAL-F09-B2",
+        "FORMAL-F09-C1",
+        "FORMAL-F09-C2",
+        "FORMAL-F09-D1",
+        "FORMAL-F09-D2",
+        "FORMAL-F09-E1",
+        "FORMAL-F09-E2"
+      ]
+    },
+    {
+      "family": "F10",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "frozen_version_hash": "7529f8e356d017ce3ff19d1660e81d0b25378a91d24625c055a0f5c9b8d30c85",
+      "frozen_content_projection_hash": "442beec3b765d572d625013455fabc1d82e1f2c957a93fc11bb3cdad44545b3c",
+      "version_file_frozen_at": "2026-10-04T06:40:41Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "version_file": "benchmark/formal/f10-version.json",
+      "version_file_sha256": "dd4cf8601447f228d84d714094ba4bdcec9298054dca703c6ad8ce7bd77efccc",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "7529f8e356d017ce3ff19d1660e81d0b25378a91d24625c055a0f5c9b8d30c85",
+        "frozen_content_projection_hash": "442beec3b765d572d625013455fabc1d82e1f2c957a93fc11bb3cdad44545b3c",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F10-A1",
+        "FORMAL-F10-A2",
+        "FORMAL-F10-B1",
+        "FORMAL-F10-B2",
+        "FORMAL-F10-C1",
+        "FORMAL-F10-C2",
+        "FORMAL-F10-D1",
+        "FORMAL-F10-D2",
+        "FORMAL-F10-E1",
+        "FORMAL-F10-E2"
+      ]
+    },
+    {
+      "family": "F11",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "frozen_version_hash": "4c31a3f7c86ae4b731b6d4a94cf6deb925e8cb8fb4f3a3e26d4f9c901412e4ad",
+      "frozen_content_projection_hash": "bca00524dc6263022bf33539930253f85216c53c38460fc336af94cf5020fb23",
+      "version_file_frozen_at": "2026-10-04T07:21:14Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "version_file": "benchmark/formal/f11-version.json",
+      "version_file_sha256": "c9218363b9fdb8c43b19c99d892bc3509d40795b908bea83ac77e0da399321a0",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "4c31a3f7c86ae4b731b6d4a94cf6deb925e8cb8fb4f3a3e26d4f9c901412e4ad",
+        "frozen_content_projection_hash": "bca00524dc6263022bf33539930253f85216c53c38460fc336af94cf5020fb23",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F11-A1",
+        "FORMAL-F11-A2",
+        "FORMAL-F11-B1",
+        "FORMAL-F11-B2",
+        "FORMAL-F11-C1",
+        "FORMAL-F11-C2",
+        "FORMAL-F11-D1",
+        "FORMAL-F11-D2",
+        "FORMAL-F11-E1",
+        "FORMAL-F11-E2"
+      ]
+    },
+    {
+      "family": "F12",
+      "status": "FROZEN（已签署冻结）",
+      "task_count": 10,
+      "signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "frozen_version_hash": "8ec5aaef0505f3ae320aa1e396ea25e30de99807f0fc42cb6c190c385c9be55a",
+      "frozen_content_projection_hash": "f8838f36aabcc1cb80887cea175ed087a2840ee01f4dd3c368286c8e5a108994",
+      "version_file_frozen_at": "2026-10-04T08:10:23Z",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "version_file": "benchmark/formal/f12-version.json",
+      "version_file_sha256": "93454ef043571d212b716115e8205c69545819f85d5515530952a41b1c5489ae",
+      "family_hash_recomputed": {
+        "frozen_version_hash": "8ec5aaef0505f3ae320aa1e396ea25e30de99807f0fc42cb6c190c385c9be55a",
+        "frozen_content_projection_hash": "f8838f36aabcc1cb80887cea175ed087a2840ee01f4dd3c368286c8e5a108994",
+        "match": true
+      },
+      "tasks": [
+        "FORMAL-F12-A1",
+        "FORMAL-F12-A2",
+        "FORMAL-F12-B1",
+        "FORMAL-F12-B2",
+        "FORMAL-F12-C1",
+        "FORMAL-F12-C2",
+        "FORMAL-F12-D1",
+        "FORMAL-F12-D2",
+        "FORMAL-F12-E1",
+        "FORMAL-F12-E2"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "FORMAL-F01-A1",
+      "family": "F01",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "45b3603743c469b7c3a3b63aa8a77f3b950657711f869b9bdbca545bbe0ecd96",
+      "gt_projection_sha256": "59323a1b6638ca76d96123ef66aa89a1fcb7f823edcf31aa0d2ebe82957e0287",
+      "required": [
+        "math_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-A1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-A2",
+      "family": "F01",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "03f121390f92623272ce512ad11686182cfbd8bbfd7f3f2d2bd71ffe04ccf8d8",
+      "gt_projection_sha256": "42f0f7bc046b4b8206d9f96b710e01ab9a947b95b3d180d07cc573b63f7001b5",
+      "required": [
+        "format_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-A2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-B1",
+      "family": "F01",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "406495cf8a409f5f89b4fd67f21d9ec4492cb72339061081b67f8fde1fccfd26",
+      "gt_projection_sha256": "599637044080789b79cf3f776b392780b98bfc286b1880a85b9ac3e90933ba31",
+      "required": [
+        "pipeline_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-B1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-B2",
+      "family": "F01",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "42445356f08bb0035b64d44a72ea589a7ba1bfd29da0f8897de118c63a9a9dcc",
+      "gt_projection_sha256": "266963e91ab90e969175851769d3ef784960745d2af08f3fd85e4c35f2b19db0",
+      "required": [
+        "rounding_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-B2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-C1",
+      "family": "F01",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "d0572741ab6a3e7b966fec795d87e0186400e28a98986acfe0d675f7325ee569",
+      "gt_projection_sha256": "1a8aff517b833a3f04c04480c6a87fce39e6e5f335fc02419c51ffafe0f9772d",
+      "required": [
+        "calc_fixed",
+        "notes_written",
+        "config_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-C1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-C2",
+      "family": "F01",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "631d41fa155f894524456c6e44dd1923146673f57884b7328b5f589fc57a5739",
+      "gt_projection_sha256": "fcf21a93687914a05a26e6dfb3630726b7d99841efb40c3b0db5223104c775b6",
+      "required": [
+        "left_fixed",
+        "right_fixed",
+        "summary_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-C2/verify.js",
+        "pilot-workspace/FORMAL-F01-C2/verify-left.js",
+        "pilot-workspace/FORMAL-F01-C2/verify-right.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-D1",
+      "family": "F01",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "b3ca7a545b1e7cba4517e4ff1918d06992bb7cf3547b516a5ceca273926b4a55",
+      "gt_projection_sha256": "9c3bab2e617e7e71c3c0cfadc01fc616c2d9e739ac397fce45a34853c6eee05b",
+      "required": [
+        "pkg1_fixed",
+        "pkg2_fixed",
+        "pkg3_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-D1/verify.js",
+        "pilot-workspace/FORMAL-F01-D1/check1.js",
+        "pilot-workspace/FORMAL-F01-D1/check2.js",
+        "pilot-workspace/FORMAL-F01-D1/check3.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-D2",
+      "family": "F01",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "54f10b2e2ce002ca13c5e3ef109b48d5ce48cb3898d4b76e9c621f233131cd5d",
+      "gt_projection_sha256": "3a3b0188805d941be1a95f9e72b43d29ed660148a959e982e6ebd848c242142c",
+      "required": [
+        "report_a_written",
+        "report_b_written",
+        "summary_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-E1",
+      "family": "F01",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "260a90b010e81f638502c220cc4041474bbeaf418f031fee925cf6f7f21f1c0c",
+      "gt_projection_sha256": "d5c1ecaeadde8a39d2fe58fa52d0373f065dfd3356f460a893085632e2c66510",
+      "required": [
+        "exact_path_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-E1/verify.js",
+        "pilot-workspace/FORMAL-F01-E1/src/stats.js",
+        "pilot-workspace/FORMAL-F01-E1/check.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F01-E2",
+      "family": "F01",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:36:08Z",
+      "gt_signed_version_hash": "1daf8f5693826049c3d1a96bac81c1ddef6927b8ef3ce2d6906e0e697952d212",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "a9c5356135c6e2920e7a3420d81b20d24bec51635f5e07928eff6eee2f599aa1",
+      "gt_projection_sha256": "ec9446dd7822a3cc480e6bf75a4bd9e6176142e7ce7c5c8a140d94ccc96d6053",
+      "required": [
+        "pipeline_consistent",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F01-E2/verify.js",
+        "pilot-workspace/FORMAL-F01-E2/config.schema.json",
+        "pilot-workspace/FORMAL-F01-E2/check.js",
+        "pilot-workspace/FORMAL-F01-E2/gen.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-A1",
+      "family": "F02",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "92328ef21599293ba51a1c885abc5b9c8772d0ab58c4d3671540fd5e8f460dcb",
+      "gt_projection_sha256": "45a175daae89a614777ba63b0815ae99b4f4651151bb0df6196c8f63da4bca50",
+      "required": [
+        "cli_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-A1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-A2",
+      "family": "F02",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "f1bdca524529313350a2f6a21f1f11119a27eaf1e618ad9bcb55d17aa81d762b",
+      "gt_projection_sha256": "ea12a1e83a9eacf796c8e34e5b4b6ece9aab7108367c04c12c9234ad796bd3c9",
+      "required": [
+        "defaults_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-A2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-B1",
+      "family": "F02",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "d5b899c98fef312b407dda230424ae87195e4cebad5716a47cee7154a6270d70",
+      "gt_projection_sha256": "faf09a68764f586f40a9280361334c304f8275871bcc86a3b48974ab6dce9350",
+      "required": [
+        "pipeline_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-B1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-B2",
+      "family": "F02",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "f4e6221883438ef9f6f408977b937d1347841d0a8c9f4e13977724707a0b1623",
+      "gt_projection_sha256": "d25eae224325242dd48ef1f9fc20f8af41560c7bd09cf9c9a11bd518e8df9658",
+      "required": [
+        "format_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-B2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-C1",
+      "family": "F02",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "46e67c5ced73cb615a1acb7e78f0f9c2e2041e7f5d61a8767c4396b601158f8a",
+      "gt_projection_sha256": "ce6ad3df503f496c9e20c6c22ac895410024020aab92f0282ef9c0801c3a781a",
+      "required": [
+        "parse_fixed",
+        "notes_written",
+        "config_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-C1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-C2",
+      "family": "F02",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "00ad4048a8796b6c4cef82854905a94a552deff5702b7d0dbc5083ace9a473f1",
+      "gt_projection_sha256": "a411b5d196e27e18d3f6f9daf1376ee72a0c6f0162696d8e3df933e772c460cf",
+      "required": [
+        "left_fixed",
+        "right_fixed",
+        "summary_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-C2/verify.js",
+        "pilot-workspace/FORMAL-F02-C2/verify-left.js",
+        "pilot-workspace/FORMAL-F02-C2/verify-right.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-D1",
+      "family": "F02",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "b6f153f8e06c0f2918601c05113620ed572e8963d28d0d9c2e798d5401e0b4b8",
+      "gt_projection_sha256": "6619e47156d5065cd7f46e75a0e9dfbcf51f57f75890039fa0c4d90442a558bd",
+      "required": [
+        "pkg1_fixed",
+        "pkg2_fixed",
+        "pkg3_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-D1/verify.js",
+        "pilot-workspace/FORMAL-F02-D1/check1.js",
+        "pilot-workspace/FORMAL-F02-D1/check2.js",
+        "pilot-workspace/FORMAL-F02-D1/check3.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-D2",
+      "family": "F02",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "ea53e27dcd59c51f74e5eabf1777dfc0ede3a4207a8472336fadf269e2c73a37",
+      "gt_projection_sha256": "719d0f568039f2ce1db763b9ce54d62499426e67a34e8851cdc050f7650814a4",
+      "required": [
+        "report_a_written",
+        "report_b_written",
+        "summary_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-E1",
+      "family": "F02",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "39df62ab70660459fcbfb782e382e0f247063f68b421cdda522183406fd764a2",
+      "gt_projection_sha256": "1580cc12798dd32cdb4498a8fa2dc3183e3844fb2b00129f6ee65d1ed9f659df",
+      "required": [
+        "exact_path_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-E1/verify.js",
+        "pilot-workspace/FORMAL-F02-E1/src/render.js",
+        "pilot-workspace/FORMAL-F02-E1/check.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F02-E2",
+      "family": "F02",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T12:52:58Z",
+      "gt_signed_version_hash": "a401581439a02712afa5b1f2b8dc24554a118a7d25078f57981f79574c249a7a",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "f030c9a0c07fc1de808acd9491fa864fc51bfca605b72a680e66232f24b0014e",
+      "gt_projection_sha256": "977abde351015d26ae395dbdc34c1b927f143c6ef246d24496b9823f45bd6ffb",
+      "required": [
+        "pipeline_consistent",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F02-E2/verify.js",
+        "pilot-workspace/FORMAL-F02-E2/config.schema.json",
+        "pilot-workspace/FORMAL-F02-E2/check.js",
+        "pilot-workspace/FORMAL-F02-E2/gen.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-A1",
+      "family": "F03",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "43f45a0deff94776dcabe79ea227039a3505a9f7aea5336a82adbacf440c16bb",
+      "gt_projection_sha256": "9055746ffe0462f80d6779c7c57091629eea034f4333a5e91578ae91b2236ae1",
+      "required": [
+        "status_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-A1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-A2",
+      "family": "F03",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "37c14e10bc2a77f3ac2765cf8da22db559c06400ee3accba53c448954761ce88",
+      "gt_projection_sha256": "2a51b8dc0d2475d3a9053bea3a9349512449eea4955dee8c08a556cb881e3dd2",
+      "required": [
+        "chain_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-A2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-B1",
+      "family": "F03",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "f51224449081f10800f5702667a524a81647609b7c011d652a1cc7f0d572df30",
+      "gt_projection_sha256": "58fc8eb9e472a3ce7325a1bd27226caba6ee0d3e92fb4b3d7a7bc380f37d580b",
+      "required": [
+        "enrich_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-B1/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-B2",
+      "family": "F03",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "9bf9ee26b8359e86a070b39cdf2b96396efbcca3925e7a560a82d63cf624cd38",
+      "gt_projection_sha256": "17269429da214dc01176a90e7924a60a56ab9f9bbfb07e9417bbb1a69d0e2712",
+      "required": [
+        "serializer_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-B2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-C1",
+      "family": "F03",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "bbb227d249cd13c992a1c097ed50d077cf9e88543bdcf0367a4dcc1f97c2943b",
+      "gt_projection_sha256": "b62566df3aa4be03dcd32567429d17caffafa33533b478ff4edfc1aa11813dca",
+      "required": [
+        "timeline_ok",
+        "artifacts_ok",
+        "integration_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-C1/verify.js",
+        "pilot-workspace/FORMAL-F03-C1/work/branch-a.js",
+        "pilot-workspace/FORMAL-F03-C1/work/branch-b.js",
+        "pilot-workspace/FORMAL-F03-C1/work/branch-c.js",
+        "pilot-workspace/FORMAL-F03-C1/check-timeline.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-C2",
+      "family": "F03",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "0f32fd913743249a1b72fa211ae043c2dc8b5cef510564613b5816bfdcc4d5c5",
+      "gt_projection_sha256": "2891d38e2420b25c8fd0e4220b4a5ff3c046ca5fd1baa22ab868d99a4fde8ac1",
+      "required": [
+        "timeline_ok",
+        "artifacts_ok",
+        "integration_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-C2/verify.js",
+        "pilot-workspace/FORMAL-F03-C2/work/branch-x.js",
+        "pilot-workspace/FORMAL-F03-C2/work/branch-y.js",
+        "pilot-workspace/FORMAL-F03-C2/work/branch-z.js",
+        "pilot-workspace/FORMAL-F03-C2/check-timeline.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-D1",
+      "family": "F03",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "5830aabc53e1b1f1b3d288c97a1220ee0141e11e4903c2509b09152d09faf2de",
+      "gt_projection_sha256": "2b7d115ef44b0712b9db3098b13d5ab374d6734c1a9f5e9368cb13ceac54e372",
+      "required": [
+        "auth_fixed",
+        "rate_fixed",
+        "audit_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-D1/verify.js",
+        "pilot-workspace/FORMAL-F03-D1/check-auth.js",
+        "pilot-workspace/FORMAL-F03-D1/check-rate.js",
+        "pilot-workspace/FORMAL-F03-D1/check-audit.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-D2",
+      "family": "F03",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "a233b80aef9457f43012113254ff904d878be59cffd13a940fd7602e79fbd12b",
+      "gt_projection_sha256": "1298626b2f0cd0903695a55e1a77440e0979f9b968217e165f73e4d071a7add5",
+      "required": [
+        "alpha_written",
+        "beta_written",
+        "summary_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-E1",
+      "family": "F03",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "66db0b37756885a617b5325f3994f830ed5eb08f701a414e1d3a21440029bce6",
+      "gt_projection_sha256": "ae7e66e260b1577a677314df2e140fc09594503fd6eea9f53a07da41fec1001d",
+      "required": [
+        "v2_path_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-E1/verify.js",
+        "pilot-workspace/FORMAL-F03-E1/serialize.js",
+        "pilot-workspace/FORMAL-F03-E1/check.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F03-E2",
+      "family": "F03",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:02:49Z",
+      "gt_signed_version_hash": "e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "16b694f90d156b762b295483fe9da959da365afb99b3b917ca3ba8ab81a2e4ad",
+      "gt_projection_sha256": "606675ab2310e3744a2b8bb216675a14d03ee4d280dd92f5107757f3f3584840",
+      "required": [
+        "idempotency_path_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F03-E2/verify.js",
+        "pilot-workspace/FORMAL-F03-E2/contract.js",
+        "pilot-workspace/FORMAL-F03-E2/pipeline.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-A1",
+      "family": "F04",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "196a1d46726f48f092482915cf3dd89810ac03abfcec4b548d3199822e40716c",
+      "gt_projection_sha256": "4a85e291cf2921737232eb6451700b196db3397d9f065d9eecffc8c87b0229b2",
+      "required": [
+        "machine_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-A1/verify.js",
+        "pilot-workspace/FORMAL-F04-A1/check-machine.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-A2",
+      "family": "F04",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "0cf7969feb60b2adeacf9117559d2a5d65953f0d7ff1752443afe91869923120",
+      "gt_projection_sha256": "3a0b069ed372d3840fda1c2bc242b09009bf86660ad68bb0862d36834d76a825",
+      "required": [
+        "order_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-A2/verify.js",
+        "pilot-workspace/FORMAL-F04-A2/check-order.js",
+        "pilot-workspace/FORMAL-F04-A2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-B1",
+      "family": "F04",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "25cdf1219c2ede6e96e41365e331a25250afb3b21fbccbfa8ae546044c567fd3",
+      "gt_projection_sha256": "5e999651130dc4a362bd514893a30158477b39a44c364e7ecb4a9fc87d070a01",
+      "required": [
+        "snapshot_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-B1/verify.js",
+        "pilot-workspace/FORMAL-F04-B1/check-snapshot.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-B2",
+      "family": "F04",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "dc511eae5f7bf306d627d7c60adb9406853aba4eacc23e5fc31a8b156bbcde11",
+      "gt_projection_sha256": "86a748f683203f451e2c621a7e18ea592c71832bfc85283e4911e519f0365396",
+      "required": [
+        "dedupe_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-B2/verify.js",
+        "pilot-workspace/FORMAL-F04-B2/check-dedupe.js",
+        "pilot-workspace/FORMAL-F04-B2/dedupe.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-C1",
+      "family": "F04",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "06c69f332cc4f077179fb9d8df5a6899f670da3fb7e513efef2aa23beff62c95",
+      "gt_projection_sha256": "a5cc9315097bded169e2f455d932b320e43efbfae9be54d5352209815f48f001",
+      "required": [
+        "sources_done",
+        "timeline_ok",
+        "integration_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-C1/verify.js",
+        "pilot-workspace/FORMAL-F04-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F04-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F04-C1/work/src-a.js",
+        "pilot-workspace/FORMAL-F04-C1/work/src-b.js",
+        "pilot-workspace/FORMAL-F04-C1/work/src-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-C2",
+      "family": "F04",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "d02eed57eef500e73d73afde390ef61ef1be6d8fbce097131073c5fd325cb3ef",
+      "gt_projection_sha256": "0e037c2ae266a558f3de4faa858b15b1e8ec78d5708e485dfa90d2d8e53c52c6",
+      "required": [
+        "sources_done",
+        "merged_ok",
+        "timeline_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-C2/verify.js",
+        "pilot-workspace/FORMAL-F04-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F04-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F04-C2/work/src-x.js",
+        "pilot-workspace/FORMAL-F04-C2/work/src-y.js",
+        "pilot-workspace/FORMAL-F04-C2/work/src-z.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-D1",
+      "family": "F04",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "bfdb009b230dd1a88b94c3da1743dcc3369e5fde20b9d5966d90a314f269af05",
+      "gt_projection_sha256": "459581e0bce836e9a4e3905fc1d628de1ad27a5d696fa81cbc768457e20490ee",
+      "required": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "merge_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-D1/verify.js",
+        "pilot-workspace/FORMAL-F04-D1/check-a.js",
+        "pilot-workspace/FORMAL-F04-D1/check-b.js",
+        "pilot-workspace/FORMAL-F04-D1/check-c.js",
+        "pilot-workspace/FORMAL-F04-D1/check-merge.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-D2",
+      "family": "F04",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "127804d92e53c38850c8c88638f6f7df7cc439602de3237a4db07c915f579177",
+      "gt_projection_sha256": "f9c8cb5957d3571ee577572a34b02ef08898304daff3ba571854800b7c672ad0",
+      "required": [
+        "alpha_written",
+        "beta_written",
+        "summary_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-E1",
+      "family": "F04",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "192de06a70e29b9efc828231425d8b0d547a52bac0af5ee380e2dc9a764d1f05",
+      "gt_projection_sha256": "3120d13a86f6d2aa25cedd035383cc121876d7e3b2e1bb5a521e3fed86db3af8",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-E1/verify.js",
+        "pilot-workspace/FORMAL-F04-E1/consumer.js",
+        "pilot-workspace/FORMAL-F04-E1/golden.json",
+        "pilot-workspace/FORMAL-F04-E1/check.js",
+        "pilot-workspace/FORMAL-F04-E1/normalize.js",
+        "pilot-workspace/FORMAL-F04-E1/SPEC.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F04-E2",
+      "family": "F04",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:39:57Z",
+      "gt_signed_version_hash": "8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "91f682f9a09b5da322f0b2775854287f2b1ecc073109c8223d02514561df3d57",
+      "gt_projection_sha256": "b7488bc68b15b22d2f1155925cf2856678c98c95ab24d97a0278e4e339b659e7",
+      "required": [
+        "idempotency_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F04-E2/verify.js",
+        "pilot-workspace/FORMAL-F04-E2/contract.js",
+        "pilot-workspace/FORMAL-F04-E2/processor.js",
+        "pilot-workspace/FORMAL-F04-E2/exactly-once.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-A1",
+      "family": "F05",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "69954c9cc5be994a2b23616847e0a8c46caaa0b9a7a30db8025b75a16e66069d",
+      "gt_projection_sha256": "f2d2f1855bdb335530c920e86fc971d61b051d9cd2dadba031bfd23a83645792",
+      "required": [
+        "version_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-A1/verify.js",
+        "pilot-workspace/FORMAL-F05-A1/check-resolve.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-A2",
+      "family": "F05",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "0eac7e0094d45610c3c681f7ef6b7ace8a78e258e16e7b446f257b929aea6ae9",
+      "gt_projection_sha256": "4297ad69d2447de3f32db483689020841fff035af7d33e08a11a21196011e3a8",
+      "required": [
+        "lockfile_honored",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-A2/verify.js",
+        "pilot-workspace/FORMAL-F05-A2/check-lockfile.js",
+        "pilot-workspace/FORMAL-F05-A2/lockfile.json",
+        "pilot-workspace/FORMAL-F05-A2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-B1",
+      "family": "F05",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "a029f14adf3c3db11531e898bf74338999e741c1d9b4367043d77833862efc14",
+      "gt_projection_sha256": "53feb7c5b2800ca1dd2677c7a65b954581bd59d5a8011524a55be48e37bf047f",
+      "required": [
+        "graph_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-B1/verify.js",
+        "pilot-workspace/FORMAL-F05-B1/check-graph.js",
+        "pilot-workspace/FORMAL-F05-B1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-B2",
+      "family": "F05",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "67df21e2426b42434d1b2c99618afac1f6383c39a023751aa3ebd4d335d7f47f",
+      "gt_projection_sha256": "9ea9aa240b9a932599b8d6ce37100509296beecd9a00648e3a3b9d69858b8b02",
+      "required": [
+        "conflict_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-B2/verify.js",
+        "pilot-workspace/FORMAL-F05-B2/check-conflict.js",
+        "pilot-workspace/FORMAL-F05-B2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-C1",
+      "family": "F05",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "8eefd53abd82fce108ccd074c761ac507f254487a159201d2f4cb9b922ccf57d",
+      "gt_projection_sha256": "decbfb2e637a3c7f72c411fef4ebc8a66593451f4ce4351427c5b01eaaa89f9d",
+      "required": [
+        "packages_done",
+        "timeline_ok",
+        "integration_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-C1/verify.js",
+        "pilot-workspace/FORMAL-F05-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F05-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F05-C1/work/pkg-a.js",
+        "pilot-workspace/FORMAL-F05-C1/work/pkg-b.js",
+        "pilot-workspace/FORMAL-F05-C1/work/pkg-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-C2",
+      "family": "F05",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "22a68588045f7a2dc336b7354c35e2ddec6d59e7c93973b221cec31835beb580",
+      "gt_projection_sha256": "262f65865bbcd91707fc025213d0c262c786896aa794ca9f0d8034da250914b5",
+      "required": [
+        "packages_done",
+        "unified_ok",
+        "timeline_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-C2/verify.js",
+        "pilot-workspace/FORMAL-F05-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F05-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F05-C2/work/pkg-x.js",
+        "pilot-workspace/FORMAL-F05-C2/work/pkg-y.js",
+        "pilot-workspace/FORMAL-F05-C2/work/pkg-z.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-D1",
+      "family": "F05",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "f8cbbb14320ed5347f65af99917f217af04b9bac36035ea47324b7c99ee3ca25",
+      "gt_projection_sha256": "efadbf43d83d13d3a391a5bb3da55bdbec96c8815d2aff2d94d7623e13d5f11f",
+      "required": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "unified_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-D1/verify.js",
+        "pilot-workspace/FORMAL-F05-D1/check-a.js",
+        "pilot-workspace/FORMAL-F05-D1/check-b.js",
+        "pilot-workspace/FORMAL-F05-D1/check-c.js",
+        "pilot-workspace/FORMAL-F05-D1/check-unified.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-D2",
+      "family": "F05",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "e534f37f4aff0bbb602396d3c755c43f84212cd8eb4b6571b3bdbdc109728e78",
+      "gt_projection_sha256": "cd13c97d9085466c6cdce0864bbfd1c83988d3cf15c9307ff25cd2cb601abd3d",
+      "required": [
+        "graph_repaired",
+        "versions_normalized",
+        "lockfile_regenerated",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-E1",
+      "family": "F05",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "0e763bd0e482a81387c98020a9f82107f6ce1ad02ba974c2c57a5f078d01b111",
+      "gt_projection_sha256": "17bac2179fd4209477bf1c19c8a88b5174efd36c4faaa9ed6b7bf20e676e0e9e",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-E1/verify.js",
+        "pilot-workspace/FORMAL-F05-E1/lockfile.js",
+        "pilot-workspace/FORMAL-F05-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F05-E1/legacy/lockfile.json",
+        "pilot-workspace/FORMAL-F05-E1/check.js",
+        "pilot-workspace/FORMAL-F05-E1/CONTRACT-v2.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F05-E2",
+      "family": "F05",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T17:54:00Z",
+      "gt_signed_version_hash": "1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "a46eb8a439baec1ee158842a087e4ba28f21a6937b79d178b26619d59b849f8a",
+      "gt_projection_sha256": "c927ce2dd49cb81f1630e31036932eb474c18095e15438b3cd0aa3b2698dd103",
+      "required": [
+        "determinism_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F05-E2/verify.js",
+        "pilot-workspace/FORMAL-F05-E2/repro.js",
+        "pilot-workspace/FORMAL-F05-E2/resolver.js",
+        "pilot-workspace/FORMAL-F05-E2/reproducibility.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-A1",
+      "family": "F06",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "23e6f6959cf6648eeabbca9bfa40a342d22e537acb63e4f6ac5b4cdf9f3236f8",
+      "gt_projection_sha256": "4681a47f9f07cd461abee62cdbbf6fd230354d2b911fe30af01c493f92219b9c",
+      "required": [
+        "match_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-A1/verify.js",
+        "pilot-workspace/FORMAL-F06-A1/check-allow.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-A2",
+      "family": "F06",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "f7c0f0805cfb4af41fa52fd9e6f1141e885465141e909100b68a71823546cd25",
+      "gt_projection_sha256": "2036d651faec0e0afbf2d8c7b767918e42dee595ce51b7776ec0d2989f97a8e0",
+      "required": [
+        "precedence_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-A2/verify.js",
+        "pilot-workspace/FORMAL-F06-A2/check-precedence.js",
+        "pilot-workspace/FORMAL-F06-A2/POLICY.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-B1",
+      "family": "F06",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "1bdcdcd95d35c96473ba92d985cc3d11d34b4d5efe8698cc7ea4d9b39db536f5",
+      "gt_projection_sha256": "55d3d9784a220b9150b65d9679f0134a656b27f03c0bc29f264884d62d4f587a",
+      "required": [
+        "inherit_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-B1/verify.js",
+        "pilot-workspace/FORMAL-F06-B1/check-inherit.js",
+        "pilot-workspace/FORMAL-F06-B1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-B2",
+      "family": "F06",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "3c7d7339b44be871576842beb3bbdce0e6c81c9c4d6bad64bccd76e5efc8ccca",
+      "gt_projection_sha256": "67be1188b76145fe70658a208c2eafbe4a470beea160fa873262ed980a349c7a",
+      "required": [
+        "conflict_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-B2/verify.js",
+        "pilot-workspace/FORMAL-F06-B2/check-conflict.js",
+        "pilot-workspace/FORMAL-F06-B2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-C1",
+      "family": "F06",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "5d3f63684450efe3021ad1d1630255530a27a538e28d6ad2bb148a06d3657e38",
+      "gt_projection_sha256": "485493e1f08acbc4f5ee84885adde1accbb7133871e6acc532d86a06b3e0dea8",
+      "required": [
+        "sources_done",
+        "timeline_ok",
+        "precedence_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-C1/verify.js",
+        "pilot-workspace/FORMAL-F06-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F06-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F06-C1/evaluator.js",
+        "pilot-workspace/FORMAL-F06-C1/work/pol-team-a.js",
+        "pilot-workspace/FORMAL-F06-C1/work/pol-team-b.js",
+        "pilot-workspace/FORMAL-F06-C1/work/pol-team-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-C2",
+      "family": "F06",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "40fcad06197e8c31f8c48d26228f8b2e23f2ebf3dbf360b5ca7d82b85670620d",
+      "gt_projection_sha256": "d2f60929047c513c69e651cbfdfe1e95ba64f73293cbadfbb86f61babb61dd16",
+      "required": [
+        "sources_done",
+        "timeline_ok",
+        "matrix_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-C2/verify.js",
+        "pilot-workspace/FORMAL-F06-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F06-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F06-C2/evaluator.js",
+        "pilot-workspace/FORMAL-F06-C2/work/pol-tenant-x.js",
+        "pilot-workspace/FORMAL-F06-C2/work/pol-tenant-y.js",
+        "pilot-workspace/FORMAL-F06-C2/work/pol-tenant-z.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-D1",
+      "family": "F06",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "bb43eb9e981184c093e54c64b8c314dae58931db1289a764ee69c45101daa9f0",
+      "gt_projection_sha256": "400b5e6039212f155d5699a5d027c341796f9b96c427d92565c0cdf5f0942025",
+      "required": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-D1/verify.js",
+        "pilot-workspace/FORMAL-F06-D1/check-a.js",
+        "pilot-workspace/FORMAL-F06-D1/check-b.js",
+        "pilot-workspace/FORMAL-F06-D1/check-c.js",
+        "pilot-workspace/FORMAL-F06-D1/check-report.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-D2",
+      "family": "F06",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "641adc7ced98af14b3c76052113d2a21d26e4a436bcc918fca6b80319cd9bea1",
+      "gt_projection_sha256": "ed1e0b8189f9771e46ae21009756e4075c3789eeea3397539718ce841ce15a29",
+      "required": [
+        "policy_repaired",
+        "precedence_normalized",
+        "audit_regenerated",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-E1",
+      "family": "F06",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "abb462ed61f636f888fd3a364d3501541273b7957a19ba874047dfd90b7aa784",
+      "gt_projection_sha256": "4a4d755b7e627f86ad047a3f9d98602b0c5132296cdfd9a498ca3a5c103856f0",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-E1/verify.js",
+        "pilot-workspace/FORMAL-F06-E1/acl.js",
+        "pilot-workspace/FORMAL-F06-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F06-E1/legacy/acl.json",
+        "pilot-workspace/FORMAL-F06-E1/check.js",
+        "pilot-workspace/FORMAL-F06-E1/CONTRACT-rbac.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F06-E2",
+      "family": "F06",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:00:27Z",
+      "gt_signed_version_hash": "13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "3f018b38551094aa2a139182adc19887cea9414fb6b43ffa6a50c2e87f2bf6c0",
+      "gt_projection_sha256": "6e5d6d109a8c8098d5edd1b246323979f9d06f77209d1525db3961d1f73a5b33",
+      "required": [
+        "cache_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F06-E2/verify.js",
+        "pilot-workspace/FORMAL-F06-E2/stale.js",
+        "pilot-workspace/FORMAL-F06-E2/policy-store.js",
+        "pilot-workspace/FORMAL-F06-E2/cache-contract.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "f5877ea9a6447ba6f80e969d8fd576f76ba0f2d3754964ebaa4d48038961f3de",
+      "gt_projection_sha256": "0e43110daf1339d4afad00fe24b0c330e366eee79742ff9e60e33d785d90122b",
+      "required": [
+        "precedence_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-A1/verify.js",
+        "pilot-workspace/FORMAL-F07-A1/check-precedence.js",
+        "pilot-workspace/FORMAL-F07-A1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "3577eb244d7e240f457b62647b08c3116eb346d4efbd0c15a0518d941938d670",
+      "gt_projection_sha256": "fe1a3c6bfbd172bb0aed126a26b2dd805dbc34274719f2b5831a679d4c6f78d5",
+      "required": [
+        "null_missing_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-A2/verify.js",
+        "pilot-workspace/FORMAL-F07-A2/check-null-missing.js",
+        "pilot-workspace/FORMAL-F07-A2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "e2d2f5ab8690b410318b58f96cdbc51afa6f076bf9456fed2a809d13493a5d6c",
+      "gt_projection_sha256": "e9c19e0b9068c77c0da0a0fbc7dd2a030468a41597df926e513343a3fe9be68f",
+      "required": [
+        "nested_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-B1/verify.js",
+        "pilot-workspace/FORMAL-F07-B1/check-nested.js",
+        "pilot-workspace/FORMAL-F07-B1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "94d03a3033fac390c1445b492aabf252bf77608b689ac7227d48c1f25cd563d1",
+      "gt_projection_sha256": "702e0f6724181f0308642c3525742383e832eff5c3c244bca49035d1ac4c7a6e",
+      "required": [
+        "array_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-B2/verify.js",
+        "pilot-workspace/FORMAL-F07-B2/check-array-semantics.js",
+        "pilot-workspace/FORMAL-F07-B2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "c86753edd0044868ef80fd0a62ff5e5af334f39f66168c20e3d52d5b367135cf",
+      "gt_projection_sha256": "69ddfcc39fd7cf5688da867712286eecfae1996c11bdb6c8be86e0addea801e7",
+      "required": [
+        "sources_done",
+        "timeline_ok",
+        "effective_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-C1/verify.js",
+        "pilot-workspace/FORMAL-F07-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F07-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F07-C1/merge.js",
+        "pilot-workspace/FORMAL-F07-C1/work/cfg-a.js",
+        "pilot-workspace/FORMAL-F07-C1/work/cfg-b.js",
+        "pilot-workspace/FORMAL-F07-C1/work/cfg-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "b4c042e72ffa3e2df4864151b955fe14e1fe3fe1c1101ffdb34fed5b9d1a1e1d",
+      "gt_projection_sha256": "43c1ea93cc1e2d6e140dbd48c8c92c864f8fd4f59db78ddb8ebcd53fd0974839",
+      "required": [
+        "profiles_done",
+        "timeline_ok",
+        "matrix_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-C2/verify.js",
+        "pilot-workspace/FORMAL-F07-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F07-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F07-C2/merge.js",
+        "pilot-workspace/FORMAL-F07-C2/work/prof-p1.js",
+        "pilot-workspace/FORMAL-F07-C2/work/prof-p2.js",
+        "pilot-workspace/FORMAL-F07-C2/work/prof-p3.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "0ed949f53be216cc57c4d09ff3dafe3d5d1b9e163d7b5635fb19f74a0ff10a6b",
+      "gt_projection_sha256": "1e6f51394eded04daa0ca120622e607c6e5ffde1410a4d21592a08620694591b",
+      "required": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-D1/verify.js",
+        "pilot-workspace/FORMAL-F07-D1/check-a.js",
+        "pilot-workspace/FORMAL-F07-D1/check-b.js",
+        "pilot-workspace/FORMAL-F07-D1/check-c.js",
+        "pilot-workspace/FORMAL-F07-D1/check-report.js",
+        "pilot-workspace/FORMAL-F07-D1/build.js",
+        "pilot-workspace/FORMAL-F07-D1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "f5630bbd9e86298eb4b7978773582a3295072c97922b3664da2f66f9333322e7",
+      "gt_projection_sha256": "d8651c31bcca80d89452b1fa6566f50f9f58bcc8061c8c4f7128cd7fa48eb482",
+      "required": [
+        "schema_repaired",
+        "layers_normalized",
+        "effective_generated",
+        "report_valid",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-D2/verify.js",
+        "pilot-workspace/FORMAL-F07-D2/schema.json",
+        "pilot-workspace/FORMAL-F07-D2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "479ed670d68d65422ed6904f009b1e5b26acd422049d91fed3e2ce42fb9f9853",
+      "gt_projection_sha256": "24ded2531a61aed5e86b5064be9318d086204892d0f3297fec269047c1f351af",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-E1/verify.js",
+        "pilot-workspace/FORMAL-F07-E1/config.js",
+        "pilot-workspace/FORMAL-F07-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F07-E1/legacy/config.json",
+        "pilot-workspace/FORMAL-F07-E1/check.js",
+        "pilot-workspace/FORMAL-F07-E1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-09-30T18:15:03Z",
+      "gt_signed_version_hash": "883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "2b67594ba0842d8c66af8f2d5659ad62a337023af8569994f4d2e7fbe0b3e097",
+      "gt_projection_sha256": "c84d25b517001c12fa4628bae42c01f8bd5ff4c3c089f2741d12c2663b1b74b6",
+      "required": [
+        "propagation_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F07-E2/verify.js",
+        "pilot-workspace/FORMAL-F07-E2/propagate.js",
+        "pilot-workspace/FORMAL-F07-E2/layer-store.js",
+        "pilot-workspace/FORMAL-F07-E2/merge.js",
+        "pilot-workspace/FORMAL-F07-E2/layers/defaults.json",
+        "pilot-workspace/FORMAL-F07-E2/layers/environment.json",
+        "pilot-workspace/FORMAL-F07-E2/layers/profile.json",
+        "pilot-workspace/FORMAL-F07-E2/layers/local.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "fcc577b11df909ac3e09b447e0de999585d0e353bc0d3e2de9da75f27cefd9be",
+      "gt_projection_sha256": "18d8a16f00494403f11a105344ea9e150da86c5dd676697f34e9fe5f5f0df8b3",
+      "required": [
+        "boundary_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-A1/verify.js",
+        "pilot-workspace/FORMAL-F08-A1/check-allow.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "459df36f49fe07f34169712ae106215e1d8ec94e00ad841586f69793cb9447a3",
+      "gt_projection_sha256": "4daa0af9ccab3bed29352d1e90038ca64536ca3dddd59b038439912ca76aebba",
+      "required": [
+        "window_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-A2/verify.js",
+        "pilot-workspace/FORMAL-F08-A2/check-window.js",
+        "pilot-workspace/FORMAL-F08-A2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F08-A2/window.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "daf972a22d0cc3c64f15b912e6c35a25759e8c90048cdb079b0455b004539506",
+      "gt_projection_sha256": "c57cb6cbfd4ad7709d320ca3bc30e28b612a9f75a2831293d9dc7e6e6b459e63",
+      "required": [
+        "layer_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-B1/verify.js",
+        "pilot-workspace/FORMAL-F08-B1/check-layer.js",
+        "pilot-workspace/FORMAL-F08-B1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "5b030dbafde1d0f5a3553b181c01b98cdf0921aa41abf4da324da797bffb71a6",
+      "gt_projection_sha256": "046b48f96c55005dbb48839f2d61e736274ddae78a5bcffb3e2ea909d0d6a084",
+      "required": [
+        "idempotent_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-B2/verify.js",
+        "pilot-workspace/FORMAL-F08-B2/check-idempotent.js",
+        "pilot-workspace/FORMAL-F08-B2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "789bef9e945933f1b93f38ac693c30dd771c97117052b24856cc43de9341e197",
+      "gt_projection_sha256": "79717a0b2cfcb22c730ea5749a0888b304592a83be409057b4725a7e5bc3e1e5",
+      "required": [
+        "sources_done",
+        "timeline_ok",
+        "ledger_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-C1/verify.js",
+        "pilot-workspace/FORMAL-F08-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F08-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F08-C1/window.json",
+        "pilot-workspace/FORMAL-F08-C1/account.js",
+        "pilot-workspace/FORMAL-F08-C1/work/src-a.js",
+        "pilot-workspace/FORMAL-F08-C1/work/src-b.js",
+        "pilot-workspace/FORMAL-F08-C1/work/src-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "5017efc6c4a08e71c8d9d87c65af210a630f513183273aa4ecee0f22ad5daf97",
+      "gt_projection_sha256": "0c885ce843df6d58e84a99e70bf72b878948e6dd80f74f98e4b2549f5a943dc4",
+      "required": [
+        "sources_done",
+        "timeline_ok",
+        "ledger_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-C2/verify.js",
+        "pilot-workspace/FORMAL-F08-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F08-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F08-C2/window.json",
+        "pilot-workspace/FORMAL-F08-C2/account.js",
+        "pilot-workspace/FORMAL-F08-C2/work/src-x.js",
+        "pilot-workspace/FORMAL-F08-C2/work/src-y.js",
+        "pilot-workspace/FORMAL-F08-C2/work/src-z.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "6923f9b2d222a24449de398702debd19dfd90ddcb4a362f266f2124a1a11ffee",
+      "gt_projection_sha256": "779a26aa72f4f260fad2608881e143b0aade9a12312b806b2010ad2d8e5e0735",
+      "required": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-D1/verify.js",
+        "pilot-workspace/FORMAL-F08-D1/check-a.js",
+        "pilot-workspace/FORMAL-F08-D1/check-b.js",
+        "pilot-workspace/FORMAL-F08-D1/check-c.js",
+        "pilot-workspace/FORMAL-F08-D1/check-report.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "8675dd0b39c4d843ff41080539ffe3cc5ae60bac83a8f88530a9b73e704d3e92",
+      "gt_projection_sha256": "43ba079d621b11e7166f5efe5db32af221c126819ad5510a77000ead376907fb",
+      "required": [
+        "records_repaired",
+        "aggregation_normalized",
+        "ledger_rebuilt",
+        "reconciled",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "d98272909cf26748e0bdb731433e2432f53b5306156b0c763d096074a6de94e7",
+      "gt_projection_sha256": "c8a3f12eda278f0d9f7d21b00a372245e10d3c7a6b92ddfdb4af41885123dcef",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-E1/verify.js",
+        "pilot-workspace/FORMAL-F08-E1/billing.js",
+        "pilot-workspace/FORMAL-F08-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F08-E1/legacy/billing.json",
+        "pilot-workspace/FORMAL-F08-E1/check.js",
+        "pilot-workspace/FORMAL-F08-E1/CONTRACT-quota.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T05:04:23Z",
+      "gt_signed_version_hash": "024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "5ee28712a68ef5e9fa1ce222764308a3101c37380eb4b698d10ac5aa2d59b289",
+      "gt_projection_sha256": "6fabbd44dbf52bf8381a04d53e2cd133a54eecd5b95241fa21a2200aabcac089",
+      "required": [
+        "authority_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F08-E2/verify.js",
+        "pilot-workspace/FORMAL-F08-E2/reconcile.js",
+        "pilot-workspace/FORMAL-F08-E2/ledger.js",
+        "pilot-workspace/FORMAL-F08-E2/ledger-authority.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-A1",
+      "family": "F09",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "2687a6ebc86c8cba5413df2bae71ecaee6e3358cca55b9940366066c91c52ef0",
+      "gt_projection_sha256": "7a7d4c11dd0a1ed7f3a2394889d7dc4f1f0f5cd9b86bdbedcbfffe0209a326c6",
+      "required": [
+        "render_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-A1/verify.js",
+        "pilot-workspace/FORMAL-F09-A1/check-render.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-A2",
+      "family": "F09",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "eff5889da51923b401d672a799cf3b6e36057a765d9178ca1f2d3d3bb3d4fd09",
+      "gt_projection_sha256": "4d9387686f0a2800192dc54b2b95ad61bb9eaf7e2ddd36b9ad89c416c656d8b2",
+      "required": [
+        "escape_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-A2/verify.js",
+        "pilot-workspace/FORMAL-F09-A2/check-escape.js",
+        "pilot-workspace/FORMAL-F09-A2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-B1",
+      "family": "F09",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "9576f9d9e843087686720a80a3c9b602c223b57f925e74fd26e0772ab1295936",
+      "gt_projection_sha256": "c7f787c440cce83be4c2fb6dde0f5c8826c6c62b550df72e7737b53ccb53cb47",
+      "required": [
+        "include_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-B1/verify.js",
+        "pilot-workspace/FORMAL-F09-B1/check-include.js",
+        "pilot-workspace/FORMAL-F09-B1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-B2",
+      "family": "F09",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "684e7478c4b086a4f50394ee9ba0f5607ff7c78abd4c41f10b774315fbeee872",
+      "gt_projection_sha256": "ee540360e17e6217d668b07d48af5cf3e73ea3e955f26f5123ad272a462df5bf",
+      "required": [
+        "inherit_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-B2/verify.js",
+        "pilot-workspace/FORMAL-F09-B2/check-inherit.js",
+        "pilot-workspace/FORMAL-F09-B2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-C1",
+      "family": "F09",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "5798f47cf1f417428cead0a5e608bb2e63bdce67dc37f7aae429fde1a72bad7a",
+      "gt_projection_sha256": "caa6a62f43453d9a8a3635bbc266f9f8214bafa1a81a1ebb34843a85d8a96783",
+      "required": [
+        "templates_done",
+        "timeline_ok",
+        "snapshots_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-C1/verify.js",
+        "pilot-workspace/FORMAL-F09-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F09-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F09-C1/renderer.js",
+        "pilot-workspace/FORMAL-F09-C1/work/tpl-a.js",
+        "pilot-workspace/FORMAL-F09-C1/work/tpl-b.js",
+        "pilot-workspace/FORMAL-F09-C1/work/tpl-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-C2",
+      "family": "F09",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "8937174fb3db69fce7591563ac993b1229d5616c53deb9cbe26db0525a33dfe3",
+      "gt_projection_sha256": "17d4c1f0446cb7a3d1d01b487133c40fa41963c11ff3d6f750520afeec59dbcb",
+      "required": [
+        "templates_done",
+        "timeline_ok",
+        "order_independent",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-C2/verify.js",
+        "pilot-workspace/FORMAL-F09-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F09-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F09-C2/renderer.js",
+        "pilot-workspace/FORMAL-F09-C2/work/page-x.js",
+        "pilot-workspace/FORMAL-F09-C2/work/page-y.js",
+        "pilot-workspace/FORMAL-F09-C2/work/page-z.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-D1",
+      "family": "F09",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "d14fbe76213703ccd5296bce548689ac2bf9a80a9efd006df84215c764b0ad8d",
+      "gt_projection_sha256": "5376cf5494f6a7bb0a90f14b4b73dc86d189f9f4d59c321f44d9301faf12eb71",
+      "required": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "unified_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-D1/verify.js",
+        "pilot-workspace/FORMAL-F09-D1/check-a.js",
+        "pilot-workspace/FORMAL-F09-D1/check-b.js",
+        "pilot-workspace/FORMAL-F09-D1/check-c.js",
+        "pilot-workspace/FORMAL-F09-D1/check-unified.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-D2",
+      "family": "F09",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "7662fe0e973a906d93babc02c2b1518ea4b120d0fa9780fa340cac93e5a0eadd",
+      "gt_projection_sha256": "95ebf3e0cf299e19ec6b658eec4d891d24cb211bdb7838782e0c397e32f36b26",
+      "required": [
+        "prepared_ok",
+        "rendered_ok",
+        "snapshot_ok",
+        "verified_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-D2/verify.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-E1",
+      "family": "F09",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "cfaf8589097ebe644d6393d59d6c3dd86657e24d647c8967258338a66a468667",
+      "gt_projection_sha256": "3ab1e32842d40de82c39ee7260e651e1dd54f9b08283a7dc390bb22ca0afc3a1",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-E1/verify.js",
+        "pilot-workspace/FORMAL-F09-E1/legacy.js",
+        "pilot-workspace/FORMAL-F09-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F09-E1/legacy/greeting.snap",
+        "pilot-workspace/FORMAL-F09-E1/check.js",
+        "pilot-workspace/FORMAL-F09-E1/CONTRACT-v2.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F09-E2",
+      "family": "F09",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:18:32Z",
+      "gt_signed_version_hash": "6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "b0a2ceb3f82eba30991b8f6a2b404b3d97066c6cb5750ce7c2d42a2a21175bd4",
+      "gt_projection_sha256": "30e8df3b7edf9d64c5d6d4f3f8f8c4a0cc65667b8eb613c1e6f979efd20d9fc6",
+      "required": [
+        "authority_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F09-E2/verify.js",
+        "pilot-workspace/FORMAL-F09-E2/reconcile.js",
+        "pilot-workspace/FORMAL-F09-E2/snapshot.js",
+        "pilot-workspace/FORMAL-F09-E2/authority.md",
+        "pilot-workspace/FORMAL-F09-E2/templates/main.tpl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-A1",
+      "family": "F10",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "4c1468a6db984170d2678f4b6624752873aee8300915a0d92822688c8cba58aa",
+      "gt_projection_sha256": "a7dacfbf266dbfa6c2881d1335b84bb86bbdce62c6f827bdeed8a14753bde75f",
+      "required": [
+        "required_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-A1/verify.js",
+        "pilot-workspace/FORMAL-F10-A1/check-required.js",
+        "pilot-workspace/FORMAL-F10-A1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-A1/schemas/v1.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-A2",
+      "family": "F10",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "17738d4b3cce5758ed9ad657085b278d41b66e9376792df1583bff4f35e18ca6",
+      "gt_projection_sha256": "e147421fc74b3427d67e1a430cb718904dfcb9f9e36b82bfc4666c15ccfc628e",
+      "required": [
+        "type_null_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-A2/verify.js",
+        "pilot-workspace/FORMAL-F10-A2/check-type-null.js",
+        "pilot-workspace/FORMAL-F10-A2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-A2/schemas/v1.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-B1",
+      "family": "F10",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "014f3afd415b9426560e882a0f2c9d8f99c3eee669f9b49c5e28451adca04a25",
+      "gt_projection_sha256": "0e724c0ec6b1c79a2bf3049c6d693ee81a50ea1835a4514516ddc3d7ebf3b781",
+      "required": [
+        "backward_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-B1/verify.js",
+        "pilot-workspace/FORMAL-F10-B1/check-backward.js",
+        "pilot-workspace/FORMAL-F10-B1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-B1/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-B1/schemas/v2.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-B2",
+      "family": "F10",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "eb41874d1e27b41b78f8f030882c6d8917f7d98ea07fd604d4657c40dba9962e",
+      "gt_projection_sha256": "7ae43f9ccb38322903f8d9af68d2b695333aba3a572ed1a6bacd4fd18e9ba16b",
+      "required": [
+        "forward_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-B2/verify.js",
+        "pilot-workspace/FORMAL-F10-B2/check-forward.js",
+        "pilot-workspace/FORMAL-F10-B2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-B2/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-B2/schemas/v2.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-C1",
+      "family": "F10",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "90f14a8d7faf3db556d50d42be97e6c1b09c8fc54f025dc1d353276aea8dd5bf",
+      "gt_projection_sha256": "11b7e25f6b2ee4e565f5906d40093e4fb622a2878561928e5d298be4db107ab6",
+      "required": [
+        "shards_done",
+        "timeline_ok",
+        "migrated_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-C1/verify.js",
+        "pilot-workspace/FORMAL-F10-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F10-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-C1/canonical.js",
+        "pilot-workspace/FORMAL-F10-C1/migrate.js",
+        "pilot-workspace/FORMAL-F10-C1/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-C1/schemas/v2.json",
+        "pilot-workspace/FORMAL-F10-C1/work/shard-a.js",
+        "pilot-workspace/FORMAL-F10-C1/work/shard-b.js",
+        "pilot-workspace/FORMAL-F10-C1/work/shard-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-C2",
+      "family": "F10",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "02b44e5bf9c6d5d3f4856dadb76ea0d1949224ea811ea0b24f29ed26ad401d28",
+      "gt_projection_sha256": "a26a8f453c5c3bbc56fa5f5bf1f00b9d60228b00ad9c160381f9603f5678db24",
+      "required": [
+        "shards_done",
+        "timeline_ok",
+        "migrated_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-C2/verify.js",
+        "pilot-workspace/FORMAL-F10-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F10-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-C2/canonical.js",
+        "pilot-workspace/FORMAL-F10-C2/migrate.js",
+        "pilot-workspace/FORMAL-F10-C2/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-C2/schemas/v2.json",
+        "pilot-workspace/FORMAL-F10-C2/work/shard-a.js",
+        "pilot-workspace/FORMAL-F10-C2/work/shard-b.js",
+        "pilot-workspace/FORMAL-F10-C2/work/shard-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-D1",
+      "family": "F10",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "db76d63b6c08f04234c855b93ba95b30662298010d5371ec48e94a6bff20bab5",
+      "gt_projection_sha256": "17e22fdb736f2f60038231286885107706ab01d298b5b3fdfa0cfd615cc10c39",
+      "required": [
+        "customers_fixed",
+        "orders_fixed",
+        "logs_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-D1/verify.js",
+        "pilot-workspace/FORMAL-F10-D1/check-customers.js",
+        "pilot-workspace/FORMAL-F10-D1/check-orders.js",
+        "pilot-workspace/FORMAL-F10-D1/check-logs.js",
+        "pilot-workspace/FORMAL-F10-D1/check-report.js",
+        "pilot-workspace/FORMAL-F10-D1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-D1/canonical.js",
+        "pilot-workspace/FORMAL-F10-D1/schemas/customers.v2.json",
+        "pilot-workspace/FORMAL-F10-D1/schemas/orders.v2.json",
+        "pilot-workspace/FORMAL-F10-D1/schemas/logs.v2.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-D2",
+      "family": "F10",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "6f5f5c87a2d566b9671e16cfbcc871d56f111027cb32c73fc70d5948a887d861",
+      "gt_projection_sha256": "15064d7eef1a706ba5327343c3568f897e3f0ca83cd85e52a16657e0672f63ad",
+      "required": [
+        "chain_provenance",
+        "chain_ok",
+        "migrated_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-D2/verify.js",
+        "pilot-workspace/FORMAL-F10-D2/check-chain.js",
+        "pilot-workspace/FORMAL-F10-D2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F10-D2/canonical.js",
+        "pilot-workspace/FORMAL-F10-D2/lib/ops.js",
+        "pilot-workspace/FORMAL-F10-D2/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-D2/schemas/v2.json",
+        "pilot-workspace/FORMAL-F10-D2/data/records.jsonl",
+        "pilot-workspace/FORMAL-F10-D2/data/region-map.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-E1",
+      "family": "F10",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "41de99bbdf1f449e506336ec8d576d61981e38c33344faa52f435ad93eb08ed2",
+      "gt_projection_sha256": "380b72ec8f085e23b3ee9c03540f8600f3a159f04b149dde5f0138e408f0cd8c",
+      "required": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-E1/verify.js",
+        "pilot-workspace/FORMAL-F10-E1/migrate.js",
+        "pilot-workspace/FORMAL-F10-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F10-E1/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-E1/schemas/v2.json",
+        "pilot-workspace/FORMAL-F10-E1/check.js",
+        "pilot-workspace/FORMAL-F10-E1/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F10-E2",
+      "family": "F10",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T06:40:41Z",
+      "gt_signed_version_hash": "715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "71d3bb36d54e51bbd385d126145b6a0c893f36c29774ce2df979b848b4d8c226",
+      "gt_projection_sha256": "017fa94448fa95c79773c926978b815c9a174527055e0261abba7b55c3005816",
+      "required": [
+        "idempotency_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F10-E2/verify.js",
+        "pilot-workspace/FORMAL-F10-E2/idempotent.js",
+        "pilot-workspace/FORMAL-F10-E2/canonical.js",
+        "pilot-workspace/FORMAL-F10-E2/schemas/v1.json",
+        "pilot-workspace/FORMAL-F10-E2/schemas/v2.json",
+        "pilot-workspace/FORMAL-F10-E2/data/v1.jsonl",
+        "pilot-workspace/FORMAL-F10-E2/data/v2.jsonl",
+        "pilot-workspace/FORMAL-F10-E2/CONTRACT.md"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-A1",
+      "family": "F11",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "5f4dd7bc343c8a606ee963c2fcd0bc3c75dd0f272a3ea3fa50bd660bbb4f43e6",
+      "gt_projection_sha256": "2a393a5e4fd7474b5a8ba581db46a775d07f092a75c282b69f84e045fa82ffae",
+      "required": [
+        "filter_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-A1/verify.js",
+        "pilot-workspace/FORMAL-F11-A1/check-filter.js",
+        "pilot-workspace/FORMAL-F11-A1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-A1/canonical.js",
+        "pilot-workspace/FORMAL-F11-A1/run.js",
+        "pilot-workspace/FORMAL-F11-A1/query.json",
+        "pilot-workspace/FORMAL-F11-A1/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-A2",
+      "family": "F11",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "ab1e0a090c47f87f13001b846fe910c3593837d5b0fbb9b50f70affbce9aa203",
+      "gt_projection_sha256": "d489309f631c2b1e7e3d40e7156eb9239d5fb4dbe911ed54c859a51316adc672",
+      "required": [
+        "window_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-A2/verify.js",
+        "pilot-workspace/FORMAL-F11-A2/check-window.js",
+        "pilot-workspace/FORMAL-F11-A2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-A2/canonical.js",
+        "pilot-workspace/FORMAL-F11-A2/run.js",
+        "pilot-workspace/FORMAL-F11-A2/query.json",
+        "pilot-workspace/FORMAL-F11-A2/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-B1",
+      "family": "F11",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "9048a8a4fb478b19ea722591a6bfe1e0b58bd033cdbc755ec777caa90f971dbf",
+      "gt_projection_sha256": "6823a98713d061fa88bbe672327fcde8002b16cf033fea00ef0c7b9cac702a1b",
+      "required": [
+        "filter_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-B1/verify.js",
+        "pilot-workspace/FORMAL-F11-B1/check-filter.js",
+        "pilot-workspace/FORMAL-F11-B1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-B1/canonical.js",
+        "pilot-workspace/FORMAL-F11-B1/run.js",
+        "pilot-workspace/FORMAL-F11-B1/query.json",
+        "pilot-workspace/FORMAL-F11-B1/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-B2",
+      "family": "F11",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "3457196844661d2669838a4086e9dc9fb492f16153676639ee76b3fef6f75199",
+      "gt_projection_sha256": "daa7daa62ab8dc8e824913e67b0d5c504aed2398951513c17b438a8de4c017e9",
+      "required": [
+        "dedup_fixed",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-B2/verify.js",
+        "pilot-workspace/FORMAL-F11-B2/check-dedup.js",
+        "pilot-workspace/FORMAL-F11-B2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-B2/canonical.js",
+        "pilot-workspace/FORMAL-F11-B2/run.js",
+        "pilot-workspace/FORMAL-F11-B2/query.json",
+        "pilot-workspace/FORMAL-F11-B2/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-C1",
+      "family": "F11",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "e9d6bc79e9ca43a1794097cc8c400a3c3cb55a2ac2b1b6bdb33a31b2307cce47",
+      "gt_projection_sha256": "ce8b132d4fb71f240601088851b9f3556de5b07628a05412f7b6020acfe0dba3",
+      "required": [
+        "shards_done",
+        "timeline_ok",
+        "result_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-C1/verify.js",
+        "pilot-workspace/FORMAL-F11-C1/check-timeline.js",
+        "pilot-workspace/FORMAL-F11-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-C1/canonical.js",
+        "pilot-workspace/FORMAL-F11-C1/shard-lib.js",
+        "pilot-workspace/FORMAL-F11-C1/query.json",
+        "pilot-workspace/FORMAL-F11-C1/logs/shard-a.jsonl",
+        "pilot-workspace/FORMAL-F11-C1/logs/shard-b.jsonl",
+        "pilot-workspace/FORMAL-F11-C1/logs/shard-c.jsonl",
+        "pilot-workspace/FORMAL-F11-C1/work/shard-a.js",
+        "pilot-workspace/FORMAL-F11-C1/work/shard-b.js",
+        "pilot-workspace/FORMAL-F11-C1/work/shard-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-C2",
+      "family": "F11",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "fee89ef2766b42405071188b269ec92780513a7f3c1a6fd50c5ce77fb5c932e9",
+      "gt_projection_sha256": "4cadb682c5d7681a709edd94c4dda5fc6e17ffba943cd27e81e2bf7780ddceb6",
+      "required": [
+        "shards_done",
+        "timeline_ok",
+        "merged_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-C2/verify.js",
+        "pilot-workspace/FORMAL-F11-C2/check-timeline.js",
+        "pilot-workspace/FORMAL-F11-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-C2/canonical.js",
+        "pilot-workspace/FORMAL-F11-C2/predicate.js",
+        "pilot-workspace/FORMAL-F11-C2/query.json",
+        "pilot-workspace/FORMAL-F11-C2/logs/shard-a.jsonl",
+        "pilot-workspace/FORMAL-F11-C2/logs/shard-b.jsonl",
+        "pilot-workspace/FORMAL-F11-C2/logs/shard-c.jsonl",
+        "pilot-workspace/FORMAL-F11-C2/work/shard-a.js",
+        "pilot-workspace/FORMAL-F11-C2/work/shard-b.js",
+        "pilot-workspace/FORMAL-F11-C2/work/shard-c.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-D1",
+      "family": "F11",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "b4582f8baf53fbf9646cb85b9f7e8d0ba72f75aac1550619e4a292ed68b2376b",
+      "gt_projection_sha256": "93cdff179933e7c14efea87cad6e9aec8a61cedef4b64a2838c58560266264b8",
+      "required": [
+        "stats_fixed",
+        "errors_fixed",
+        "slowest_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-D1/verify.js",
+        "pilot-workspace/FORMAL-F11-D1/check-stats.js",
+        "pilot-workspace/FORMAL-F11-D1/check-errors.js",
+        "pilot-workspace/FORMAL-F11-D1/check-slowest.js",
+        "pilot-workspace/FORMAL-F11-D1/check-report.js",
+        "pilot-workspace/FORMAL-F11-D1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-D1/canonical.js",
+        "pilot-workspace/FORMAL-F11-D1/run-all.js",
+        "pilot-workspace/FORMAL-F11-D1/query.json",
+        "pilot-workspace/FORMAL-F11-D1/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-D2",
+      "family": "F11",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "64c90c61eeed5114a36cdf1806edbe20524453c0d741a1804dff70a30ee68cde",
+      "gt_projection_sha256": "b2c96fe941e2d3adb64454bdf15f6c795e831da499942fd48e559f641b06e473",
+      "required": [
+        "chain_provenance",
+        "chain_ok",
+        "result_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-D2/verify.js",
+        "pilot-workspace/FORMAL-F11-D2/check-chain.js",
+        "pilot-workspace/FORMAL-F11-D2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-D2/canonical.js",
+        "pilot-workspace/FORMAL-F11-D2/lib/ops.js",
+        "pilot-workspace/FORMAL-F11-D2/query.json",
+        "pilot-workspace/FORMAL-F11-D2/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-E1",
+      "family": "F11",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "25674f6af08819cec4faeb01b534f00170d394c1dffa51efa656328a1aa4f5cc",
+      "gt_projection_sha256": "ead757a5328f6193ea43d9f3b5fe4ad24d75459f64a28ab0e9c96f0e0b477be1",
+      "required": [
+        "order_path_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-E1/verify.js",
+        "pilot-workspace/FORMAL-F11-E1/check.js",
+        "pilot-workspace/FORMAL-F11-E1/check-legacy.js",
+        "pilot-workspace/FORMAL-F11-E1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-E1/canonical.js",
+        "pilot-workspace/FORMAL-F11-E1/query.js",
+        "pilot-workspace/FORMAL-F11-E1/run-query.js",
+        "pilot-workspace/FORMAL-F11-E1/legacy/export.js",
+        "pilot-workspace/FORMAL-F11-E1/legacy/consumer.js",
+        "pilot-workspace/FORMAL-F11-E1/snapshots/legacy-view.snap",
+        "pilot-workspace/FORMAL-F11-E1/query.json",
+        "pilot-workspace/FORMAL-F11-E1/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F11-E2",
+      "family": "F11",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T07:21:14Z",
+      "gt_signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "740b9302a4f0fa47a8ad4d6ede20657156d907d416a33507f3b00810e2cc4c22",
+      "gt_projection_sha256": "632d0be008d14bf5936eb94d0e812b1cd529e0b5bcaaf8ae9c1ac2f059c3ff77",
+      "required": [
+        "compat_layer_added",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F11-E2/verify.js",
+        "pilot-workspace/FORMAL-F11-E2/check-query.js",
+        "pilot-workspace/FORMAL-F11-E2/check-legacy.js",
+        "pilot-workspace/FORMAL-F11-E2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F11-E2/canonical.js",
+        "pilot-workspace/FORMAL-F11-E2/pipeline.js",
+        "pilot-workspace/FORMAL-F11-E2/legacy/normalize.js",
+        "pilot-workspace/FORMAL-F11-E2/legacy/defaults.json",
+        "pilot-workspace/FORMAL-F11-E2/legacy-view.js",
+        "pilot-workspace/FORMAL-F11-E2/query.json",
+        "pilot-workspace/FORMAL-F11-E2/logs/logs.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-A1",
+      "family": "F12",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "6fd86ef2d6d4abcfe03df4476bb8120ba0265c39bfa47d33d231f2d65f9574c4",
+      "gt_projection_sha256": "0e54d379fa2143fc478e942e7c199d6babb08f74bad23ffa3ca89f45ac4c2ef3",
+      "required": [
+        "history_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-A1/verify.js",
+        "pilot-workspace/FORMAL-F12-A1/check-history.js",
+        "pilot-workspace/FORMAL-F12-A1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-A1/canonical.js",
+        "pilot-workspace/FORMAL-F12-A1/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-A1/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-A1/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-A2",
+      "family": "F12",
+      "category": "A",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "c38e2284cb2f6421113cfc424971fa8e021242ff424d46363908722804c6af82",
+      "gt_projection_sha256": "e0558c1ea43fbeefab0868f5f12d57f5224346fff9d102ba4536df9929e861fc",
+      "required": [
+        "reject_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-A2/verify.js",
+        "pilot-workspace/FORMAL-F12-A2/check-reject.js",
+        "pilot-workspace/FORMAL-F12-A2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-A2/canonical.js",
+        "pilot-workspace/FORMAL-F12-A2/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-A2/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-A2/plan.json",
+        "pilot-workspace/FORMAL-F12-A2/snapshots/inputs/state.json",
+        "pilot-workspace/FORMAL-F12-A2/snapshots/inputs/history.jsonl"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-B1",
+      "family": "F12",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "16dd15c6cada717115983864f9caa4a208e23a1dbac9db290315b15ef9be02e6",
+      "gt_projection_sha256": "3f3eb85cf9f7317b16250b2c258b9dcffd79bac65554672af97055a38d37451c",
+      "required": [
+        "order_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-B1/verify.js",
+        "pilot-workspace/FORMAL-F12-B1/check-order.js",
+        "pilot-workspace/FORMAL-F12-B1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-B1/canonical.js",
+        "pilot-workspace/FORMAL-F12-B1/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-B1/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-B1/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-B2",
+      "family": "F12",
+      "category": "B",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "0a25d7ae0a3166243bf8f6a6831026249fc161e1beab7b043900061e05896561",
+      "gt_projection_sha256": "e5f763e637466a88678a61df483472c07ecaee236a2fa0ba5cde476b9abe8814",
+      "required": [
+        "rollback_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-B2/verify.js",
+        "pilot-workspace/FORMAL-F12-B2/check-rollback.js",
+        "pilot-workspace/FORMAL-F12-B2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-B2/canonical.js",
+        "pilot-workspace/FORMAL-F12-B2/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-B2/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-B2/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-C1",
+      "family": "F12",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "f9e28929bb7528118b6b04053d5f3cdc17748952648faf3cf6f14deda31f4c8b",
+      "gt_projection_sha256": "12613a0604b7a498cfbc2dcf4ca26668c00eb6e4c8d5753b13b90ac5b48987d9",
+      "required": [
+        "deploy_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-C1/verify.js",
+        "pilot-workspace/FORMAL-F12-C1/check-deploy.js",
+        "pilot-workspace/FORMAL-F12-C1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-C1/canonical.js",
+        "pilot-workspace/FORMAL-F12-C1/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-C1/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-C1/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-C2",
+      "family": "F12",
+      "category": "C",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "004dc3a51c07efe56f49cea23d07cc70048423eba4ff982b8b53c5fab6672146",
+      "gt_projection_sha256": "46ebb67976494b41da12ab6d06de87f2b013576e186ea68b400d9281869f5cb3",
+      "required": [
+        "halt_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-C2/verify.js",
+        "pilot-workspace/FORMAL-F12-C2/check-halt.js",
+        "pilot-workspace/FORMAL-F12-C2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-C2/canonical.js",
+        "pilot-workspace/FORMAL-F12-C2/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-C2/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-C2/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-D1",
+      "family": "F12",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "PARALLEL"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "eefa38b34f970b79b1e71ff4d536f35456458650977fca0ca4bbb52061fd061d",
+      "gt_projection_sha256": "b81a3a0704691fb85f92408f735507c9fe4e9a85b869a16e2a000b54fe905644",
+      "required": [
+        "rollout_done",
+        "timeline_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-D1/verify.js",
+        "pilot-workspace/FORMAL-F12-D1/check-rollout.js",
+        "pilot-workspace/FORMAL-F12-D1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-D1/canonical.js",
+        "pilot-workspace/FORMAL-F12-D1/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-D1/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-D1/plan.json",
+        "pilot-workspace/FORMAL-F12-D1/work/api.js",
+        "pilot-workspace/FORMAL-F12-D1/work/web.js",
+        "pilot-workspace/FORMAL-F12-D1/work/worker.js"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-D2",
+      "family": "F12",
+      "category": "D",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "yaml_sha256": "bed9e1150f8123e9d7429d8c3a8a5624ee2a201359183c543f14064867236ff4",
+      "gt_projection_sha256": "d5a7aad3854df3a096c2c7b8f1fbe037fae8c2952091f8dd3d0e6cade36933e3",
+      "required": [
+        "chain_provenance",
+        "chain_ok",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-D2/verify.js",
+        "pilot-workspace/FORMAL-F12-D2/check-chain.js",
+        "pilot-workspace/FORMAL-F12-D2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-D2/canonical.js",
+        "pilot-workspace/FORMAL-F12-D2/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-D2/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-D2/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-E1",
+      "family": "F12",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "6b9152bc285a8a3184f157603e81596c48e8cbdc7c819411b6cabe78c0d90107",
+      "gt_projection_sha256": "9b0175183c80444ee804e30fd90050a5de8cde87a0bbb6fd3a0bc8438905edb2",
+      "required": [
+        "new_path_added",
+        "legacy_record_intact",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-E1/verify.js",
+        "pilot-workspace/FORMAL-F12-E1/check.js",
+        "pilot-workspace/FORMAL-F12-E1/check-legacy.js",
+        "pilot-workspace/FORMAL-F12-E1/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-E1/canonical.js",
+        "pilot-workspace/FORMAL-F12-E1/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-E1/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-E1/legacy/deploy.js",
+        "pilot-workspace/FORMAL-F12-E1/legacy-record.json",
+        "pilot-workspace/FORMAL-F12-E1/snapshots/inputs/state.json",
+        "pilot-workspace/FORMAL-F12-E1/snapshots/legacy-record.snap",
+        "pilot-workspace/FORMAL-F12-E1/plan.json"
+      ]
+    },
+    {
+      "task_id": "FORMAL-F12-E2",
+      "family": "F12",
+      "category": "E",
+      "status": "frozen",
+      "gt_signed_by": "fei-hua",
+      "gt_signed_at": "2026-10-04T08:10:23Z",
+      "gt_signed_version_hash": "bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "yaml_sha256": "d2399be8c0df85cb93658eb49b3c20633f686ccc04a730c89bbf20995f9fde4f",
+      "gt_projection_sha256": "04f3e29c0276bcd9fe4552ee1ceb33b677bea5402a3d50a6c4eccee6be424a48",
+      "required": [
+        "drift_repaired",
+        "legacy_view_intact",
+        "report_written",
+        "verify_pass"
+      ],
+      "protected_paths": [
+        "pilot-workspace/FORMAL-F12-E2/verify.js",
+        "pilot-workspace/FORMAL-F12-E2/check-repair.js",
+        "pilot-workspace/FORMAL-F12-E2/check-legacy.js",
+        "pilot-workspace/FORMAL-F12-E2/CONTRACT.md",
+        "pilot-workspace/FORMAL-F12-E2/canonical.js",
+        "pilot-workspace/FORMAL-F12-E2/lib/deploy-lib.js",
+        "pilot-workspace/FORMAL-F12-E2/lib/runtime.js",
+        "pilot-workspace/FORMAL-F12-E2/reconcile.js",
+        "pilot-workspace/FORMAL-F12-E2/legacy-view.json",
+        "pilot-workspace/FORMAL-F12-E2/snapshots/legacy-view.snap",
+        "pilot-workspace/FORMAL-F12-E2/snapshots/inputs/state.json",
+        "pilot-workspace/FORMAL-F12-E2/snapshots/inputs/artifacts/api.json",
+        "pilot-workspace/FORMAL-F12-E2/plan.json"
+      ]
+    }
+  ],
+  "voided_identity_policy": {
+    "note": "被作废身份的具体前缀集中记录在审核层（benchmark/formal/formal-progress.md、benchmark/formal/f12-review.md），本 manifest 不写入任何历史身份字符串。",
+    "voided_identity_count": 1,
+    "enforced_by": "self_check.no_voided_identity"
+  }
+}

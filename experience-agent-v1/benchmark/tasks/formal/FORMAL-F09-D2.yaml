@@ -1,0 +1,62 @@
+id: FORMAL-F09-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:18:32Z
+gt_signed_version_hash: 6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F09-D2 需要交付四份产物，且后一步必须消费前一步的真实产物：
+  ① prepared.json（含字段 "prepared": true 与 "vars" 对象）；
+  ② rendered.json（含字段 "rendered": true 与 "text"，其 text 必须等于用 prepared.vars 渲染 templates/main.tpl 的结果）；
+  ③ main.snap（内容必须与 rendered.json 的 text 逐字节一致）；
+  ④ verified.json（含字段 "verified": true 与 "bytes"，bytes 必须等于 main.snap 的字节长度）；node verify.js 必须通过。
+  不得修改 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - prepared_ok
+    - rendered_ok
+    - snapshot_ok
+    - verified_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F09-D2/prepared.json
+  - pilot-workspace/FORMAL-F09-D2/rendered.json
+  - pilot-workspace/FORMAL-F09-D2/main.snap
+  - pilot-workspace/FORMAL-F09-D2/verified.json
+allowed_paths:
+  - pilot-workspace/FORMAL-F09-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F09-D2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F09-D2/verify.js
+    expect: "F09-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F09-D2/verify.js
+  - id: prepared_ok
+    kind: file_contains
+    expect: "prepared"
+    path: pilot-workspace/FORMAL-F09-D2/prepared.json
+  - id: rendered_ok
+    kind: file_contains
+    expect: "rendered"
+    path: pilot-workspace/FORMAL-F09-D2/rendered.json
+  - id: snapshot_ok
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F09-D2/main.snap
+  - id: verified_ok
+    kind: file_contains
+    expect: "verified"
+    path: pilot-workspace/FORMAL-F09-D2/verified.json

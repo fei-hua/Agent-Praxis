@@ -1,0 +1,51 @@
+id: FORMAL-F12-B2
+category: B
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T08:10:23Z
+gt_signed_version_hash: bd6e12fa7673679b45358eeabf40a1a9f46c5d7ed2e56611f7319b3e91328a60
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F12-B2 的部署在健康门禁失败后回滚到了错误的版本（S3 要求回滚到 LKG，而不是猜测的 v1）。
+  修正 deploy.js 后运行 node run.js 重新执行部署，使 node verify.js 通过。
+  不得修改 verify.js、check-rollback.js、CONTRACT.md、canonical.js、lib/、plan.json、state.json、history.jsonl、artifacts/、blobs/ 与 snapshots/。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - rollback_ok
+    - report_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F12-B2/deploy.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F12-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F12-B2/verify.js
+  - pilot-workspace/FORMAL-F12-B2/check-rollback.js
+  - pilot-workspace/FORMAL-F12-B2/CONTRACT.md
+  - pilot-workspace/FORMAL-F12-B2/canonical.js
+  - pilot-workspace/FORMAL-F12-B2/lib/deploy-lib.js
+  - pilot-workspace/FORMAL-F12-B2/lib/runtime.js
+  - pilot-workspace/FORMAL-F12-B2/plan.json
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F12-B2/verify.js
+    expect: "F12-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F12-B2/verify.js
+  - id: rollback_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F12-B2/check-rollback.js
+  - id: report_written
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F12-B2/report.json

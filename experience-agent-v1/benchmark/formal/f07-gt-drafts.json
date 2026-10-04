@@ -1,0 +1,248 @@
+{
+  "family": "F07",
+  "generated_at": "2026-09-30T18:10:23.767Z",
+  "signature": {
+    "gt_signed_by": "",
+    "gt_signed_at": "",
+    "status": "DRAFT — 待人工签署"
+  },
+  "variants": [
+    {
+      "task_id": "FORMAL-F07-A1",
+      "family": "F07",
+      "category": "A",
+      "variant": 1,
+      "title": "层叠覆盖方向反了（defaults 覆盖了 local）",
+      "task_description": "pilot-workspace/FORMAL-F07-A1 的 effective config 里 defaults 层覆盖了 local 层（期望 local 覆盖 defaults）。\n修正后使 node verify.js 通过。不得修改 verify.js、check-precedence.js 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "precedence_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "单文件、单症状（层叠顺序常量写反），目标文件与成功判据都唯一明确 ⇒ 直接修改是最小充分的首决策。",
+      "rationale_not_in_gt": "EXPLORE 无依据（成因已由错误输出直接定位）；委派类与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-A2",
+      "family": "F07",
+      "category": "A",
+      "variant": 2,
+      "title": "missing 被当作 null（缺失键误删下层值）",
+      "task_description": "pilot-workspace/FORMAL-F07-A2 的 effective config 与 CONTRACT.md 规定的 S1 / S5 语义不一致。\n修正后使 node verify.js 通过。不得修改 verify.js、check-null-missing.js 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "null_missing_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "目标文件已知（merge.js），但「缺失 ≠ null」与「null = 删除」的判定依据写在 CONTRACT.md（S1/S5）⇒ 先查契约再改与直接修改并列成立。",
+      "rationale_not_in_gt": "委派类超出必要；REPLAN 不适用（状态自洽，仅实现与契约不符）。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-B1",
+      "family": "F07",
+      "category": "B",
+      "variant": 1,
+      "title": "深层嵌套配置在层叠中丢失（只合并了一层）",
+      "task_description": "pilot-workspace/FORMAL-F07-B1 的 effective config 里深层配置不完整（期望见 check-nested.js）。\n请修复该问题，使 node verify.js 通过。不得修改 verify.js、check-nested.js 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "nested_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "症状是「深层配置不完整」，成因可能在合并递归、层顺序或某层 JSON 结构；需沿 root→service→database 逐层定位 ⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 可能只补一层而漏掉 cache 分支；委派与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-B2",
+      "family": "F07",
+      "category": "B",
+      "variant": 2,
+      "title": "数组层叠语义与契约相反（声明 replace，实现 append）",
+      "task_description": "pilot-workspace/FORMAL-F07-B2 的数组字段层叠结果与 CONTRACT.md 声明的数组语义不一致。\n请修复该问题，使 node verify.js 通过。不得修改 verify.js、check-array-semantics.js 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "array_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "数组结果错误，成因可能在 merge 层（数组分支的语义选择）或调用路径（层文件装配与调用方式）；需定位合并层与其调用路径 ⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 容易只改调用方而留下 merge 层语义不一致；委派与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-C1",
+      "family": "F07",
+      "category": "C",
+      "variant": 1,
+      "title": "硬预算下的多来源并行配置加载（层叠语义不得被破坏）",
+      "task_description": "pilot-workspace/FORMAL-F07-C1 需要在**总预算 6500 ms**内完成三个配置来源的加载，最终必须同时成立：\n① work/ 下的三个来源加载工具都必须真实执行完成，各自产出 out/<src>.json 与 timeline.jsonl 记录；\n② 每次执行都会把 {src,start,end,token,layers} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 各来源完成时间跨度（max(end) - min(start)）不得超过总预算；\n④ 合并后的 effective.json 必须与按 CONTRACT.md 固定层叠规则（defaults<environment<profile<local + S1..S5）独立生成的参考结果**语义等价**；\n⑤ 写出 INTEGRATION.md；node verify.js 必须通过。\n不得修改 verify.js、check-timeline.js、CONTRACT.md、merge.js 与 work/ 下的来源工具。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "sources_done",
+        "timeline_ok",
+        "effective_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "同时给出两条可机械验证的约束：三来源各自固定加载耗时（3.5s/3.5s/3.0s，串行约 10s）与 6500ms 总预算，且**并行加载不得破坏层叠语义**（effective.json 必须与固定规则独立生成的参考结果 canonical 相等）。串行调度必然超预算（verify 直接拒绝），来源级并行 + 按固定层叠规则合并可同时满足 ⇒ 拆解/并行/编排具有结构依据。",
+      "rationale_not_in_gt": "串行调度无法满足硬预算约束（顺序 span≈10s > 6500ms）；EXPLORE 未刻画「预算-来源-层叠等价」结构；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-C2",
+      "family": "F07",
+      "category": "C",
+      "variant": 2,
+      "title": "硬预算下的多 profile 批量生效配置（profile 内层顺序不得被打乱）",
+      "task_description": "pilot-workspace/FORMAL-F07-C2 需要在**总预算 6500 ms**内完成三个 profile 的 effective config 批量生成与矩阵汇总：\n① work/ 下的三个 profile 生成工具都必须真实执行完成，各自产出 out/<profile>.json 与 timeline.jsonl 记录；\n② 每次执行都会把 {src,start,end,token,profile} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 每个 profile 内部必须保持固定层顺序（defaults<environment<profile<local，见 CONTRACT.md）；\n④ 三个 profile 的完成时间跨度不得超过总预算；\n⑤ 汇总矩阵 matrix.json 必须与按固定层叠规则独立生成的参考矩阵**语义等价**，且按 profile × key 完整覆盖；写出 INTEGRATION.md；node verify.js 必须通过。\n不得修改 verify.js、check-timeline.js、CONTRACT.md、merge.js 与 work/ 下的生成工具。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "profiles_done",
+        "timeline_ok",
+        "matrix_written",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "与 C1 同构但非复制：对象是 profile 集合而非来源集合，层文件集合与矩阵覆盖要求不同。同样存在「硬预算 + profile 内固定层顺序 + 并行结果必须与固定规则参考矩阵等价」的可机械验证约束，串行超预算而 profile 级并行可行 ⇒ 委派类成立。",
+      "rationale_not_in_gt": "串行调度无法满足硬预算约束；EXPLORE 未刻画「预算-profile-矩阵等价」结构；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-D1",
+      "family": "F07",
+      "category": "D",
+      "variant": 1,
+      "title": "三套配置模块各自的缺陷 + 统一生效配置与报告校验",
+      "task_description": "pilot-workspace/FORMAL-F07-D1 下的三套配置模块 mod-a / mod-b / mod-c 都需要修好，\n并交付统一产物 effective-config.json（含 effective 字段）与 config-report.md（配置层叠报告），\n两者必须与修好后的模块一致（见 check-report.js）；node verify.js 必须通过。\n不得修改 check-a.js、check-b.js、check-c.js、check-report.js、build.js、verify.js 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "三套配置模块各自有真实缺陷与独立验收脚本，且存在必须三者都正确才能通过的统一产物校验（effective-config.json 与 config-report.md 必须与三套模块一致）⇒ 并行/编排有实际收益。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未利用三套模块互不共享的结构；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-D2",
+      "family": "F07",
+      "category": "D",
+      "variant": 2,
+      "title": "多阶段配置交付：schema 修复 → 层归一 → 生效配置 → 校验报告",
+      "task_description": "pilot-workspace/FORMAL-F07-D2 需要交付四份产物：\n① schema 修复结果 schema-repair.json（含字段 \"repaired\": true）；\n② 层归一结果 layers-normalized.json（含字段 \"normalized\": true 与覆盖四个层的 layers 数组）；\n③ 生效配置 effective-config.json（含字段 \"effective\"，其 service.database.timeout 必须与层文件按 CONTRACT.md 归一后的结果一致）；\n④ 校验报告 validation-report.json（含字段 \"valid\": true 与至少 4 项 checks）。node verify.js 必须通过。\n不得修改 verify.js、schema.json 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "schema_repaired",
+        "layers_normalized",
+        "effective_generated",
+        "report_valid",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "四个阶段（schema 修复 → 层归一 → 生效配置 → 校验报告）各有独立产物与验收字段，后两阶段依赖前两阶段结果 ⇒ 多阶段编排由任务本身给出（prompt 只陈述交付物）。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未刻画阶段化产物结构；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-E1",
+      "family": "F07",
+      "category": "E",
+      "variant": 1,
+      "title": "legacy 配置布局冻结与新层级语义契约冲突",
+      "task_description": "pilot-workspace/FORMAL-F07-E1 的 config.js 是一版**已上线**的配置加载实现，其输出被 legacy/consumer.js 按字段逐项回放（legacy/config.json 与 consumer 均不得修改）。\nCONTRACT.md 的新层级与迁移要求必须成立；check.js 与 config.js 都不得修改。请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "现状把既有实现当作新接口：config.js 只输出 version/timeout，而新契约要求同时携带 layers/migrated；config.js 与 legacy 消费方冻结、check.js 不得修改 ⇒ 局部改参无法满足，必须新增兼容路径并调整非保护入口装配（计划层重规划）⇒ REPLAN 最小充分。",
+      "rationale_not_in_gt": "DIRECT 指向受保护文件；EXPLORE 不成立（成因与位置已由真实预跑记录明确）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F07-E2",
+      "family": "F07",
+      "category": "E",
+      "variant": 2,
+      "title": "effective config 使用了加载时快照（层输入变更不传播）",
+      "task_description": "pilot-workspace/FORMAL-F07-E2 的 effective config 在层输入被修改后仍然返回旧结果。\nCONTRACT.md 的「重算条款」必须成立；propagate.js、layer-store.js、merge.js 与 layers/ 下的层文件都不得修改。\n请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "propagation_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "未修复态在层输入变更后仍返回旧值（真实预跑：after.timeout=30 而期望 60，属业务结果差异，不是结构断言）；propagate.js / layer-store.js / merge.js 冻结 ⇒ 必须改变\"effective config 从何处取值、何时计算\"的方案（去掉加载时快照，改为按需推导）⇒ 计划层重规划，REPLAN 有构念依据且可满足。",
+      "rationale_not_in_gt": "DIRECT 指向受保护文件；EXPLORE 不成立（成因已由真实预跑记录明确）；本变体不是缓存失效问题（layer-store 每次读的是当前层树，问题在推导时机）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    }
+  ]
+}

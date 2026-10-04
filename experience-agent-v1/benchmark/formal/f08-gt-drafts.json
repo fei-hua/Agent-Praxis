@@ -1,0 +1,248 @@
+{
+  "family": "F08",
+  "generated_at": "2026-10-04T04:59:38.583Z",
+  "signature": {
+    "gt_signed_by": "",
+    "gt_signed_at": "",
+    "status": "DRAFT — 待人工签署"
+  },
+  "variants": [
+    {
+      "task_id": "FORMAL-F08-A1",
+      "family": "F08",
+      "category": "A",
+      "variant": 1,
+      "title": "额度越界判定错误（恰好用尽被误拒）",
+      "task_description": "pilot-workspace/FORMAL-F08-A1 的限流器在请求成本**恰好等于剩余额度**时错误地拒绝。\n修正 limiter.js 使 node verify.js 通过。不得修改 verify.js 与 check-allow.js。",
+      "expected_first_decisions": [
+        "DIRECT"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "boundary_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "单文件、单症状（limiter.js 的越界比较符），且 S1 契约已写死判定规则 ⇒ 直接修改是最小充分的首决策。",
+      "rationale_not_in_gt": "EXPLORE 无依据（位置与规则都已知）；委派类与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-A2",
+      "family": "F08",
+      "category": "A",
+      "variant": 2,
+      "title": "窗口边界记录归属错误（timestamp == window_end）",
+      "task_description": "pilot-workspace/FORMAL-F08-A2 的窗口过滤把边界记录计入了错误的窗口，导致额度判定与 CONTRACT.md 不一致。\n修正后使 node verify.js 通过。不得修改 verify.js、check-window.js 与 CONTRACT.md。",
+      "expected_first_decisions": [
+        "DIRECT",
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "window_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "目标文件可能已知（窗口过滤实现），但\"边界记录归下一窗口\"这一判定依据写在 CONTRACT.md（S2）⇒ 先查约定再改属合理探索，DIRECT 与 EXPLORE 并列成立。",
+      "rationale_not_in_gt": "委派类超出必要；REPLAN 不适用（状态自洽，仅实现与契约不符）。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-B1",
+      "family": "F08",
+      "category": "B",
+      "variant": 1,
+      "title": "多层限额未取最小值（reject_layer 错误）",
+      "task_description": "pilot-workspace/FORMAL-F08-B1 的额度判定没有按 CONTRACT.md 的多层规则执行（结果见 check-layer.js）。\n请修复该问题，使 node verify.js 通过。不得修改 verify.js 与 check-layer.js。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "layer_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "症状是\"多层限额未按 min 生效\"，成因可能在层级收集（漏层）或取值比较（取错层）；需沿多层判定链定位 ⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 可能只改 effective 取值而漏掉 reject_layer 归属；委派与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-B2",
+      "family": "F08",
+      "category": "B",
+      "variant": 2,
+      "title": "重复记账（同一 request_id 重放被重复扣减）",
+      "task_description": "pilot-workspace/FORMAL-F08-B2 在用量记录重放后产生了重复扣减（结果见 check-idempotent.js）。\n请修复该问题，使 node verify.js 通过。不得修改 verify.js 与 check-idempotent.js。",
+      "expected_first_decisions": [
+        "EXPLORE"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "idempotent_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "重复扣减的成因可能在记账聚合缺去重、或幂等键选择错误、或在 limiter 累计路径；需探查记账链才能定位 ⇒ EXPLORE。",
+      "rationale_not_in_gt": "DIRECT 可能只改 limiter 而遗漏聚合层；委派与 REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-C1",
+      "family": "F08",
+      "category": "C",
+      "variant": 1,
+      "title": "硬预算下的多来源用量并行汇总（账务 canonical 等价）",
+      "task_description": "pilot-workspace/FORMAL-F08-C1 需要在**总预算 6500 ms**内完成三个用量来源的汇总，最终必须同时成立：\n① work/ 下的三个来源汇总工具都必须真实执行完成，各自产出 out/<src>.json；\n② 每次执行都会把 {src,start,end,token,accepted,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 每个来源内部按 S6 规则（去重 request_id → fixed window 过滤 → accepted cost 求和）汇总；\n④ 三来源完成时间跨度（max(end) - min(start)）不得超过总预算；\n⑤ 生成 ledger.json，其 used 与分组必须与**独立参考实现**一致；写出 INTEGRATION.md；node verify.js 必须通过。\n不得修改 verify.js、check-timeline.js、CONTRACT.md、window.json、account.js 与 work/ 下的来源工具。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "sources_done",
+        "timeline_ok",
+        "ledger_ok",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "同时给出两条可机械验证的约束：三来源各自固定汇总耗时（3.5s/3.5s/3.0s，串行约 10s）与 6500ms 总预算，且**并行汇总不得破坏账务语义**（ledger 的 used 与分组必须等于 checker 内嵌独立参考实现按 S6 规则算出的结果）。串行调度必然超预算（verify 直接拒绝），而来源级并行 + canonical 合并可同时满足 ⇒ 拆解/并行/编排具有结构依据。",
+      "rationale_not_in_gt": "串行调度无法满足硬预算约束（顺序 span≈10s > 6500ms）；EXPLORE 未刻画\"预算-来源-账务等价\"结构；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-C2",
+      "family": "F08",
+      "category": "C",
+      "variant": 2,
+      "title": "硬预算下的重叠分片并行汇总（跨来源全局幂等）",
+      "task_description": "pilot-workspace/FORMAL-F08-C2 需要在**总预算 6500 ms**内完成三个用量分片的汇总，最终必须同时成立：\n① work/ 下的三个分片工具都必须真实执行完成，各自产出 out/<src>.json（含该分片的原始记录）与 timeline.jsonl 记录；\n② 每次执行都会把 {src,start,end,token,naiveAccepted,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；\n③ 分片之间可能包含**相同的 request_id**（见 CONTRACT.md 的全局幂等规则）；\n④ 三来源完成时间跨度（max(end) - min(start)）不得超过总预算；\n⑤ 生成 ledger.json，其 used 与 tenant/endpoint 分组必须与**全局幂等参考实现**一致；写出 INTEGRATION.md；node verify.js 必须通过。\n不得修改 verify.js、check-timeline.js、CONTRACT.md、window.json、account.js 与 work/ 下的分片工具。",
+      "expected_first_decisions": [
+        "DELEGATE",
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "sources_done",
+        "timeline_ok",
+        "ledger_ok",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "与 C1 的 failure mode 不同：C1 的分片**互不重叠**（来源内去重 + 分片求和即可）；C2 的分片**存在跨来源重复 request_id**（r1 同时出现在 src-x 与 src-y）⇒ per-source 去重不足，必须做**全局幂等去重**（tie-break：ts 最小者，ts 相同取来源名序最小者）后再按 fixed window 汇总。未修复/朴素实现按分片各自去重再相加 ⇒ naive=83 ≠ canonical=68（checker 显式断言两者必须不同，以证明该 fixture 具有区分力）。硬预算与并行结构同 C1：串行约 10s > 6500ms 被 verify 拒绝，分片级并行 ≤ 预算，且账本必须等于独立全局幂等参考 ⇒ 拆解/并行/编排 + 全局幂等 reconciliation 具有结构依据。",
+      "rationale_not_in_gt": "串行调度无法满足硬预算约束；EXPLORE 未刻画\"预算-重叠分片-全局幂等\"结构；REPLAN 不适用（任务状态自洽，无既有失败方案需要推翻）。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-D1",
+      "family": "F08",
+      "category": "D",
+      "variant": 1,
+      "title": "三个限流模块各自的缺陷 + 统一额度报告校验",
+      "task_description": "pilot-workspace/FORMAL-F08-D1 下的三个限流模块 mod-a / mod-b / mod-c 都需要修好，\n并且统一额度报告校验（check-report.js）与该目录下的 node verify.js 也必须全部通过。\n不得修改 check-a.js、check-b.js、check-c.js、check-report.js 与 verify.js。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "a_fixed",
+        "b_fixed",
+        "c_fixed",
+        "report_ok",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "三个限流模块各自有真实缺陷与独立验收脚本，且存在必须三者都正确才能通过的统一报告校验；该结构使并行/编排有实际收益 ⇒ 并行/编排成立。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未利用模块互不共享的结构；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-D2",
+      "family": "F08",
+      "category": "D",
+      "variant": 2,
+      "title": "多阶段账务修复：记录修复 → 聚合归一 → 账本重生成 → 对账报告",
+      "task_description": "pilot-workspace/FORMAL-F08-D2 需要交付四份产物：\n① 修复后的用量记录 records-fixed.json（含字段 \"repaired\": true）；\n② 聚合归一结果 aggregation-normalized.json（含字段 \"normalized\": true）；\n③ 重生成的账本 ledger-rebuilt.json（含字段 \"used\"）；\n④ 对账报告 reconciliation-report.json（含字段 \"reconciled\": true）；node verify.js 必须通过。\n不得修改 verify.js。",
+      "expected_first_decisions": [
+        "PARALLEL",
+        "WORKFLOW"
+      ],
+      "expected_delegation": true,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 true）",
+      "verification_rules": [
+        "records_repaired",
+        "aggregation_normalized",
+        "ledger_rebuilt",
+        "reconciled",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "四个阶段（记录修复 → 聚合归一 → 账本重生成 → 对账报告）各有独立产物与验收字段，后续阶段依赖前序结果 ⇒ 多阶段编排结构由任务本身给出（prompt 只陈述交付物）。",
+      "rationale_not_in_gt": "DIRECT/EXPLORE 未刻画阶段化产物结构；DELEGATE 单路不足（D 类等价集）；REPLAN 不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-E1",
+      "family": "F08",
+      "category": "E",
+      "variant": 1,
+      "title": "旧版计费规则与新 quota 契约冲突（新增兼容路径）",
+      "task_description": "pilot-workspace/FORMAL-F08-E1 的 billing.js 是一版**已上线**的计费实现，其输出被 legacy/consumer.js 按字段逐项回放（legacy/billing.json 与 consumer 均不得修改）。\nCONTRACT-quota.md 的新要求必须成立；check.js 与 billing.js 都不得修改。请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "compat_added",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "现状把既有实现当作新接口：billing.js 只能输出 billed，而新契约要求同时携带 remaining/reject_layer；billing.js 与 legacy 消费方冻结、check.js 不得修改 ⇒ 局部改参无法满足，必须新增兼容路径并调整非保护入口装配（计划层重规划）⇒ REPLAN 最小充分。",
+      "rationale_not_in_gt": "DIRECT 指向受保护文件；EXPLORE 不成立（成因与位置已由真实预跑记录明确）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    },
+    {
+      "task_id": "FORMAL-F08-E2",
+      "family": "F08",
+      "category": "E",
+      "variant": 2,
+      "title": "展示派生状态与账本真值脱节（账本权威性）",
+      "task_description": "pilot-workspace/FORMAL-F08-E2 对外展示的剩余额度与账本真值不一致。\n上一轮针对展示数据的处理记录在 display.log。\nledger-authority.md 规定的前置契约必须成立；reconcile.js 与 ledger.js 都不得修改。请让 node verify.js 通过。",
+      "expected_first_decisions": [
+        "REPLAN"
+      ],
+      "expected_delegation": false,
+      "candidate_set_check": "PASS",
+      "delegation_axis_check": "PASS（派生 false）",
+      "verification_rules": [
+        "authority_fixed",
+        "verify_pass"
+      ],
+      "rationale_in_gt": "未修复态把派生展示数据当作权威：display-snapshot.json 残留 remaining=70（对应旧 used=30），而账本 used=80 ⇒ 真实剩余 20（真实预跑断言 actual=70 / expected=20）；进一步账本更新为 used=90 时展示必须变为 10。reconcile.js 与 ledger.js 冻结 ⇒ 必须改变\"展示从哪里取数\"的方案（由账本推导），属计划层重规划 ⇒ REPLAN 有构念依据且可满足；与 F06 缓存键失效、F07 层叠传播机制不同。",
+      "rationale_not_in_gt": "DIRECT 指向受保护文件或直接改 display-snapshot.json 数值（把派生数据当真值，不解决问题）；EXPLORE 不成立（权威性规则与成因已由真实预跑记录明确）；VERIFY 与委派类不适用。",
+      "gt_signed_by": "",
+      "gt_signed_at": ""
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+id: FORMAL-F06-A2
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:00:27Z
+gt_signed_version_hash: 13b0d0fe8c1e4653bffcdc2e209bb944884d475b32d8bc3700d3680ecff2767e
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F06-A2 的最终决策与 POLICY.md 规定的优先级要求不一致。
+  修正后使 node verify.js 通过。不得修改 verify.js、check-precedence.js 与 POLICY.md。
+expected_first_decisions: [DIRECT, EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - precedence_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F06-A2/evaluator.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F06-A2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F06-A2/verify.js
+  - pilot-workspace/FORMAL-F06-A2/check-precedence.js
+  - pilot-workspace/FORMAL-F06-A2/POLICY.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F06-A2/verify.js
+    expect: "F06-A2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F06-A2/verify.js
+  - id: precedence_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F06-A2/check-precedence.js

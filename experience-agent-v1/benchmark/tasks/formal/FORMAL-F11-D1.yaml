@@ -1,0 +1,65 @@
+id: FORMAL-F11-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T07:21:14Z
+gt_signed_version_hash: 5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F11-D1 下的三个查询目标 q-stats.js / q-errors.js / q-slowest.js 的结果都与 CONTRACT.md 的 Q1–Q8 不一致，统一报告 query-report.json 的 total_input_records 也不符合 Q1。
+  交付 results/stats.json、results/errors.json、results/slowest.json 与 query-report.json；运行 node run-all.js 重算全部产物；node verify.js 必须通过。
+  不得修改 check-stats.js、check-errors.js、check-slowest.js、check-report.js、verify.js、CONTRACT.md、canonical.js、run-all.js、query.json 与 logs/。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - stats_fixed
+    - errors_fixed
+    - slowest_fixed
+    - report_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F11-D1/q-stats.js
+  - pilot-workspace/FORMAL-F11-D1/q-errors.js
+  - pilot-workspace/FORMAL-F11-D1/q-slowest.js
+  - pilot-workspace/FORMAL-F11-D1/report.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F11-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F11-D1/verify.js
+  - pilot-workspace/FORMAL-F11-D1/check-stats.js
+  - pilot-workspace/FORMAL-F11-D1/check-errors.js
+  - pilot-workspace/FORMAL-F11-D1/check-slowest.js
+  - pilot-workspace/FORMAL-F11-D1/check-report.js
+  - pilot-workspace/FORMAL-F11-D1/CONTRACT.md
+  - pilot-workspace/FORMAL-F11-D1/canonical.js
+  - pilot-workspace/FORMAL-F11-D1/run-all.js
+  - pilot-workspace/FORMAL-F11-D1/query.json
+  - pilot-workspace/FORMAL-F11-D1/logs/logs.jsonl
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F11-D1/verify.js
+    expect: "F11-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F11-D1/verify.js
+  - id: stats_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-D1/check-stats.js
+  - id: errors_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-D1/check-errors.js
+  - id: slowest_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-D1/check-slowest.js
+  - id: report_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-D1/check-report.js

@@ -1,0 +1,42 @@
+id: FORMAL-F05-B2
+category: B
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:54:00Z
+gt_signed_version_hash: 1a6dcaba14576b50c55541a0d8f7a192f084aed16e60411fecbba250cfdc62d1
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F05-B2 在两个顶层依赖对同一包提出互不兼容的约束时没有报告冲突。
+  请修复该问题，使 node verify.js 通过。不得修改 verify.js 与 check-conflict.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - conflict_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F05-B2/resolver.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F05-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F05-B2/verify.js
+  - pilot-workspace/FORMAL-F05-B2/check-conflict.js
+  - pilot-workspace/FORMAL-F05-B2/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F05-B2/verify.js
+    expect: "F05-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F05-B2/verify.js
+  - id: conflict_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F05-B2/check-conflict.js

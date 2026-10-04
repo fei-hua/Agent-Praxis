@@ -1,0 +1,56 @@
+id: FORMAL-F04-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:39:57Z
+gt_signed_version_hash: 8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2
+source: synthetic-formal
+task_type: doc
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F04-D2 需要交付三份产物：
+  ① 归档 fixtures/alpha/ 下的事件批次，生成 report-alpha.md（含一行以「Alpha 结论」开头的结论）；
+  ② 归档 fixtures/beta/ 下的事件批次，生成 report-beta.md（含一行以「Beta 结论」开头的结论）；
+  ③ 写 SUMMARY.md，含一行以「合并」开头的结论；node verify.js 必须通过。
+  不得修改 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - alpha_written
+    - beta_written
+    - summary_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F04-D2/report-alpha.md
+  - pilot-workspace/FORMAL-F04-D2/report-beta.md
+  - pilot-workspace/FORMAL-F04-D2/SUMMARY.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F04-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F04-D2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F04-D2/verify.js
+    expect: "F04-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F04-D2/verify.js
+  - id: alpha_written
+    kind: file_contains
+    expect: "Alpha 结论"
+    path: pilot-workspace/FORMAL-F04-D2/report-alpha.md
+  - id: beta_written
+    kind: file_contains
+    expect: "Beta 结论"
+    path: pilot-workspace/FORMAL-F04-D2/report-beta.md
+  - id: summary_written
+    kind: file_contains
+    expect: "合并"
+    path: pilot-workspace/FORMAL-F04-D2/SUMMARY.md

@@ -1,0 +1,69 @@
+id: FORMAL-F10-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:40:41Z
+gt_signed_version_hash: 715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F10-D1 下的三套迁移模块 mig-customers.js / mig-orders.js / mig-logs.js 都需要修好，
+  交付三张表的迁移产物 migrated/customers.jsonl、migrated/orders.jsonl、migrated/logs.jsonl，
+  以及统一迁移报告 migration-report.json（含 tables 与 total_records）；node verify.js 必须通过。
+  不得修改 check-customers.js、check-orders.js、check-logs.js、check-report.js、verify.js、CONTRACT.md、canonical.js 与 schemas/。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - customers_fixed
+    - orders_fixed
+    - logs_fixed
+    - report_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F10-D1/mig-customers.js
+  - pilot-workspace/FORMAL-F10-D1/mig-orders.js
+  - pilot-workspace/FORMAL-F10-D1/mig-logs.js
+  - pilot-workspace/FORMAL-F10-D1/migrated/customers.jsonl
+  - pilot-workspace/FORMAL-F10-D1/migrated/orders.jsonl
+  - pilot-workspace/FORMAL-F10-D1/migrated/logs.jsonl
+  - pilot-workspace/FORMAL-F10-D1/migration-report.json
+allowed_paths:
+  - pilot-workspace/FORMAL-F10-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F10-D1/verify.js
+  - pilot-workspace/FORMAL-F10-D1/check-customers.js
+  - pilot-workspace/FORMAL-F10-D1/check-orders.js
+  - pilot-workspace/FORMAL-F10-D1/check-logs.js
+  - pilot-workspace/FORMAL-F10-D1/check-report.js
+  - pilot-workspace/FORMAL-F10-D1/CONTRACT.md
+  - pilot-workspace/FORMAL-F10-D1/canonical.js
+  - pilot-workspace/FORMAL-F10-D1/schemas/customers.v2.json
+  - pilot-workspace/FORMAL-F10-D1/schemas/orders.v2.json
+  - pilot-workspace/FORMAL-F10-D1/schemas/logs.v2.json
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F10-D1/verify.js
+    expect: "F10-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F10-D1/verify.js
+  - id: customers_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-D1/check-customers.js
+  - id: orders_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-D1/check-orders.js
+  - id: logs_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-D1/check-logs.js
+  - id: report_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-D1/check-report.js

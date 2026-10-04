@@ -1,0 +1,62 @@
+id: FORMAL-F08-C1
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T05:04:23Z
+gt_signed_version_hash: 024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F08-C1 需要在**总预算 6500 ms**内完成三个用量来源的汇总，最终必须同时成立：
+  ① work/ 下的三个来源汇总工具都必须真实执行完成，各自产出 out/<src>.json；
+  ② 每次执行都会把 {src,start,end,token,accepted,count} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 每个来源内部按 S6 规则（去重 request_id → fixed window 过滤 → accepted cost 求和）汇总；
+  ④ 三来源完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ⑤ 生成 ledger.json，其 used 与分组必须与**独立参考实现**一致；写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、window.json、account.js 与 work/ 下的来源工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - sources_done
+    - timeline_ok
+    - ledger_ok
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F08-C1/run-sources.js
+  - pilot-workspace/FORMAL-F08-C1/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F08-C1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F08-C1/verify.js
+  - pilot-workspace/FORMAL-F08-C1/check-timeline.js
+  - pilot-workspace/FORMAL-F08-C1/CONTRACT.md
+  - pilot-workspace/FORMAL-F08-C1/window.json
+  - pilot-workspace/FORMAL-F08-C1/account.js
+  - pilot-workspace/FORMAL-F08-C1/work/src-a.js
+  - pilot-workspace/FORMAL-F08-C1/work/src-b.js
+  - pilot-workspace/FORMAL-F08-C1/work/src-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F08-C1/verify.js
+    expect: "F08-C1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F08-C1/verify.js
+  - id: sources_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F08-C1/out/src-a.json
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F08-C1/check-timeline.js
+  - id: ledger_ok
+    kind: file_contains
+    expect: "used"
+    path: pilot-workspace/FORMAL-F08-C1/ledger.json

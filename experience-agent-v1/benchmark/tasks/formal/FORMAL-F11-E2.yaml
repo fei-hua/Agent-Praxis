@@ -1,0 +1,52 @@
+id: FORMAL-F11-E2
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T07:21:14Z
+gt_signed_version_hash: 5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [api_immutable]
+prompt: |
+  pilot-workspace/FORMAL-F11-E2 的 result.json 聚合把**缺失 value 的记录按 legacy 默认值修补**后计入，而新契约（CONTRACT.md 的 Q2）要求缺失/null 不得计入 sum 与 count_with_value；同时 legacy 视图必须继续由冻结的默认值填充路径生成。
+  pipeline.js 与 legacy/ 不得修改；请新增兼容聚合层 aggregate-compat.js 并调整非保护装配 query.js，运行 node run.js 重新生成 result.json，使 node verify.js 通过。
+  不得修改 verify.js、check-query.js、check-legacy.js、CONTRACT.md、canonical.js、pipeline.js、legacy/、legacy-view.js、query.json 与 logs/。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - compat_layer_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F11-E2/aggregate-compat.js
+  - pilot-workspace/FORMAL-F11-E2/query.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F11-E2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F11-E2/verify.js
+  - pilot-workspace/FORMAL-F11-E2/check-query.js
+  - pilot-workspace/FORMAL-F11-E2/check-legacy.js
+  - pilot-workspace/FORMAL-F11-E2/CONTRACT.md
+  - pilot-workspace/FORMAL-F11-E2/canonical.js
+  - pilot-workspace/FORMAL-F11-E2/pipeline.js
+  - pilot-workspace/FORMAL-F11-E2/legacy/normalize.js
+  - pilot-workspace/FORMAL-F11-E2/legacy/defaults.json
+  - pilot-workspace/FORMAL-F11-E2/legacy-view.js
+  - pilot-workspace/FORMAL-F11-E2/query.json
+  - pilot-workspace/FORMAL-F11-E2/logs/logs.jsonl
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F11-E2/verify.js
+    expect: "F11-E2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F11-E2/verify.js
+  - id: compat_layer_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F11-E2/aggregate-compat.js

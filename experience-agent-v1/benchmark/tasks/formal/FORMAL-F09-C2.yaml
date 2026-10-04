@@ -1,0 +1,61 @@
+id: FORMAL-F09-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:18:32Z
+gt_signed_version_hash: 6224f1f9c61469b8dcc6e571f6ebe6a45d34b1341d692f618d20659f43b67ac7
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F09-C2 需要在**总预算 6500 ms**内完成三个共享同一 partial 的模板渲染：
+  ① work/ 下的三个渲染工具都必须真实执行完成，各自产出 snapshots/<name>.snap；
+  ② 每次执行都会把 {tpl,start,end,token,bytes} 追加到 timeline.jsonl（由工具自身写入，不得手工构造）；
+  ③ 三模板完成时间跨度不得超过总预算；
+  ④ 三个模板都 include 同一个 `shared.tpl`；每份快照必须与**独立参考渲染器**逐字节一致；
+  ⑤ **顺序无关性**：共享依赖在不同完成顺序下不得导致快照漂移；写出 INTEGRATION.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、renderer.js 与 work/ 下的渲染工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - templates_done
+    - timeline_ok
+    - order_independent
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F09-C2/run-templates.js
+  - pilot-workspace/FORMAL-F09-C2/INTEGRATION.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F09-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F09-C2/verify.js
+  - pilot-workspace/FORMAL-F09-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F09-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F09-C2/renderer.js
+  - pilot-workspace/FORMAL-F09-C2/work/page-x.js
+  - pilot-workspace/FORMAL-F09-C2/work/page-y.js
+  - pilot-workspace/FORMAL-F09-C2/work/page-z.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F09-C2/verify.js
+    expect: "F09-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F09-C2/verify.js
+  - id: templates_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F09-C2/snapshots/page-x.snap
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F09-C2/check-timeline.js
+  - id: order_independent
+    kind: file_contains
+    expect: "SHARED[prod]"
+    path: pilot-workspace/FORMAL-F09-C2/snapshots/page-y.snap

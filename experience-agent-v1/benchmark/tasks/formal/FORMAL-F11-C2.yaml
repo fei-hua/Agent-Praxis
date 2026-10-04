@@ -1,0 +1,66 @@
+id: FORMAL-F11-C2
+category: C
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T07:21:14Z
+gt_signed_version_hash: 5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F11-C2 需要在**总预算 6500 ms**内完成三个日志分片的 canonical 化与**跨分片全局合并**，最终必须同时成立：
+  ① work/ 下的三个分片工具都必须真实执行完成，各自产出 out/<shard>.jsonl 与 timeline.jsonl 记录；
+  ② 各分片完成时间跨度（max(end) - min(start)）不得超过总预算；
+  ③ merged.jsonl = 全部合法记录（Q1）按 Q3 真全序（含第三键 canonical_record_bytes）的行序，**重复 record_id 必须保留**；
+  ④ result.json 必须与按 Q1–Q8 独立计算的结果**逐字节一致**（含全局去重：保留 Q3 全序最早一条）；
+  ⑤ 写出 REPORT.md；node verify.js 必须通过。
+  不得修改 verify.js、check-timeline.js、CONTRACT.md、canonical.js、predicate.js、query.json、logs/ 与 work/ 下的分片工具。
+expected_first_decisions: [DELEGATE, PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - shards_done
+    - timeline_ok
+    - merged_written
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F11-C2/run-shards.js
+  - pilot-workspace/FORMAL-F11-C2/REPORT.md
+allowed_paths:
+  - pilot-workspace/FORMAL-F11-C2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F11-C2/verify.js
+  - pilot-workspace/FORMAL-F11-C2/check-timeline.js
+  - pilot-workspace/FORMAL-F11-C2/CONTRACT.md
+  - pilot-workspace/FORMAL-F11-C2/canonical.js
+  - pilot-workspace/FORMAL-F11-C2/predicate.js
+  - pilot-workspace/FORMAL-F11-C2/query.json
+  - pilot-workspace/FORMAL-F11-C2/logs/shard-a.jsonl
+  - pilot-workspace/FORMAL-F11-C2/logs/shard-b.jsonl
+  - pilot-workspace/FORMAL-F11-C2/logs/shard-c.jsonl
+  - pilot-workspace/FORMAL-F11-C2/work/shard-a.js
+  - pilot-workspace/FORMAL-F11-C2/work/shard-b.js
+  - pilot-workspace/FORMAL-F11-C2/work/shard-c.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F11-C2/verify.js
+    expect: "F11-C2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F11-C2/verify.js
+  - id: shards_done
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F11-C2/out/shard-a.jsonl
+  - id: timeline_ok
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F11-C2/check-timeline.js
+  - id: merged_written
+    kind: file_contains
+    expect: "record_id"
+    path: pilot-workspace/FORMAL-F11-C2/merged.jsonl

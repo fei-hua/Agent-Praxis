@@ -1,0 +1,43 @@
+id: FORMAL-F10-A2
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T06:40:41Z
+gt_signed_version_hash: 715d7a7ebb125fd48d7e42ea0c7e29abb2e2f0ae44f08f59b5ef07b676744a7b
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F10-A2 的 Schema 校验结果与 CONTRACT.md 规定的 V2 语义不一致。
+  修正后使 node verify.js 通过。不得修改 verify.js、check-type-null.js、CONTRACT.md 与 schemas/v1.json。
+expected_first_decisions: [DIRECT, EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - type_null_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F10-A2/validate.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F10-A2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F10-A2/verify.js
+  - pilot-workspace/FORMAL-F10-A2/check-type-null.js
+  - pilot-workspace/FORMAL-F10-A2/CONTRACT.md
+  - pilot-workspace/FORMAL-F10-A2/schemas/v1.json
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F10-A2/verify.js
+    expect: "F10-A2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F10-A2/verify.js
+  - id: type_null_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F10-A2/check-type-null.js

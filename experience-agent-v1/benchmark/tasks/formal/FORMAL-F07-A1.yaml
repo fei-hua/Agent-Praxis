@@ -1,0 +1,42 @@
+id: FORMAL-F07-A1
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:15:03Z
+gt_signed_version_hash: 883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F07-A1 的 effective config 里 defaults 层覆盖了 local 层（期望 local 覆盖 defaults）。
+  修正后使 node verify.js 通过。不得修改 verify.js、check-precedence.js 与 CONTRACT.md。
+expected_first_decisions: [DIRECT]
+expected_delegation: false
+success_criteria:
+  required:
+    - precedence_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F07-A1/merge.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F07-A1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F07-A1/verify.js
+  - pilot-workspace/FORMAL-F07-A1/check-precedence.js
+  - pilot-workspace/FORMAL-F07-A1/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F07-A1/verify.js
+    expect: "F07-A1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F07-A1/verify.js
+  - id: precedence_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F07-A1/check-precedence.js

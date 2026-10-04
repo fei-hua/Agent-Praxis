@@ -1,0 +1,26 @@
+{
+  "dataset": "formal",
+  "family": "F11",
+  "status": "FROZEN（已签署冻结）",
+  "version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+  "file_count": 12,
+  "files": {
+    "benchmark/formal-seeds-f11.ts": "7cda61aa13d530f799a087ce6c87160ec17c8811bea63de49325155f8419309f",
+    "benchmark/formal/slots.json": "d8e832a04cdeb426ff1640c1b5c659ee00795c03434954e7ee6fa1301550d3e3",
+    "benchmark/tasks/formal/FORMAL-F11-A1.yaml": "4068dc929917550a89fa503c2864afbdbcc01f16f4599f0c112db1449ea8e8c7",
+    "benchmark/tasks/formal/FORMAL-F11-A2.yaml": "c203d66855b295af8ee7949a1db9763c88a83a55e5428bb88236bf04ffa585ba",
+    "benchmark/tasks/formal/FORMAL-F11-B1.yaml": "88de1360abe57c7e1216a77c7169c1ff469e50da250955668a6bf2ddf345e521",
+    "benchmark/tasks/formal/FORMAL-F11-B2.yaml": "1a1c7ccfbeb5047ee6aca36f72278537550fbeb905672f5a004d5158d21a42c8",
+    "benchmark/tasks/formal/FORMAL-F11-C1.yaml": "48011bdcf354d2b776c328e82c6c8a91fd4b954a9516871926ecf19af7de551d",
+    "benchmark/tasks/formal/FORMAL-F11-C2.yaml": "c1ac5cd5330d28bd4bae3fbf6664de77dde4944d73652b9d18f0ba11ecf5cf02",
+    "benchmark/tasks/formal/FORMAL-F11-D1.yaml": "22f9be50e243b60f46185ec22eb3a3f290c0179973c14ef1ce8bef0988cff9df",
+    "benchmark/tasks/formal/FORMAL-F11-D2.yaml": "b75248c7d624d1f1ff77efcbc87d5d8d883bf04cbc96c88a133b76ea56401854",
+    "benchmark/tasks/formal/FORMAL-F11-E1.yaml": "9228593d799aeae2fda49f81718b96a459253d3d23ad1a41f7a7f38c8168370d",
+    "benchmark/tasks/formal/FORMAL-F11-E2.yaml": "79af4b7bc5cdd30cdd08fa1b84e930b31badf1d5e61358d506a81da5107c5af3"
+  },
+  "generated_at": "2026-10-04T07:18:46.331Z",
+  "signed_version_hash": "5bfea286b9457b853a48f30fc7a00c23675a0e41f4bf389ea783da01076882cf",
+  "frozen_version_hash": "4c31a3f7c86ae4b731b6d4a94cf6deb925e8cb8fb4f3a3e26d4f9c901412e4ad",
+  "frozen_content_projection_hash": "bca00524dc6263022bf33539930253f85216c53c38460fc336af94cf5020fb23",
+  "frozen_at": "2026-10-04T07:21:14Z"
+}

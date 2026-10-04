@@ -1,0 +1,42 @@
+id: FORMAL-F04-A2
+category: A
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:39:57Z
+gt_signed_version_hash: 8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2
+source: synthetic-formal
+task_type: bugfix
+complexity: simple
+scope: project
+characteristics: [shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F04-A2 的最终状态与 CONTRACT.md 描述的事件处理要求不一致。
+  修正后使 node verify.js 通过。不得修改 verify.js、check-order.js 与 CONTRACT.md。
+expected_first_decisions: [DIRECT, EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - order_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F04-A2/apply.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F04-A2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F04-A2/verify.js
+  - pilot-workspace/FORMAL-F04-A2/check-order.js
+  - pilot-workspace/FORMAL-F04-A2/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F04-A2/verify.js
+    expect: "F04-A2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F04-A2/verify.js
+  - id: order_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F04-A2/check-order.js

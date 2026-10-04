@@ -1,0 +1,39 @@
+id: FORMAL-F03-B2
+category: B
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:02:49Z
+gt_signed_version_hash: e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9
+source: synthetic-formal
+task_type: bugfix
+complexity: medium
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F03-B2 的响应快照与期望快照存在字段差异（见 REPORT.md）。请修复该问题，使 node verify.js 通过。不得修改 verify.js。
+expected_first_decisions: [EXPLORE]
+expected_delegation: false
+success_criteria:
+  required:
+    - serializer_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F03-B2/serialize.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F03-B2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F03-B2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F03-B2/verify.js
+    expect: "F03-B2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F03-B2/verify.js
+  - id: serializer_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F03-B2/verify.js

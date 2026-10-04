@@ -1,0 +1,45 @@
+id: FORMAL-F04-E2
+category: E
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:39:57Z
+gt_signed_version_hash: 8e5682980e5d2b15ba5d19fba8cba63b1936816cd11d71e61492de661d057fc2
+source: synthetic-formal
+task_type: refactor
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [api_immutable]
+prompt: |
+  pilot-workspace/FORMAL-F04-E2 的处理器在事件重放时会重复产生副作用。
+  上一轮针对判重逻辑做的调整记录在 replay.log。
+  exactly-once.md 规定的前置契约必须成立；contract.js 与 processor.js 都不得修改。请让 node verify.js 通过。
+expected_first_decisions: [REPLAN]
+expected_delegation: false
+success_criteria:
+  required:
+    - idempotency_added
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F04-E2/idempotency.js
+  - pilot-workspace/FORMAL-F04-E2/dedupe.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F04-E2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F04-E2/verify.js
+  - pilot-workspace/FORMAL-F04-E2/contract.js
+  - pilot-workspace/FORMAL-F04-E2/processor.js
+  - pilot-workspace/FORMAL-F04-E2/exactly-once.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F04-E2/verify.js
+    expect: "F04-E2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F04-E2/verify.js
+  - id: idempotency_added
+    kind: file_exists
+    path: pilot-workspace/FORMAL-F04-E2/idempotency.js

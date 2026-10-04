@@ -1,0 +1,65 @@
+id: FORMAL-F07-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T18:15:03Z
+gt_signed_version_hash: 883ce1ed05bf68737d7160ef5f80653e59c0fd86230319e2a42738bce68b4e8d
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F07-D2 需要交付四份产物：
+  ① schema 修复结果 schema-repair.json（含字段 "repaired": true）；
+  ② 层归一结果 layers-normalized.json（含字段 "normalized": true 与覆盖四个层的 layers 数组）；
+  ③ 生效配置 effective-config.json（含字段 "effective"，其 service.database.timeout 必须与层文件按 CONTRACT.md 归一后的结果一致）；
+  ④ 校验报告 validation-report.json（含字段 "valid": true 与至少 4 项 checks）。node verify.js 必须通过。
+  不得修改 verify.js、schema.json 与 CONTRACT.md。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - schema_repaired
+    - layers_normalized
+    - effective_generated
+    - report_valid
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F07-D2/schema-repair.json
+  - pilot-workspace/FORMAL-F07-D2/layers-normalized.json
+  - pilot-workspace/FORMAL-F07-D2/effective-config.json
+  - pilot-workspace/FORMAL-F07-D2/validation-report.json
+allowed_paths:
+  - pilot-workspace/FORMAL-F07-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F07-D2/verify.js
+  - pilot-workspace/FORMAL-F07-D2/schema.json
+  - pilot-workspace/FORMAL-F07-D2/CONTRACT.md
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F07-D2/verify.js
+    expect: "F07-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F07-D2/verify.js
+  - id: schema_repaired
+    kind: file_contains
+    expect: "repaired"
+    path: pilot-workspace/FORMAL-F07-D2/schema-repair.json
+  - id: layers_normalized
+    kind: file_contains
+    expect: "normalized"
+    path: pilot-workspace/FORMAL-F07-D2/layers-normalized.json
+  - id: effective_generated
+    kind: file_contains
+    expect: "effective"
+    path: pilot-workspace/FORMAL-F07-D2/effective-config.json
+  - id: report_valid
+    kind: file_contains
+    expect: "valid"
+    path: pilot-workspace/FORMAL-F07-D2/validation-report.json

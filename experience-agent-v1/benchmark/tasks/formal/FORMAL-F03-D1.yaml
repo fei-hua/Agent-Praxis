@@ -1,0 +1,52 @@
+id: FORMAL-F03-D1
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-09-30T17:02:49Z
+gt_signed_version_hash: e1467928ba6363fc2f31255b4f4fcd01d2e7b7207fb658bf72db84c97186aab9
+source: synthetic-formal
+task_type: data_layer
+complexity: high
+scope: project
+characteristics: [multi_file]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F03-D1 的三个服务包 svc-auth / svc-rate / svc-audit 都需要修好：这些包各自的验收脚本与该目录下的 node verify.js 必须全部通过。不得修改验收脚本与 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - auth_fixed
+    - rate_fixed
+    - audit_fixed
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F03-D1/svc-auth/src.js
+  - pilot-workspace/FORMAL-F03-D1/svc-rate/src.js
+  - pilot-workspace/FORMAL-F03-D1/svc-audit/src.js
+allowed_paths:
+  - pilot-workspace/FORMAL-F03-D1/**
+protected_paths:
+  - pilot-workspace/FORMAL-F03-D1/verify.js
+  - pilot-workspace/FORMAL-F03-D1/check-auth.js
+  - pilot-workspace/FORMAL-F03-D1/check-rate.js
+  - pilot-workspace/FORMAL-F03-D1/check-audit.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F03-D1/verify.js
+    expect: "F03-D1 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F03-D1/verify.js
+  - id: auth_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F03-D1/check-auth.js
+  - id: rate_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F03-D1/check-rate.js
+  - id: audit_fixed
+    kind: command_exit_zero
+    command: node pilot-workspace/FORMAL-F03-D1/check-audit.js

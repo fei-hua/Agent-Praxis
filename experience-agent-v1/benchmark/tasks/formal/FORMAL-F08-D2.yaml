@@ -1,0 +1,63 @@
+id: FORMAL-F08-D2
+category: D
+status: frozen
+gt_signed_by: fei-hua
+gt_signed_at: 2026-10-04T05:04:23Z
+gt_signed_version_hash: 024aed6c0408749cc8aa904182629f854c8086b46eeaff9eb07a23d095092fb2
+source: synthetic-formal
+task_type: refactor
+complexity: medium
+scope: project
+characteristics: [multi_file, shared_state]
+constraints: [scope_limited]
+prompt: |
+  pilot-workspace/FORMAL-F08-D2 需要交付四份产物：
+  ① 修复后的用量记录 records-fixed.json（含字段 "repaired": true）；
+  ② 聚合归一结果 aggregation-normalized.json（含字段 "normalized": true）；
+  ③ 重生成的账本 ledger-rebuilt.json（含字段 "used"）；
+  ④ 对账报告 reconciliation-report.json（含字段 "reconciled": true）；node verify.js 必须通过。
+  不得修改 verify.js。
+expected_first_decisions: [PARALLEL, WORKFLOW]
+expected_delegation: true
+success_criteria:
+  required:
+    - records_repaired
+    - aggregation_normalized
+    - ledger_rebuilt
+    - reconciled
+    - verify_pass
+  forbidden:
+    - verify_script_changed
+expected_files:
+  - pilot-workspace/FORMAL-F08-D2/records-fixed.json
+  - pilot-workspace/FORMAL-F08-D2/aggregation-normalized.json
+  - pilot-workspace/FORMAL-F08-D2/ledger-rebuilt.json
+  - pilot-workspace/FORMAL-F08-D2/reconciliation-report.json
+allowed_paths:
+  - pilot-workspace/FORMAL-F08-D2/**
+protected_paths:
+  - pilot-workspace/FORMAL-F08-D2/verify.js
+verification:
+  - id: verify_pass
+    kind: output_contains
+    command: node pilot-workspace/FORMAL-F08-D2/verify.js
+    expect: "F08-D2 OK"
+  - id: verify_script_changed
+    kind: file_unchanged
+    path: pilot-workspace/FORMAL-F08-D2/verify.js
+  - id: records_repaired
+    kind: file_contains
+    expect: "repaired"
+    path: pilot-workspace/FORMAL-F08-D2/records-fixed.json
+  - id: aggregation_normalized
+    kind: file_contains
+    expect: "normalized"
+    path: pilot-workspace/FORMAL-F08-D2/aggregation-normalized.json
+  - id: ledger_rebuilt
+    kind: file_contains
+    expect: "used"
+    path: pilot-workspace/FORMAL-F08-D2/ledger-rebuilt.json
+  - id: reconciled
+    kind: file_contains
+    expect: "reconciled"
+    path: pilot-workspace/FORMAL-F08-D2/reconciliation-report.json
